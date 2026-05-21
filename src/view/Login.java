@@ -98,6 +98,7 @@ public class Login extends javax.swing.JFrame {
         registertext.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         registertext.setForeground(new java.awt.Color(255, 102, 0));
         registertext.setText("Register");
+        registertext.addActionListener(this::registertextActionPerformed);
 
         Email_textfield.addActionListener(this::Email_textfieldActionPerformed);
 
@@ -202,7 +203,8 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void forgetpassword_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgetpassword_btnActionPerformed
-        // TODO add your handling code here:
+new Forgotpassword().setVisible(true);
+this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
@@ -243,6 +245,11 @@ if (isPasswordVisible) {
     isPasswordVisible = true;
 }        // TODO add your handling code here:
     }//GEN-LAST:event_show_hide_btnActionPerformed
+
+    private void registertextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registertextActionPerformed
+new SignUp().setVisible(true);
+this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_registertextActionPerformed
 
     /**
      * @param args the command line arguments

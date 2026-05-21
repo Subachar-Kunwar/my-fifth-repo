@@ -36,7 +36,7 @@ public class OTPpage extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        verify_btn = new javax.swing.JButton();
         Text8 = new javax.swing.JLabel();
         Button3 = new javax.swing.JButton();
 
@@ -69,11 +69,11 @@ public class OTPpage extends javax.swing.JFrame {
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField5.addActionListener(this::jTextField5ActionPerformed);
 
-        jButton1.setBackground(new java.awt.Color(170, 218, 172));
-        jButton1.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(51, 51, 51));
-        jButton1.setText("Login");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        verify_btn.setBackground(new java.awt.Color(170, 218, 172));
+        verify_btn.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        verify_btn.setForeground(new java.awt.Color(51, 51, 51));
+        verify_btn.setText("Verify Otp");
+        verify_btn.addActionListener(this::verify_btnActionPerformed);
 
         Text8.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
         Text8.setText("Didn't recieved OTP?");
@@ -104,7 +104,7 @@ public class OTPpage extends javax.swing.JFrame {
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(verify_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(Text8)
@@ -131,7 +131,7 @@ public class OTPpage extends javax.swing.JFrame {
                     .addComponent(Text8)
                     .addComponent(Button3))
                 .addGap(33, 33, 33)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(verify_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 353, Short.MAX_VALUE))
         );
 
@@ -169,9 +169,9 @@ public class OTPpage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField5ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void verify_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verify_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_verify_btnActionPerformed
 
     private void Button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button3ActionPerformed
         // TODO add your handling code here:
@@ -207,12 +207,12 @@ public class OTPpage extends javax.swing.JFrame {
     private javax.swing.JLabel Text1;
     private javax.swing.JLabel Text3;
     private javax.swing.JLabel Text8;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton verify_btn;
     // End of variables declaration//GEN-END:variables
 }

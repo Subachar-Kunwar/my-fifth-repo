@@ -8,6 +8,7 @@ import model.User;
 
 public class UserDAO {
 
+    // ✅ LOGIN METHOD
     public boolean loginUser(User user) {
 
         boolean isValidUser = false;
@@ -35,5 +36,35 @@ public class UserDAO {
         }
 
         return isValidUser;
+    }
+
+    // ✅ UPDATE PASSWORD METHOD
+    public boolean updatePassword(String email, String newPassword) {
+
+        boolean updated = false;
+
+        try {
+            MySqlConnector connector = new MySqlConnector();
+            Connection conn = connector.openConnection();
+
+            String query = "UPDATE users SET password = ? WHERE email = ?";
+
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, newPassword);
+            pst.setString(2, email);
+
+            int rows = pst.executeUpdate();
+
+            if (rows > 0) {
+                updated = true;
+            }
+
+            connector.closeConnection(conn);
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return updated;
     }
 }

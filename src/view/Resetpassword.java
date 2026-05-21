@@ -10,13 +10,20 @@ package view;
  */
 public class Resetpassword extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Resetpassword.class.getName());
+    private static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(Resetpassword.class.getName());
 
-    /**
-     * Creates new form Resetpassword
-     */
+    private String userEmail;
+
+    // ✅ Default constructor (KEEP THIS)
     public Resetpassword() {
         initComponents();
+    }
+
+    // ✅ Constructor with email
+    public Resetpassword(String email) {
+        initComponents();
+        this.userEmail = email;
     }
 
     /**
@@ -28,79 +35,79 @@ public class Resetpassword extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        Text1 = new javax.swing.JLabel();
-        Text3 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        Text4 = new javax.swing.JLabel();
-        jPasswordField3 = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        Mainpanal = new javax.swing.JPanel();
+        Resetpassword_text = new javax.swing.JLabel();
+        Newpassword_text = new javax.swing.JLabel();
+        Newpassword_textfield = new javax.swing.JPasswordField();
+        ConfirmPassword_text = new javax.swing.JLabel();
+        Confirmpassword_textfield = new javax.swing.JPasswordField();
+        Reset_btn = new javax.swing.JButton();
+        Logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(232, 255, 233));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1550, 840));
+        Mainpanal.setBackground(new java.awt.Color(232, 255, 233));
+        Mainpanal.setPreferredSize(new java.awt.Dimension(1550, 840));
 
-        Text1.setFont(new java.awt.Font("Arial Black", 1, 50)); // NOI18N
-        Text1.setText("Reset Password");
+        Resetpassword_text.setFont(new java.awt.Font("Arial Black", 1, 50)); // NOI18N
+        Resetpassword_text.setText("Reset Password");
 
-        Text3.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
-        Text3.setText("New Password");
+        Newpassword_text.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
+        Newpassword_text.setText("New Password");
 
-        jPasswordField2.setText("jPasswordField2");
+        Newpassword_textfield.setText("jPasswordField2");
 
-        Text4.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
-        Text4.setText("Confirm Password");
+        ConfirmPassword_text.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
+        ConfirmPassword_text.setText("Confirm Password");
 
-        jPasswordField3.setText("jPasswordField2");
-        jPasswordField3.addActionListener(this::jPasswordField3ActionPerformed);
+        Confirmpassword_textfield.setText("jPasswordField2");
+        Confirmpassword_textfield.addActionListener(this::Confirmpassword_textfieldActionPerformed);
 
-        jButton1.setBackground(new java.awt.Color(170, 218, 172));
-        jButton1.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(51, 51, 51));
-        jButton1.setText("Reset");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        Reset_btn.setBackground(new java.awt.Color(170, 218, 172));
+        Reset_btn.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        Reset_btn.setForeground(new java.awt.Color(51, 51, 51));
+        Reset_btn.setText("Reset");
+        Reset_btn.addActionListener(this::Reset_btnActionPerformed);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout MainpanalLayout = new javax.swing.GroupLayout(Mainpanal);
+        Mainpanal.setLayout(MainpanalLayout);
+        MainpanalLayout.setHorizontalGroup(
+            MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainpanalLayout.createSequentialGroup()
                 .addGap(138, 562, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Text1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Resetpassword_text)
+                    .addGroup(MainpanalLayout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField2)
-                            .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Text4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPasswordField3)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Newpassword_textfield)
+                            .addComponent(Newpassword_text, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ConfirmPassword_text, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Confirmpassword_textfield)
+                            .addComponent(Reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(524, 524, 524))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+            .addGroup(MainpanalLayout.createSequentialGroup()
+                .addComponent(Logo)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+        MainpanalLayout.setVerticalGroup(
+            MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(MainpanalLayout.createSequentialGroup()
+                .addComponent(Logo)
                 .addGap(4, 4, 4)
-                .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Resetpassword_text, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(Text3)
+                .addComponent(Newpassword_text)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Newpassword_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(Text4)
+                .addComponent(ConfirmPassword_text)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPasswordField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Confirmpassword_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(409, Short.MAX_VALUE))
         );
 
@@ -109,26 +116,51 @@ public class Resetpassword extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Mainpanal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Mainpanal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField3ActionPerformed
+    private void Confirmpassword_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Confirmpassword_textfieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField3ActionPerformed
+    }//GEN-LAST:event_Confirmpassword_textfieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void Reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reset_btnActionPerformed
+        String newPassword = new String(Newpassword_textfield.getPassword()).trim();
+String confirmPassword = new String(Confirmpassword_textfield.getPassword()).trim();
+
+if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Fields cannot be empty ❌");
+    return;
+}
+
+if (!newPassword.equals(confirmPassword)) {
+    javax.swing.JOptionPane.showMessageDialog(this, "Passwords do not match ❌");
+    return;
+}
+System.out.println("Email used: " + userEmail);
+controller.ResetController controller = new controller.ResetController();
+
+if (controller.resetPassword(userEmail, newPassword)) {
+
+    javax.swing.JOptionPane.showMessageDialog(this, "Password Updated Successfully ✅");
+
+    new Login().setVisible(true);
+    this.dispose();
+
+} else {
+
+    javax.swing.JOptionPane.showMessageDialog(this, "Failed to update password ❌");
+}// TODO add your handling code here:
+    }//GEN-LAST:event_Reset_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -156,13 +188,13 @@ public class Resetpassword extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Text1;
-    private javax.swing.JLabel Text3;
-    private javax.swing.JLabel Text4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JPasswordField jPasswordField3;
+    private javax.swing.JLabel ConfirmPassword_text;
+    private javax.swing.JPasswordField Confirmpassword_textfield;
+    private javax.swing.JLabel Logo;
+    private javax.swing.JPanel Mainpanal;
+    private javax.swing.JLabel Newpassword_text;
+    private javax.swing.JPasswordField Newpassword_textfield;
+    private javax.swing.JButton Reset_btn;
+    private javax.swing.JLabel Resetpassword_text;
     // End of variables declaration//GEN-END:variables
 }
