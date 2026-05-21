@@ -3,20 +3,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
-
+import controller.LoginController;
+import javax.swing.JOptionPane;
 /**
  *
  * @author nikes
  */
 public class Login extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
+    private static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(Login.class.getName());
 
-    /**
-     * Creates new form Signup
-     */
+    private boolean isPasswordVisible = false;
+    private char defaultEchoChar;
+
     public Login() {
         initComponents();
+        defaultEchoChar = password_textfield.getEchoChar();
     }
 
     /**
@@ -43,6 +46,7 @@ public class Login extends javax.swing.JFrame {
         Username_textfield = new javax.swing.JTextField();
         password_textfield = new javax.swing.JPasswordField();
         logo = new javax.swing.JLabel();
+        show_hide_btn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,34 +107,46 @@ public class Login extends javax.swing.JFrame {
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
 
+        show_hide_btn.setText("Show/Hide");
+        show_hide_btn.addActionListener(this::show_hide_btnActionPerformed);
+
         javax.swing.GroupLayout mainpanalLayout = new javax.swing.GroupLayout(mainpanal);
         mainpanal.setLayout(mainpanalLayout);
         mainpanalLayout.setHorizontalGroup(
             mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
-                .addComponent(logo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
-                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(welcomebacktext)
-                    .addGroup(mainpanalLayout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Logintocontinuetext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(forgetpassword_btn, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(Login_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Email_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Username_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(password_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(539, 539, 539))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
+            .addGroup(mainpanalLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(DontHaveanaccounttext)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(registertext)
-                .addGap(632, 632, 632))
+                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
+                        .addComponent(logo)
+                        .addGap(353, 353, 353)
+                        .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(welcomebacktext)
+                            .addGroup(mainpanalLayout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(forgetpassword_btn, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Login_btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(mainpanalLayout.createSequentialGroup()
+                                        .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Logintocontinuetext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Username_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Email_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(mainpanalLayout.createSequentialGroup()
+                                                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(password_textfield)
+                                                    .addComponent(passwordtext, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(show_hide_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(110, 110, 110)))))
+                        .addGap(524, 524, 524))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
+                        .addComponent(DontHaveanaccounttext)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registertext)
+                        .addGap(632, 632, 632))))
         );
         mainpanalLayout.setVerticalGroup(
             mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,7 +169,9 @@ public class Login extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(passwordtext)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(password_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(password_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(show_hide_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(forgetpassword_btn)
                 .addGap(27, 27, 27)
@@ -162,7 +180,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registertext)
                     .addComponent(DontHaveanaccounttext))
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap(246, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -188,7 +206,19 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
-        // TODO add your handling code here:
+       String email = Email_textfield.getText();
+String password = new String(password_textfield.getPassword());
+
+LoginController controller = new LoginController();
+
+if (controller.login(email, password)) {
+
+    JOptionPane.showMessageDialog(this, "Login Successful ✅");
+
+} else {
+
+    JOptionPane.showMessageDialog(this, "Invalid Email or Password ❌");
+} // TODO add your handling code here:
     }//GEN-LAST:event_Login_btnActionPerformed
 
     private void Email_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Email_textfieldActionPerformed
@@ -198,6 +228,21 @@ public class Login extends javax.swing.JFrame {
     private void Username_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Username_textfieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Username_textfieldActionPerformed
+
+    private void show_hide_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_show_hide_btnActionPerformed
+if (isPasswordVisible) {
+
+    // Hide password
+    password_textfield.setEchoChar(defaultEchoChar);
+    isPasswordVisible = false;
+
+} else {
+
+    // Show password
+    password_textfield.setEchoChar((char) 0);
+    isPasswordVisible = true;
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_show_hide_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -238,6 +283,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPasswordField password_textfield;
     private javax.swing.JLabel passwordtext;
     private javax.swing.JButton registertext;
+    private javax.swing.JButton show_hide_btn;
     private javax.swing.JLabel usernametext;
     private javax.swing.JLabel welcomebacktext;
     // End of variables declaration//GEN-END:variables
