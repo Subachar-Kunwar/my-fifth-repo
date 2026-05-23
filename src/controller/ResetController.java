@@ -9,4 +9,8 @@ public class ResetController {
         UserDAO dao = new UserDAO();
         return dao.updatePassword(email, newPassword);
     }
+
+    public boolean resendOTP(String userEmail) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

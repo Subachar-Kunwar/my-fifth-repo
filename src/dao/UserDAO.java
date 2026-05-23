@@ -1,70 +1,98 @@
 package dao;
 
-import database.MySqlConnector;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import model.User;
+import Database.MySqlConnector;
+import java.sql.*;
+import model.logindata;
 
 public class UserDAO {
 
-    // ✅ LOGIN METHOD
-    public boolean loginUser(User user) {
+    MySqlConnector mysql = new MySqlConnector();
 
-        boolean isValidUser = false;
+    // CREATE USER
+    public boolean createUser(logindata user) {
 
-        try {
-            MySqlConnector connector = new MySqlConnector();
-            Connection conn = connector.openConnection();
+        Connection conn = mysql.openConnection();
 
-            String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+        String sql = "INSERT INTO users(username, email, password) VALUES (?, ?, ?)";
 
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, user.getEmail());
-            pst.setString(2, user.getPassword());
+        try (PreparedStatement pstm = conn.prepareStatement(sql)) {
 
-            ResultSet rs = pst.executeQuery();
+            pstm.setString(1, user.getUsername());
+            pstm.setString(2, user.getEmail());
+            pstm.setString(3, user.getPassword());
 
-            if (rs.next()) {
-                isValidUser = true;
-            }
+            int rowsInserted = pstm.executeUpdate();
 
-            connector.closeConnection(conn);
+            return rowsInserted > 0;
 
         } catch (Exception e) {
+
             System.out.println(e);
+
+        } finally {
+
+            mysql.closeConnection(conn);
+
         }
 
-        return isValidUser;
+        return false;
     }
 
-    // ✅ UPDATE PASSWORD METHOD
-    public boolean updatePassword(String email, String newPassword) {
+    // CHECK USER EXISTS
+    public boolean checkUser(logindata user) {
 
-        boolean updated = false;
+        Connection conn = mysql.openConnection();
 
-        try {
-            MySqlConnector connector = new MySqlConnector();
-            Connection conn = connector.openConnection();
+        String sql = "SELECT * FROM users WHERE email = ? OR username = ?";
 
-            String query = "UPDATE users SET password = ? WHERE email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            PreparedStatement pst = conn.prepareStatement(query);
-            pst.setString(1, newPassword);
-            pst.setString(2, email);
+            pstmt.setString(1, user.getEmail());
+            pstmt.setString(2, user.getUsername());
 
-            int rows = pst.executeUpdate();
+            ResultSet result = pstmt.executeQuery();
 
-            if (rows > 0) {
-                updated = true;
-            }
+            return result.next();
 
-            connector.closeConnection(conn);
+        } catch (SQLException ex) {
 
-        } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(ex);
+
+        } finally {
+
+            mysql.closeConnection(conn);
+
         }
 
-        return updated;
+        return false;
+    }
+
+    // UPDATE PASSWORD
+    public boolean updatePassword(String email, String newPassword) {
+
+        Connection conn = mysql.openConnection();
+
+        String sql = "UPDATE users SET password = ? WHERE email = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, email);
+
+            int rowsUpdated = pstmt.executeUpdate();
+
+            return rowsUpdated > 0;
+
+        } catch (SQLException ex) {
+
+            System.out.println(ex);
+
+        } finally {
+
+            mysql.closeConnection(conn);
+
+        }
+
+        return false;
     }
 }

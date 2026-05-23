@@ -5,6 +5,7 @@
 package view;
 import controller.LoginController;
 import javax.swing.JOptionPane;
+import view.Forgotpassword;
 /**
  *
  * @author nikes
@@ -104,7 +105,7 @@ public class Login extends javax.swing.JFrame {
 
         Username_textfield.addActionListener(this::Username_textfieldActionPerformed);
 
-        password_textfield.setText("jPasswordField2");
+        password_textfield.setText("********");
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
 
@@ -206,19 +207,7 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
-       String email = Email_textfield.getText();
-String password = new String(password_textfield.getPassword());
-
-LoginController controller = new LoginController();
-
-if (controller.login(email, password)) {
-
-    JOptionPane.showMessageDialog(this, "Login Successful ✅");
-
-} else {
-
-    JOptionPane.showMessageDialog(this, "Invalid Email or Password ❌");
-} // TODO add your handling code here:
+// TODO add your handling code here:
     }//GEN-LAST:event_Login_btnActionPerformed
 
     private void Email_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Email_textfieldActionPerformed
@@ -241,7 +230,31 @@ if (isPasswordVisible) {
     // Show password
     password_textfield.setEchoChar((char) 0);
     isPasswordVisible = true;
-}        // TODO add your handling code here:
+}     
+    }
+    
+    private void setupPasswordFields() {
+    // Password Field
+    password_textfield.setEchoChar((char) 0);
+    password_textfield.setText("********");
+    password_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            String current = new String(password_textfield.getPassword());
+            if (current.equals("********")) {
+                password_textfield.setText("");
+                password_textfield.setEchoChar('*');
+            }
+        }
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            if (password_textfield.getPassword().length == 0) {
+                password_textfield.setEchoChar((char) 0);
+                password_textfield.setText("********");
+            }
+        }
+    });
+    
+
+// TODO add your handling code here:
     }//GEN-LAST:event_show_hide_btnActionPerformed
 
     private void registertextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registertextActionPerformed
@@ -252,6 +265,8 @@ this.dispose();        // TODO add your handling code here:
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -265,7 +265,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="password_textfield">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jPasswordField2"/>
+            <Property name="text" type="java.lang.String" value="********"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="logo">

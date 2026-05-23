@@ -1,8 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
+
+import controller.ResetController;
+import javax.swing.JOptionPane;
+import view.Resetpassword;
 
 /**
  *
@@ -10,21 +10,232 @@ package view;
  */
 public class OTPpage extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OTPpage.class.getName());
+    private static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(OTPpage.class.getName());
+    
+    private String userEmail;
+    private String expectedOTP;
 
-    /**
-     * Creates new form OTPpage
-     */
-    public OTPpage() {
-        initComponents();
-    }
+   public OTPpage() {
+    initComponents();
+    setupOTPFields();
+}
+
+public OTPpage(String email, String otp) {
+    initComponents();
+    this.userEmail = email;
+    this.expectedOTP = otp;
+    setupOTPFields();
+}
+    
+private void setupOTPFields() {
+    // Set maximum size to 1 character for all fields
+    jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            if (jTextField2.getText().length() >= 1) {
+                if (jTextField2.getText().length() > 1) {
+                    jTextField2.setText(jTextField2.getText().substring(0, 1));
+                }
+                // Auto move to next box AFTER typing
+                java.awt.EventQueue.invokeLater(() -> {
+                    if (jTextField2.getText().length() == 1) {
+                        jTextField3.requestFocus();
+                        jTextField3.selectAll();
+                    }
+                });
+            }
+        }
+    });
+    
+    jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            if (jTextField3.getText().length() >= 1) {
+                if (jTextField3.getText().length() > 1) {
+                    jTextField3.setText(jTextField3.getText().substring(0, 1));
+                }
+                java.awt.EventQueue.invokeLater(() -> {
+                    if (jTextField3.getText().length() == 1) {
+                        jTextField4.requestFocus();
+                        jTextField4.selectAll();
+                    }
+                });
+            }
+        }
+    });
+    
+    jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            if (jTextField4.getText().length() >= 1) {
+                if (jTextField4.getText().length() > 1) {
+                    jTextField4.setText(jTextField4.getText().substring(0, 1));
+                }
+                java.awt.EventQueue.invokeLater(() -> {
+                    if (jTextField4.getText().length() == 1) {
+                        jTextField5.requestFocus();
+                        jTextField5.selectAll();
+                    }
+                });
+            }
+        }
+    });
+    
+    // Last box - just limit to 1 character
+    jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyReleased(java.awt.event.KeyEvent evt) {
+            if (jTextField5.getText().length() > 1) {
+                jTextField5.setText(jTextField5.getText().substring(0, 1));
+            }
+        }
+    });
+    
+    // LEFT ARROW - move to previous box (always works, even with values)
+    java.awt.event.KeyAdapter leftArrowAdapter = new java.awt.event.KeyAdapter() {
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT) {
+                javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                if (source == jTextField2) {
+                    // At first box, just select all
+                    jTextField2.selectAll();
+                } else if (source == jTextField3) {
+                    jTextField2.requestFocus();
+                    jTextField2.selectAll();
+                } else if (source == jTextField4) {
+                    jTextField3.requestFocus();
+                    jTextField3.selectAll();
+                } else if (source == jTextField5) {
+                    jTextField4.requestFocus();
+                    jTextField4.selectAll();
+                }
+            }
+        }
+    };
+    
+    // RIGHT ARROW - move to next box (always works, even with values)
+    java.awt.event.KeyAdapter rightArrowAdapter = new java.awt.event.KeyAdapter() {
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
+                javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                if (source == jTextField2) {
+                    jTextField3.requestFocus();
+                    jTextField3.selectAll();
+                } else if (source == jTextField3) {
+                    jTextField4.requestFocus();
+                    jTextField4.selectAll();
+                } else if (source == jTextField4) {
+                    jTextField5.requestFocus();
+                    jTextField5.selectAll();
+                } else if (source == jTextField5) {
+                    jTextField5.selectAll();
+                }
+            }
+        }
+    };
+    
+    // BACKSPACE - delete current or move to previous
+    java.awt.event.KeyAdapter backspaceAdapter = new java.awt.event.KeyAdapter() {
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE) {
+                javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                
+                if (!source.getText().isEmpty()) {
+                    // If box has content, delete it (one press)
+                    source.setText("");
+                } else {
+                    // If box is empty, move to previous box
+                    if (source == jTextField2) {
+                        // First box, do nothing
+                        source.selectAll();
+                    } else if (source == jTextField3) {
+                        jTextField2.requestFocus();
+                        jTextField2.selectAll();
+                    } else if (source == jTextField4) {
+                        jTextField3.requestFocus();
+                        jTextField3.selectAll();
+                    } else if (source == jTextField5) {
+                        jTextField4.requestFocus();
+                        jTextField4.selectAll();
+                    }
+                }
+            }
+        }
+    };
+    
+    // DELETE key - clear current box
+    java.awt.event.KeyAdapter deleteAdapter = new java.awt.event.KeyAdapter() {
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
+                javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                source.setText("");
+            }
+        }
+    };
+    
+    // HOME / END keys
+    java.awt.event.KeyAdapter homeEndAdapter = new java.awt.event.KeyAdapter() {
+        public void keyPressed(java.awt.event.KeyEvent evt) {
+            if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_HOME) {
+                jTextField2.requestFocus();
+                jTextField2.selectAll();
+            } else if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_END) {
+                jTextField5.requestFocus();
+                jTextField5.selectAll();
+            }
+        }
+    };
+    
+    // Add all adapters to all fields
+    jTextField2.addKeyListener(leftArrowAdapter);
+    jTextField2.addKeyListener(rightArrowAdapter);
+    jTextField2.addKeyListener(backspaceAdapter);
+    jTextField2.addKeyListener(deleteAdapter);
+    jTextField2.addKeyListener(homeEndAdapter);
+    
+    jTextField3.addKeyListener(leftArrowAdapter);
+    jTextField3.addKeyListener(rightArrowAdapter);
+    jTextField3.addKeyListener(backspaceAdapter);
+    jTextField3.addKeyListener(deleteAdapter);
+    jTextField3.addKeyListener(homeEndAdapter);
+    
+    jTextField4.addKeyListener(leftArrowAdapter);
+    jTextField4.addKeyListener(rightArrowAdapter);
+    jTextField4.addKeyListener(backspaceAdapter);
+    jTextField4.addKeyListener(deleteAdapter);
+    jTextField4.addKeyListener(homeEndAdapter);
+    
+    jTextField5.addKeyListener(leftArrowAdapter);
+    jTextField5.addKeyListener(rightArrowAdapter);
+    jTextField5.addKeyListener(backspaceAdapter);
+    jTextField5.addKeyListener(deleteAdapter);
+    jTextField5.addKeyListener(homeEndAdapter);
+    
+    // Select all text when focused (for easy editing)
+    java.awt.event.FocusAdapter selectAllOnFocus = new java.awt.event.FocusAdapter() {
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+            source.selectAll();
+        }
+    };
+    
+    jTextField2.addFocusListener(selectAllOnFocus);
+    jTextField3.addFocusListener(selectAllOnFocus);
+    jTextField4.addFocusListener(selectAllOnFocus);
+    jTextField5.addFocusListener(selectAllOnFocus);
+}
+    
+    private String getFullOTP() {
+    return jTextField2.getText().trim() + 
+           jTextField3.getText().trim() + 
+           jTextField4.getText().trim() + 
+           jTextField5.getText().trim();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
-    @SuppressWarnings("unchecked")
+                          
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -55,18 +266,22 @@ public class OTPpage extends javax.swing.JFrame {
 
         jTextField2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField2.setPreferredSize(new java.awt.Dimension(70, 70));
         jTextField2.addActionListener(this::jTextField2ActionPerformed);
 
         jTextField3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField3.setPreferredSize(new java.awt.Dimension(70, 70));
         jTextField3.addActionListener(this::jTextField3ActionPerformed);
 
         jTextField4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField4.setPreferredSize(new java.awt.Dimension(70, 70));
         jTextField4.addActionListener(this::jTextField4ActionPerformed);
 
         jTextField5.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField5.setPreferredSize(new java.awt.Dimension(70, 70));
         jTextField5.addActionListener(this::jTextField5ActionPerformed);
 
         verify_btn.setBackground(new java.awt.Color(170, 218, 172));
@@ -76,7 +291,7 @@ public class OTPpage extends javax.swing.JFrame {
         verify_btn.addActionListener(this::verify_btnActionPerformed);
 
         Text8.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
-        Text8.setText("Didn't recieved OTP?");
+        Text8.setText("Didn't received OTP?");
 
         Button3.setBackground(new java.awt.Color(232, 255, 233));
         Button3.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
@@ -92,7 +307,7 @@ public class OTPpage extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 597, Short.MAX_VALUE)
+                .addGap(0, 573, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Text1)
@@ -180,6 +395,8 @@ public class OTPpage extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
