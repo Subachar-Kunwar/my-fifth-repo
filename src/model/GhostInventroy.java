@@ -9,6 +9,10 @@ package model;
  * @author nikes
  */
 public class GhostInventroy {
+
+    //tdsdsjdjs
+    /dhshds
+    String name;
     
     GhostInventroy(){
         
