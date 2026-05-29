@@ -32,9 +32,9 @@ public class Product_catalog extends javax.swing.JFrame {
         navbar_product_catalog = new javax.swing.JPanel();
         Logo_productcatalog = new javax.swing.JLabel();
         Searchbar = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
+        bell = new javax.swing.JLabel();
+        cart = new javax.swing.JLabel();
         Home_btn_productcatalog = new javax.swing.JButton();
         shop_btn_productcatalog = new javax.swing.JButton();
         sidepanal_productcatalog = new javax.swing.JPanel();
@@ -50,7 +50,8 @@ public class Product_catalog extends javax.swing.JFrame {
         g1000to2000g_price_RadioButton_productcatalog = new javax.swing.JRadioButton();
         g2000to5000g_price_RadioButton_productcatalog = new javax.swing.JRadioButton();
         jRadioButton9 = new javax.swing.JRadioButton();
-        jPanel1 = new javax.swing.JPanel();
+        middlepanal = new javax.swing.JPanel();
+        Scrollpanal_productcatalog = new javax.swing.JScrollPane();
         panal_forscroll = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -67,11 +68,11 @@ public class Product_catalog extends javax.swing.JFrame {
 
         Searchbar.setText("Search Product");
 
-        jLabel4.setText("jLabel4");
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Group.png"))); // NOI18N
 
-        jLabel5.setText("jLabel5");
+        bell.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Group (1).png"))); // NOI18N
 
-        jLabel6.setText("jLabel6");
+        cart.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Vector (1).png"))); // NOI18N
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
         navbar_product_catalog.setLayout(navbar_product_catalogLayout);
@@ -82,22 +83,24 @@ public class Product_catalog extends javax.swing.JFrame {
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(386, 386, 386)
                 .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 324, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 333, Short.MAX_VALUE)
+                .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cart, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bell, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
         );
         navbar_product_catalogLayout.setVerticalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(Searchbar)
-                .addComponent(jLabel4)
-                .addComponent(jLabel5)
-                .addComponent(jLabel6))
+                .addComponent(bell, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                .addComponent(cart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -170,41 +173,32 @@ public class Product_catalog extends javax.swing.JFrame {
         Main_panal_productcatalog.add(sidepanal_productcatalog);
         sidepanal_productcatalog.setBounds(0, 100, 240, 780);
 
-        jPanel1.setBackground(new java.awt.Color(232, 255, 233));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        middlepanal.setBackground(new java.awt.Color(232, 255, 233));
+        middlepanal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         panal_forscroll.setBackground(new java.awt.Color(232, 255, 233));
+        panal_forscroll.setLayout(new java.awt.GridLayout(0, 3, 20, 20));
+        Scrollpanal_productcatalog.setViewportView(panal_forscroll);
 
-        javax.swing.GroupLayout panal_forscrollLayout = new javax.swing.GroupLayout(panal_forscroll);
-        panal_forscroll.setLayout(panal_forscrollLayout);
-        panal_forscrollLayout.setHorizontalGroup(
-            panal_forscrollLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1243, Short.MAX_VALUE)
-        );
-        panal_forscrollLayout.setVerticalGroup(
-            panal_forscrollLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 707, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout middlepanalLayout = new javax.swing.GroupLayout(middlepanal);
+        middlepanal.setLayout(middlepanalLayout);
+        middlepanalLayout.setHorizontalGroup(
+            middlepanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(middlepanalLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(panal_forscroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addComponent(Scrollpanal_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1226, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(52, Short.MAX_VALUE)
-                .addComponent(panal_forscroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        middlepanalLayout.setVerticalGroup(
+            middlepanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, middlepanalLayout.createSequentialGroup()
+                .addContainerGap(777, Short.MAX_VALUE)
+                .addComponent(Scrollpanal_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
 
-        Main_panal_productcatalog.add(jPanel1);
-        jPanel1.setBounds(240, 100, 1290, 780);
+        Main_panal_productcatalog.add(middlepanal);
+        middlepanal.setBounds(240, 100, 1290, 780);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -255,21 +249,22 @@ public class Product_catalog extends javax.swing.JFrame {
     private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JPanel Main_panal_productcatalog;
     private javax.swing.JLabel Price_range_text_productcatalog;
+    private javax.swing.JScrollPane Scrollpanal_productcatalog;
     private javax.swing.JTextField Searchbar;
+    private javax.swing.JLabel bell;
+    private javax.swing.JLabel cart;
     private javax.swing.JLabel catagotytext_productcatalog;
     private javax.swing.JRadioButton children_RadioButton_productcatalog;
     private javax.swing.JRadioButton g1000to2000g_price_RadioButton_productcatalog;
     private javax.swing.JRadioButton g100to500g_price_RadioButton_productcatalog;
     private javax.swing.JRadioButton g2000to5000g_price_RadioButton_productcatalog;
     private javax.swing.JRadioButton g500to1000g_price_RadioButton_productcatalog;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JRadioButton men_RadioButton_productcatalog;
+    private javax.swing.JPanel middlepanal;
     private javax.swing.JPanel navbar_product_catalog;
     private javax.swing.JPanel panal_forscroll;
+    private javax.swing.JLabel profile;
     private javax.swing.JButton shop_btn_productcatalog;
     private javax.swing.JPanel sidepanal_productcatalog;
     private javax.swing.JRadioButton unisex_RadioButton_productcatalog;
