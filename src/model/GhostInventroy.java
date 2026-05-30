@@ -11,7 +11,7 @@ package model;
 public class GhostInventroy {
 
     //tdsdsjdjs
-    /dhshds
+    //dhshds
     String name;
     
     GhostInventroy(){
