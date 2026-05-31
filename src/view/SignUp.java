@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
 import model.logindata;
+import dao.UserDAO;  
 
 /**
  *
@@ -224,47 +225,48 @@ String password = new String(txtPassword.getPassword()).trim();
 String confirmPassword = new String(txtConfirmPassword.getPassword()).trim();
 
 // Check if password fields have placeholder
-if (password.equals("**********")) {
+if (password.equals("********") || password.equals("**********")) {
     password = "";
 }
-if (confirmPassword.equals("**********")) {
+if (confirmPassword.equals("********") || confirmPassword.equals("**********")) {
     confirmPassword = "";
 }
 
-// Basic validation - check all fields are filled
+// 1. CHECK IF ANY FIELD IS EMPTY
 if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
     JOptionPane.showMessageDialog(this, "Please fill all fields!", "Validation Error", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
-// Email validation - must contain @ and . 
-if (!email.contains("@") || !email.contains(".")) {
-    JOptionPane.showMessageDialog(this, "Please enter a valid email address!\nExample: user@gmail.com", "Invalid Email", JOptionPane.ERROR_MESSAGE);
+// 2. CHECK EMAIL VALIDATION (must contain @gmail.com)
+if (!email.contains("@gmail.com")) {
+    JOptionPane.showMessageDialog(this,  "Please enter a valid email address!\nExample: user@gmail.com", "Invalid Email", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
-// Password length validation - must be at least 8 characters
+// 3. CHECK PASSWORD LENGTH (must be at least 8 characters)
 if (password.length() < 8) {
     JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Weak Password", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
-// Password match check
+// 4. CHECK PASSWORD MATCH
 if (!password.equals(confirmPassword)) {
     JOptionPane.showMessageDialog(this, "Passwords do not match!", "Password Mismatch", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
-// Get selected user type (Buyer or Seller)
+// 5. CHECK USER TYPE SELECTED
 String userType = null;
 if (jRadioButton1.isSelected()) {
-    userType = "Buyer";
+    userType = "buyer";
 } else if (jRadioButton2.isSelected()) {
-    userType = "Seller";
+    userType = "seller";
 } else {
     JOptionPane.showMessageDialog(this, "Please select user type!\nChoose either Buyer or Seller.", "Selection Required", JOptionPane.ERROR_MESSAGE);
     return;
 }
+
 
 try {
     // Create object with user type included
@@ -277,16 +279,30 @@ try {
     boolean success = controller.registerUser(user);
 
     if (success) {
-        JOptionPane.showMessageDialog(this, "User Registered Successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+    // Get user ID
+    int userId = controller.getUserIdByEmail(email);
+    
+    // Add role-specific details
+    if (userType.equals("buyer")) {
+        controller.addBuyerDetails(userId);
+    } else {
+        controller.addSellerDetails(userId);
+    }
+    
+    JOptionPane.showMessageDialog(this, "Registered Successfully as " + userType.toUpperCase() + "!\nPlease login.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    
+    // Clear fields
+    txtUsername.setText("");
+    txtEmail.setText("");
+    txtPassword.setText("********");
+    txtConfirmPassword.setText("********");
+    jRadioButton1.setSelected(true);
+    
+    // Open login page
+    new Login().setVisible(true);
+    this.dispose();
 
-        // Clear fields
-        txtUsername.setText("");
-        txtEmail.setText("");
-        txtPassword.setText("");
-        txtConfirmPassword.setText("");
-        
-        // Reset radio button to default
-        jRadioButton1.setSelected(true);
+
 
     } else {
         JOptionPane.showMessageDialog(this, "Registration Failed!\nUsername or Email may already exist.", "Error", JOptionPane.ERROR_MESSAGE);

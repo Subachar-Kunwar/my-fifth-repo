@@ -6,6 +6,7 @@ package view;
 import controller.LoginController;
 import javax.swing.JOptionPane;
 import view.Forgotpassword;
+import dao.UserDAO; 
 /**
  *
  * @author nikes
@@ -211,8 +212,8 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
+                                                                                  
                                          
-
     String username = Username_textfield.getText().trim();
     String email = Email_textfield.getText().trim();
     String password = new String(password_textfield.getPassword());
@@ -224,66 +225,84 @@ this.dispose();        // TODO add your handling code here:
 
     // USERNAME EMPTY
     if (username.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Username is required");
+        JOptionPane.showMessageDialog(this, "Username is required", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     // EMAIL EMPTY
     if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Email is required");
-        return;
-    }
-
-    // EMAIL VALIDATION
-    if (!email.endsWith("@gmail.com")) {
-        JOptionPane.showMessageDialog(this,
-                "Email must contain @gmail.com");
+        JOptionPane.showMessageDialog(this, "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
     // PASSWORD EMPTY
     if (password.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Password is required");
+        JOptionPane.showMessageDialog(this, "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // PASSWORD LENGTH
-    if (password.length() < 8) {
-        JOptionPane.showMessageDialog(this,
-                "Password should have at least 8 characters");
-        return;
-    }
-
-    /*
-       TEMPORARY LOGIN CHECK
-       Change these later when database connection is added
-    */
-
-    String correctUsername = "admin";
-    String correctEmail = "admin@gmail.com";
-    String correctPassword = "12345678";
-
-    // LOGIN SUCCESS
-    if (username.equals(correctUsername)
-            && email.equals(correctEmail)
-            && password.equals(correctPassword)) {
-
-        JOptionPane.showMessageDialog(this,
-                "Login Successful");
-
-        // OPEN DASHBOARD LATER
-        // new Dashboard().setVisible(true);
-        // this.dispose();
-
-    } else {
-
-        JOptionPane.showMessageDialog(this,
-                "Wrong Username, Email or Password");
+    // CHECK DATABASE for user credentials
+    Database.MySqlConnector conn = new Database.MySqlConnector();
+    java.sql.Connection c = null;
     
-}// TODO add your handling code here:
+    try {
+        c = conn.openConnection();
+        
+        // Query to check username, email, and password
+        String sql = "SELECT * FROM users WHERE username = ? AND email = ? AND password = ?";
+        java.sql.PreparedStatement ps = c.prepareStatement(sql);
+        ps.setString(1, username);
+        ps.setString(2, email);
+        ps.setString(3, password);
+        
+        java.sql.ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            // Login Successful
+            String role = rs.getString("role");
+            if (role.equals("seller")) {
+    JOptionPane.showMessageDialog(this, 
+        "Login Successful!\n\nWelcome back, " + username + "\nRole: Seller\n\n🏪 Ready to start selling?", 
+        "Welcome", 
+        JOptionPane.INFORMATION_MESSAGE);
+} else {
+    JOptionPane.showMessageDialog(this, 
+        "Login Successful!\n\nWelcome back, " + username + "\nRole: Buyer\n\n🛍️ Happy thrifting!", 
+        "Welcome", 
+        JOptionPane.INFORMATION_MESSAGE);
+}
+            
+            // Open appropriate dashboard based on role
+            if (role.equals("seller")) {
+                // new SellerDashboard().setVisible(true);
+                JOptionPane.showMessageDialog(this, "Opening Seller Dashboard", "Info", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                // new BuyerDashboard().setVisible(true);
+                JOptionPane.showMessageDialog(this, "Opening Buyer Dashboard", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+            this.dispose(); // Close login window
+            
+        } else {
+            // Login Failed
+            JOptionPane.showMessageDialog(this, 
+                "Wrong Username, Email or Password!\nPlease check your credentials or register first.", 
+                "Login Failed", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+        
+        rs.close();
+        
+    } catch (Exception e) {
+        System.out.println("Login error: " + e.getMessage());
+        JOptionPane.showMessageDialog(this, 
+            "Database error: " + e.getMessage(), 
+            "Error", 
+            JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try { if (c != null) conn.closeConnection(c); } catch (Exception e) {}
+    }
+
+
     }//GEN-LAST:event_Login_btnActionPerformed
 
     private void Email_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Email_textfieldActionPerformed
@@ -291,59 +310,44 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_Email_textfieldActionPerformed
 
     private void show_hide_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_show_hide_btnActionPerformed
-if (isPasswordVisible) {
+                                            
+    if (isPasswordVisible) {
+        // Hide password
+        password_textfield.setEchoChar(defaultEchoChar);
+        isPasswordVisible = false;
+    } else {
+        // Show password
+        password_textfield.setEchoChar((char) 0);
+        isPasswordVisible = true;
+    }     
+}
 
-    // Hide password
-    password_textfield.setEchoChar(defaultEchoChar);
-    isPasswordVisible = false;
-
-} else {
-
-    // Show password
-    password_textfield.setEchoChar((char) 0);
-    isPasswordVisible = true;
-}     
-    }
-    
-    private void setupPasswordFields() {
-
+private void setupPasswordFields() {
     // Initially show ********
     password_textfield.setEchoChar((char) 0);
     password_textfield.setText("********");
 
     password_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
-
         @Override
         public void focusGained(java.awt.event.FocusEvent evt) {
-
             String current = new String(password_textfield.getPassword());
-
-            // Remove placeholder when clicked
             if (current.equals("********")) {
-
                 password_textfield.setText("");
-
-                // Start hiding typed characters
                 password_textfield.setEchoChar(defaultEchoChar);
             }
         }
 
         @Override
         public void focusLost(java.awt.event.FocusEvent evt) {
-
-            // If empty after clicking away
             if (password_textfield.getPassword().length == 0) {
-
-                // Show placeholder again
                 password_textfield.setEchoChar((char) 0);
                 password_textfield.setText("********");
             }
         }
     });
 
-    
 
-// TODO add your handling code here:
+
     }//GEN-LAST:event_show_hide_btnActionPerformed
 
     private void registertextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registertextActionPerformed

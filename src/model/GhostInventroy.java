@@ -6,8 +6,15 @@ package model;
 
 /**
  *
- * @author Lenovo
+ * @author nikes
  */
-public class NewClass {
+public class GhostInventroy {
+
+    //tdsdsjdjs
+    /dhshds
+    String name;
     
+    GhostInventroy(){
+        
+    }
 }

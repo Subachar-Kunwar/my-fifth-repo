@@ -23,7 +23,7 @@ public class OTP {
         this();
         this.email = email;
         this.otpCode = otpCode;
-        this.expiresAt = new Date(System.currentTimeMillis() + (expiryMinutes * 60 * 1000));
+        this.expiresAt = new Date(System.currentTimeMillis() + (expiryMinutes * 60 * 1000)); 
     }
     
     // Getters and Setters
