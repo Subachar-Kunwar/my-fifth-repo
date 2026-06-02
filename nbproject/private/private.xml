@@ -3,22 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/group7/rewear/Group7Rewear.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/database/db.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/database/MySqlConnector.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/.gitignore.txt</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/model/NewClass.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/thriftDatabase.sql</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/view/Forgotpassword.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/view/Login.java</file>
-            <file>file:/C:/Users/Lenovo/Documents/NetBeansProjects/Group7-Rewear/src/view/OTPpage.java</file>
-=======
             <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/OTPpage.java</file>
             <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/model/EmailService.java</file>
             <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/model/OTP.java</file>
             <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Forgotpassword.java</file>
->>>>>>> 6af0ec3bf3967472e2d8d5d65f8772146b40d528
+
         </group>
     </open-files>
 </project-private>
