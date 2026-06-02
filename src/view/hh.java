@@ -6,16 +6,16 @@ package view;
 
 /**
  *
- * @author nikes
+ * @author LENOVO
  */
-public class GhostInventory extends javax.swing.JFrame {
+public class hh extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GhostInventory.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(hh.class.getName());
 
     /**
-     * Creates new form GhostInventory
+     * Creates new form hh
      */
-    public GhostInventory() {
+    public hh() {
         initComponents();
     }
 
@@ -66,7 +66,7 @@ public class GhostInventory extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GhostInventory().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new hh().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
