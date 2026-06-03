@@ -112,7 +112,7 @@ public class Login extends javax.swing.JFrame {
         password_textfield.setText("********");
         password_textfield.addActionListener(this::password_textfieldActionPerformed);
 
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
+        // logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
 
         show_hide_btn.setText("Show/Hide");
         show_hide_btn.addActionListener(this::show_hide_btnActionPerformed);
