@@ -64,7 +64,7 @@ public class Forgotpassword extends javax.swing.JFrame {
         jButton1.setText("Send OTP");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
+      // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
