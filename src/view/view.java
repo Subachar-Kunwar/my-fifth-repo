@@ -6,10 +6,8 @@ package view;
 
 /**
  *
- * @author siblings
+ * @author Lenovo
  */
-
-public class otp {
+class view {
     
 }
-
