@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NetBeans Specific
 /nbproject/private/
 /nbproject/Makefile-*.mk
@@ -27,3 +28,7 @@ Thumbs.db
 
 #database ignore
 #src/database
+=======
+build/
+*.class
+>>>>>>> 144276a63352723d285d32e4a341c45295091f6b

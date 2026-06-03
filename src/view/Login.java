@@ -257,40 +257,38 @@ this.dispose();        // TODO add your handling code here:
         
         java.sql.ResultSet rs = ps.executeQuery();
         
-        if (rs.next()) {
-            // Login Successful
-            String role = rs.getString("role");
-            if (role.equals("seller")) {
-    JOptionPane.showMessageDialog(this, 
-        "Login Successful!\n\nWelcome back, " + username + "\nRole: Seller\n\n🏪 Ready to start selling?", 
-        "Welcome", 
-        JOptionPane.INFORMATION_MESSAGE);
+if (rs.next()) {
+    String role = rs.getString("role");
+    String loggedUsername = rs.getString("username");
+    int userId = rs.getInt("id");
+
+    if (role.equals("seller")) {
+        JOptionPane.showMessageDialog(this,
+            "Login Successful!\n\nWelcome back, " + loggedUsername + "\nRole: Seller\n\n🏪 Ready to start selling?",
+            "Welcome",
+            JOptionPane.INFORMATION_MESSAGE);
+        // new SellerDashboard(loggedUsername, userId).setVisible(true);
+        JOptionPane.showMessageDialog(this, 
+            "Seller Dashboard coming soon!", 
+            "Info", 
+            JOptionPane.INFORMATION_MESSAGE);
+    } else {
+//        JOptionPane.showMessageDialog(this,
+//            "Login Successful!\n\nWelcome back, " + loggedUsername + "\nRole: Buyer\n\n🛍️ Happy thrifting!",
+//            "Welcome",
+//            JOptionPane.INFORMATION_MESSAGE);
+//        new view.Product_catalog(loggedUsername, userId).setVisible(true);
+    }
+    this.dispose();
+
 } else {
-    JOptionPane.showMessageDialog(this, 
-        "Login Successful!\n\nWelcome back, " + username + "\nRole: Buyer\n\n🛍️ Happy thrifting!", 
-        "Welcome", 
-        JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(this,
+        "Wrong Username, Email or Password!\nPlease check your credentials or register first.",
+        "Login Failed",
+        JOptionPane.ERROR_MESSAGE);
 }
-            
-            // Open appropriate dashboard based on role
-            if (role.equals("seller")) {
-                // new SellerDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Seller Dashboard", "Info", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                // new BuyerDashboard().setVisible(true);
-                JOptionPane.showMessageDialog(this, "Opening Buyer Dashboard", "Info", JOptionPane.INFORMATION_MESSAGE);
-            }
-            this.dispose(); // Close login window
-            
-        } else {
-            // Login Failed
-            JOptionPane.showMessageDialog(this, 
-                "Wrong Username, Email or Password!\nPlease check your credentials or register first.", 
-                "Login Failed", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-        
-        rs.close();
+
+rs.close();
         
     } catch (Exception e) {
         System.out.println("Login error: " + e.getMessage());
