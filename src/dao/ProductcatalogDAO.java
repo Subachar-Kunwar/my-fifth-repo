@@ -21,6 +21,40 @@ public class ProductcatalogDAO {
         );
     }
 
+    /**
+     * Inserts a new product into the database matching the UI form schema.
+     * * @param name Name of the item
+     * @param category Classification group
+     * @param price Cost metric
+     * @param imagePath Storage reference location for the visual asset
+     * @param description Brief text details about the item
+     * @param stock Available quantity inventory units
+     * @param sellerId The unique ID key matching the seller user profile
+     * @return true if row insertion evaluates successfully, false otherwise
+     */
+    public boolean addProduct(String name, String category, double price, String imagePath, String description, int stock, int sellerId) {
+        Connection conn = mysql.openConnection();
+        String sql = "INSERT INTO products (name, category, price, image_path, description, stock, seller_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ps.setString(2, category);
+            ps.setDouble(3, price);
+            ps.setString(4, imagePath);
+            ps.setString(5, description);
+            ps.setInt(6, stock);
+            ps.setInt(7, sellerId);
+            
+            return ps.executeUpdate() > 0;
+            
+        } catch (SQLException e) {
+            System.out.println("Error adding product: " + e.getMessage());
+            return false;
+        } finally {
+            mysql.closeConnection(conn);
+        }
+    }
+
     public List<Product> getAllProducts() {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();

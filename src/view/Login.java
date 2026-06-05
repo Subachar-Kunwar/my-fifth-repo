@@ -52,6 +52,7 @@ public class Login extends javax.swing.JFrame {
         password_textfield = new javax.swing.JPasswordField();
         logo = new javax.swing.JLabel();
         show_hide_btn = new javax.swing.JButton();
+        Logo_productcatalog = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -112,18 +113,23 @@ public class Login extends javax.swing.JFrame {
         password_textfield.setText("********");
         password_textfield.addActionListener(this::password_textfieldActionPerformed);
 
-        // logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
-
         show_hide_btn.setText("Show/Hide");
         show_hide_btn.addActionListener(this::show_hide_btnActionPerformed);
+
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout mainpanalLayout = new javax.swing.GroupLayout(mainpanal);
         mainpanal.setLayout(mainpanalLayout);
         mainpanalLayout.setHorizontalGroup(
             mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainpanalLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 165, Short.MAX_VALUE)
                 .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
+                        .addComponent(DontHaveanaccounttext)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(registertext)
+                        .addGap(632, 632, 632))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
                         .addComponent(logo)
                         .addGap(353, 353, 353)
@@ -146,21 +152,23 @@ public class Login extends javax.swing.JFrame {
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                             .addComponent(show_hide_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(Login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(575, 575, 575))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainpanalLayout.createSequentialGroup()
-                        .addComponent(DontHaveanaccounttext)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(registertext)
-                        .addGap(632, 632, 632))))
+                        .addGap(575, 575, 575))))
+            .addGroup(mainpanalLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainpanalLayout.setVerticalGroup(
             mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainpanalLayout.createSequentialGroup()
                 .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainpanalLayout.createSequentialGroup()
-                        .addGap(65, 65, 65)
+                        .addGap(71, 71, 71)
                         .addComponent(welcomebacktext, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(logo))
+                    .addGroup(mainpanalLayout.createSequentialGroup()
+                        .addComponent(logo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Logintocontinuetext)
                 .addGap(24, 24, 24)
@@ -185,7 +193,7 @@ public class Login extends javax.swing.JFrame {
                 .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(registertext)
                     .addComponent(DontHaveanaccounttext))
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,43 +220,56 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
-                                                                                  
-                                         
+                                      
     String username = Username_textfield.getText().trim();
     String email = Email_textfield.getText().trim();
     String password = new String(password_textfield.getPassword());
 
-    // Remove placeholder text check
+    // 1. Remove placeholder text check
     if (password.equals("********")) {
         password = "";
     }
 
-    // USERNAME EMPTY
+    // 2. Step-by-Step UI Input Validations
     if (username.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Username is required", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Username is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        Username_textfield.requestFocus();
         return;
     }
 
-    // EMAIL EMPTY
     if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Email is required", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Email is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        Email_textfield.requestFocus();
         return;
     }
 
-    // PASSWORD EMPTY
+    // Explicit format verification step
+    if (!email.contains("@") || !email.contains(".")) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid email address (e.g., user@gmail.com).", "Validation Error", JOptionPane.ERROR_MESSAGE);
+        Email_textfield.requestFocus();
+        return;
+    }
+
     if (password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Password is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        password_textfield.requestFocus();
         return;
     }
 
-    // CHECK DATABASE for user credentials
+    // Explicit character threshold verification step
+    if (password.length() < 8) {
+        JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+        password_textfield.requestFocus();
+        return;
+    }
+
+    // 3. Database Authentication Step (Runs only if inputs pass validation rules)
     Database.MySqlConnector conn = new Database.MySqlConnector();
     java.sql.Connection c = null;
     
     try {
         c = conn.openConnection();
         
-        // Query to check username, email, and password
         String sql = "SELECT * FROM users WHERE username = ? AND email = ? AND password = ?";
         java.sql.PreparedStatement ps = c.prepareStatement(sql);
         ps.setString(1, username);
@@ -258,48 +279,50 @@ this.dispose();        // TODO add your handling code here:
         java.sql.ResultSet rs = ps.executeQuery();
         
 if (rs.next()) {
-    String role = rs.getString("role");
-    String loggedUsername = rs.getString("username");
-    int userId = rs.getInt("id");
+            String role = rs.getString("role");
+            String loggedUsername = rs.getString("username");
+            int userId = rs.getInt("id");
 
-    if (role.equals("seller")) {
-        JOptionPane.showMessageDialog(this,
-            "Login Successful!\n\nWelcome back, " + loggedUsername + "\nRole: Seller\n\n🏪 Ready to start selling?",
-            "Welcome",
-            JOptionPane.INFORMATION_MESSAGE);
-        // new SellerDashboard(loggedUsername, userId).setVisible(true);
-        JOptionPane.showMessageDialog(this, 
-            "Seller Dashboard coming soon!", 
-            "Info", 
-            JOptionPane.INFORMATION_MESSAGE);
-    } else {
-//        JOptionPane.showMessageDialog(this,
-//            "Login Successful!\n\nWelcome back, " + loggedUsername + "\nRole: Buyer\n\n🛍️ Happy thrifting!",
-//            "Welcome",
-//            JOptionPane.INFORMATION_MESSAGE);
-//        new view.Product_catalog(loggedUsername, userId).setVisible(true);
-    }
+            
+if ("seller".equalsIgnoreCase(role)) {
+    JOptionPane.showMessageDialog(this,
+        "Login Successful!\n\nWelcome back, " + loggedUsername + 
+        "\nRole: Seller\n\nRedirecting to Admin Dashboard...",
+        "Welcome",
+        JOptionPane.INFORMATION_MESSAGE);
+    new AdminDashboard(loggedUsername).setVisible(true);
     this.dispose();
 
-} else {
+} else if ("buyer".equalsIgnoreCase(role)) {
     JOptionPane.showMessageDialog(this,
-        "Wrong Username, Email or Password!\nPlease check your credentials or register first.",
-        "Login Failed",
-        JOptionPane.ERROR_MESSAGE);
+        "Login Successful!\n\nWelcome back, " + loggedUsername + 
+        "\nRole: Buyer\n\n🛍️ Happy thrifting!",
+        "Welcome",
+        JOptionPane.INFORMATION_MESSAGE);
+    new Product_catalog(loggedUsername, userId).setVisible(true);
+    this.dispose();
 }
+            
+        } else {
+            // Explicit error feedback for wrong credentials
+            JOptionPane.showMessageDialog(this,
+                "Authentication Failed!\nWrong Username, Email, or Password.\n\nPlease double check your credentials.",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE);
+        }
 
-rs.close();
+        rs.close();
+        ps.close();
         
     } catch (Exception e) {
-        System.out.println("Login error: " + e.getMessage());
+        System.out.println("Login database error: " + e.getMessage());
         JOptionPane.showMessageDialog(this, 
-            "Database error: " + e.getMessage(), 
-            "Error", 
+            "Database Connection Error:\n" + e.getMessage(), 
+            "System Error", 
             JOptionPane.ERROR_MESSAGE);
     } finally {
         try { if (c != null) conn.closeConnection(c); } catch (Exception e) {}
     }
-
 
     }//GEN-LAST:event_Login_btnActionPerformed
 
@@ -395,6 +418,7 @@ this.dispose();        // TODO add your handling code here:
     private javax.swing.JLabel Emailtext;
     private javax.swing.JButton Login_btn;
     private javax.swing.JLabel Logintocontinuetext;
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JTextField Username_textfield;
     private javax.swing.JButton forgetpassword_btn;
     private javax.swing.JPanel jPanel1;

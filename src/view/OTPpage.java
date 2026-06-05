@@ -21,19 +21,27 @@ public class OTPpage extends javax.swing.JFrame {
     private String expectedOTP;
     private model.EmailService emailService;
 
-    public OTPpage() {
-        initComponents();
-        emailService = new model.EmailService();
-        setupOTPFields();
-    }
+public OTPpage() {
+    initComponents();
+    emailService = new model.EmailService();
+    setupOTPFields();
+    
+    // Force dimensions
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
+}
 
-    public OTPpage(String email, String otp) {
-        initComponents();
-        this.userEmail = email;
-        this.expectedOTP = otp;
-        emailService = new model.EmailService();
-        setupOTPFields();
-    }
+public OTPpage(String email, String otp) {
+    initComponents();
+    this.userEmail = email;
+    this.expectedOTP = otp;
+    emailService = new model.EmailService();
+    setupOTPFields();
+    
+    // Force dimensions
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
+}
     
     private void setupOTPFields() {
         // Set maximum size to 1 character for all fields
@@ -253,6 +261,7 @@ public class OTPpage extends javax.swing.JFrame {
         verify_btn = new javax.swing.JButton();
         Text8 = new javax.swing.JLabel();
         Button3 = new javax.swing.JButton();
+        Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -262,7 +271,7 @@ public class OTPpage extends javax.swing.JFrame {
         Text1.setFont(new java.awt.Font("Arial Black", 1, 50)); // NOI18N
         Text1.setText("Verify OTP");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.jpeg"))); // NOI18N
 
         Text3.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
         Text3.setText("Enter the OTP");
@@ -302,15 +311,14 @@ public class OTPpage extends javax.swing.JFrame {
         Button3.setText("Resend");
         Button3.addActionListener(this::Button3ActionPerformed);
 
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 573, Short.MAX_VALUE)
+                .addGap(162, 573, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Text1)
@@ -329,12 +337,22 @@ public class OTPpage extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(Button3)))
                 .addGap(643, 643, 643))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(69, 69, 69)
                 .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(Text3)
@@ -350,7 +368,7 @@ public class OTPpage extends javax.swing.JFrame {
                     .addComponent(Button3))
                 .addGap(33, 33, 33)
                 .addComponent(verify_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 353, Short.MAX_VALUE))
+                .addGap(0, 297, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -399,14 +417,22 @@ public class OTPpage extends javax.swing.JFrame {
         // Use EmailService to verify from database (now returns int)
         int result = emailService.verifyOTP(userEmail, enteredOTP);
         
-        if (result == 0) {
-            // ✅ SUCCESS
-            JOptionPane.showMessageDialog(this, "✓ OTP Verified Successfully!\n\nYou can now reset your password.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            // Open Reset Password page
-            Resetpassword resetPage = new Resetpassword(userEmail);
-            resetPage.setVisible(true);
-            this.dispose();
+if (result == 0) {
+    // ✅ SUCCESS
+    JOptionPane.showMessageDialog(this, "✓ OTP Verified Successfully!\n\nYou can now reset your password.", "Success", JOptionPane.INFORMATION_MESSAGE);
+    
+    // Pass the userEmail down so Resetpassword knows who is altering their data
+    Resetpassword resetPage = new Resetpassword(userEmail);
+    
+    // Force dimensions on the new window
+    resetPage.setSize(1550, 840);
+    resetPage.setPreferredSize(new java.awt.Dimension(1550, 840));
+    resetPage.setLocationRelativeTo(null);
+    
+    resetPage.setVisible(true);
+    this.dispose(); // Close OTP window
+
+
             
         } else if (result == -1) {
             // ❌ MAX ATTEMPTS REACHED OR EXPIRED
@@ -501,6 +527,7 @@ public class OTPpage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Button3;
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JLabel Text1;
     private javax.swing.JLabel Text3;
     private javax.swing.JLabel Text8;

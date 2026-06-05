@@ -23,9 +23,10 @@ public class Forgotpassword extends javax.swing.JFrame {
     /**
      * Creates new form Forgotpassword
      */
-    public Forgotpassword() {
+public Forgotpassword() {
     initComponents();
     emailService = new EmailService();
+    jLabel1.setVisible(false);   // Hide logo completely
 }
 
     /**
@@ -44,6 +45,8 @@ public class Forgotpassword extends javax.swing.JFrame {
         Text3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+        Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,40 +67,55 @@ public class Forgotpassword extends javax.swing.JFrame {
         jButton1.setText("Send OTP");
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-      // NOI18N
+        jButton2.setBackground(new java.awt.Color(232, 255, 233));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 0, 51));
+        jButton2.setText("Back To Login");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(566, 566, 566)
-                .addComponent(Text1)
-                .addContainerGap(498, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Fill1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(597, 597, 597))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(604, 604, 604)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Fill1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(534, 534, 534)
+                        .addComponent(Text1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(533, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
+                .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
                 .addComponent(Text3)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Fill1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(474, Short.MAX_VALUE))
+                .addGap(62, 62, 62)
+                .addComponent(jButton2)
+                .addContainerGap(374, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -105,12 +123,13 @@ public class Forgotpassword extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -123,20 +142,24 @@ public class Forgotpassword extends javax.swing.JFrame {
     }//GEN-LAST:event_Fill1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                                      
-        String email = Fill1.getText().trim();
-        
-        if (email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter email", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Check if email exists in database
+                                            
+    String email = Fill1.getText().trim();
+    
+    if (email.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter email", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    if (!email.contains("@")) {
+        JOptionPane.showMessageDialog(this, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    // Disable button to prevent double-clicks during thread execution
+    jButton1.setEnabled(false);
+    
+    // Run network and database tasks in a background thread to prevent UI freezing
+    new Thread(() -> {
         Database.MySqlConnector conn = new Database.MySqlConnector();
         java.sql.Connection c = null;
         try {
@@ -146,45 +169,65 @@ public class Forgotpassword extends javax.swing.JFrame {
             java.sql.ResultSet rs = ps.executeQuery();
             
             if (!rs.next()) {
-                JOptionPane.showMessageDialog(this, "Email not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                java.awt.EventQueue.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(this, "Email not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                    jButton1.setEnabled(true);
+                });
                 return;
             }
         } catch (Exception e) {
             System.out.println(e);
+            java.awt.EventQueue.invokeLater(() -> jButton1.setEnabled(true));
             return;
         } finally {
             try { if (c != null) conn.closeConnection(c); } catch (Exception e) {}
         }
         
-        // Generate OTP using EmailService
+        // Generate and Save OTP
         String otp = emailService.generateOTP();
-        
-        // Save OTP to database
         if (!emailService.saveOTP(email, otp)) {
-            JOptionPane.showMessageDialog(this, "Failed to generate OTP", "Error", JOptionPane.ERROR_MESSAGE);
+            java.awt.EventQueue.invokeLater(() -> {
+                JOptionPane.showMessageDialog(this, "Failed to generate OTP", "Error", JOptionPane.ERROR_MESSAGE);
+                jButton1.setEnabled(true);
+            });
             return;
         }
         
-        // Show sending message
-        JOptionPane.showMessageDialog(this, "Sending OTP to " + email + "...", "Please Wait", JOptionPane.INFORMATION_MESSAGE);
+        // Send email in background
+        boolean emailSent = emailService.sendOTPEmail(email, otp);
         
-        // Send email
-        if (emailService.sendOTPEmail(email, otp)) {
-            JOptionPane.showMessageDialog(this, "✓ OTP sent successfully to " + email, "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            // Open OTP page
-            OTPpage otpPage = new OTPpage(email, otp);
-            otpPage.setVisible(true);
-            this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "⚠ Email sending failed!\n\nYour OTP is: " + otp, "Use this OTP", JOptionPane.WARNING_MESSAGE);
-            
-            OTPpage otpPage = new OTPpage(email, otp);
-            otpPage.setVisible(true);
-            this.dispose();
-        }
+        // Return to UI thread for window management and rendering
+// Return to UI thread for window management and rendering
+java.awt.EventQueue.invokeLater(() -> {
+    if (emailSent) {
+        JOptionPane.showMessageDialog(this, "✓ OTP sent successfully to " + email, "Success", JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        JOptionPane.showMessageDialog(this, "⚠ Email sending failed!\n\nYour OTP is: " + otp, "Use this OTP", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    // Create the page
+    OTPpage otpPage = new OTPpage(email, otp);
+    
+    // CRITICAL: Force the frame size and screen placement right here!
+    otpPage.setSize(1550, 840);
+    otpPage.setPreferredSize(new java.awt.Dimension(1550, 840));
+    otpPage.setLocationRelativeTo(null); // Centers the frame on your screen
+    
+    otpPage.setVisible(true);
+    this.dispose(); // Securely close the forgot password frame
+});
+
+    }).start();
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+    new Login().setVisible(true);
+    this.dispose();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,9 +251,11 @@ public class Forgotpassword extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Fill1;
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JLabel Text1;
     private javax.swing.JLabel Text3;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

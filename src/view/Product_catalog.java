@@ -1,73 +1,65 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-/**ss
- *
- * @author LENOVO
- */
 public class Product_catalog extends javax.swing.JFrame {
     
-    protected static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Product_catalog.class.getName());
+    protected static final java.util.logging.Logger logger = 
+        java.util.logging.Logger.getLogger(Product_catalog.class.getName());
 
-    /**
-     * Creates new form Product_catalog
-     */
-    
-   
-javax.swing.JScrollPane Scrollpanal_productcatalog;
-javax.swing.JPanel panal_forscroll;
-javax.swing.JLabel sortLabel;
-private String loggedInUsername;
+    javax.swing.JScrollPane Scrollpanal_productcatalog;
+    javax.swing.JPanel panal_forscroll;
+    javax.swing.JLabel sortLabel;
+    private String loggedInUsername;
 
-public Product_catalog() {
-    this("Guest", -1);
-}
+    private final controller.ProductController productController = 
+        new controller.ProductController();
+    private int loggedInUserId;
 
-public Product_catalog(String username, int userId) {
-    initComponents();
-    this.loggedInUsername = username;
-    this.loggedInUserId = userId;
-    
-  // Add scroll pane and product panel
-Scrollpanal_productcatalog = new javax.swing.JScrollPane();
-panal_forscroll = new javax.swing.JPanel();
-panal_forscroll.setBackground(new java.awt.Color(232, 255, 233));
-panal_forscroll.setLayout(new java.awt.GridLayout(0, 3, 20, 20));
-Scrollpanal_productcatalog.setViewportView(panal_forscroll);
-Main_panal_productcatalog.add(Scrollpanal_productcatalog);
-Scrollpanal_productcatalog.setBounds(240, 100, 1290, 780);
+    public Product_catalog() {
+        this("Guest", -1);
+    }
 
-// Fix searchResultLabel
-searchResultLabel.setBounds(240, 57, 560, 30);
-searchResultLabel.setVisible(false);
+    public Product_catalog(String username, int userId) {
+        initComponents();
 
-// Fix sortComboBox items and position
-sortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
-    new String[] { "Default", "Price: Low to High", "Price: High to Low" }));
-sortComboBox.setBounds(900, 57, 160, 30);
+        this.loggedInUsername = username;
+        this.loggedInUserId = userId;
 
-// Add sort label
-sortLabel = new javax.swing.JLabel("Sort by:");
-sortLabel.setForeground(java.awt.Color.BLACK);
-sortLabel.setFont(new java.awt.Font("Candara", 1, 16));
-Main_panal_productcatalog.add(sortLabel);
-sortLabel.setBounds(828, 57, 70, 30);
+        // Add scroll pane and product panel
+        Scrollpanal_productcatalog = new javax.swing.JScrollPane();
+        panal_forscroll = new javax.swing.JPanel();
+        panal_forscroll.setBackground(new java.awt.Color(232, 255, 233));
+        panal_forscroll.setLayout(new java.awt.GridLayout(0, 3, 20, 20));
+        Scrollpanal_productcatalog.setViewportView(panal_forscroll);
+        Main_panal_productcatalog.add(Scrollpanal_productcatalog);
+        Scrollpanal_productcatalog.setBounds(240, 100, 1290, 780);
 
-Main_panal_productcatalog.remove(jScrollBar1);
+        // Fix searchResultLabel
+        searchResultLabel.setBounds(240, 57, 560, 30);
+        searchResultLabel.setVisible(false);
 
-// Smart sizing
-java.awt.Dimension screenSize =
-    java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-if (screenSize.width < 1600 || screenSize.height < 900) {
-    this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-} else {
-    this.setSize(1550, 840);
-    this.setLocationRelativeTo(null);
-}
+        // Fix sortComboBox items and position
+        sortComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(
+            new String[] { "Default", "Price: Low to High", "Price: High to Low" }));
+        sortComboBox.setBounds(900, 57, 160, 30);
 
+        // Add sort label
+        sortLabel = new javax.swing.JLabel("Sort by:");
+        sortLabel.setForeground(java.awt.Color.BLACK);
+        sortLabel.setFont(new java.awt.Font("Candara", 1, 16));
+        Main_panal_productcatalog.add(sortLabel);
+        sortLabel.setBounds(828, 57, 70, 30);
+
+        Main_panal_productcatalog.remove(jScrollBar1);
+
+        // Smart sizing
+        java.awt.Dimension screenSize =
+            java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        if (screenSize.width < 1600 || screenSize.height < 900) {
+            this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        } else {
+            this.setSize(1550, 840);
+            this.setLocationRelativeTo(null);
+        }
 
 initBackend();
 
@@ -78,303 +70,325 @@ javax.swing.SwingUtilities.invokeLater(() -> {
     Searchbar.transferFocus();
 });
 
-// Search button icon
-searchBtn.setText("");
-try {
-    javax.swing.ImageIcon searchIcon = new javax.swing.ImageIcon(
-        getClass().getResource("/view/search_icon.png"));
-    java.awt.Image scaled = searchIcon.getImage()
-        .getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
-    searchBtn.setIcon(new javax.swing.ImageIcon(scaled));
-} catch (Exception ex) {
-   
-}
-
-
-// Logo clickable — resets filters
-Logo_productcatalog.setCursor(
-    new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-Logo_productcatalog.addMouseListener(new java.awt.event.MouseAdapter() {
-    public void mouseClicked(java.awt.event.MouseEvent e) {
-        categoryGroup.clearSelection();
-        priceGroup.clearSelection();
-        Searchbar.setText("Search Products.....");
-        Searchbar.setForeground(java.awt.Color.GRAY);
-        loadProducts();
-    }
-});
-
-// Adjust Home and Shop button positions
-Home_btn_productcatalog.setBounds(10, 63, 80, 30);
-shop_btn_productcatalog.setBounds(115, 63, 80, 30);
-
-// Arrow label between Home and Shop
-javax.swing.JLabel arrowLabel = new javax.swing.JLabel("›");
-arrowLabel.setFont(new java.awt.Font("Arial Black", 1, 18));
-arrowLabel.setForeground(new java.awt.Color(58, 125, 68));
-Main_panal_productcatalog.add(arrowLabel);
-arrowLabel.setBounds(93, 63, 20, 30);
-
-// Adjust scroll and side panel start
-Scrollpanal_productcatalog.setBounds(240, 110, 1290, 780);
-sidepanal_productcatalog.setBounds(0, 110, 240, 780);
-
-
-    // Resize panels when window size changes
-    this.addComponentListener(new java.awt.event.ComponentAdapter() {
-        public void componentResized(java.awt.event.ComponentEvent e) {
-            int frameWidth = getContentPane().getWidth();
-            int frameHeight = getContentPane().getHeight();
-            int sideWidth = 240;
-            int topHeight = 100;
-            
-            Main_panal_productcatalog.setPreferredSize(
-                new java.awt.Dimension(frameWidth, frameHeight));
-            
-            Scrollpanal_productcatalog.setBounds(
-                sideWidth,
-                topHeight,
-                frameWidth - sideWidth,
-                frameHeight - topHeight);
-            
-            sidepanal_productcatalog.setBounds(
-                0, topHeight, sideWidth, frameHeight - topHeight);
-            
-            navbar_product_catalog.setBounds(
-                0, 0, frameWidth, 48);
-            
-            // Reposition sort combo and label together
-            // Reposition sort combo and label together
-        sortComboBox.setBounds(frameWidth - 200, 57, 160, 30);
-        sortLabel.setBounds(frameWidth - 270, 57, 70, 30);
-        searchResultLabel.setBounds(240, 57, frameWidth - 650, 25);
-        Home_btn_productcatalog.setBounds(10, 63, 80, 30);
-        shop_btn_productcatalog.setBounds(100, 63, 80, 30);
-
-            Main_panal_productcatalog.revalidate();
-            Main_panal_productcatalog.repaint();
-        }
-    });
-}
 
 
 
-private final controller.ProductController productController = 
-    new controller.ProductController();
-private int loggedInUserId;
 
-private void initBackend() {
-
-    women_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    men_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    children_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    unisex_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-
-    g100to500g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    g500to1000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    g1000to2000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    g2000to5000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-    g5000to10000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
-
-    Searchbar.setForeground(java.awt.Color.GRAY);
-    Searchbar.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent e) {
-            if (Searchbar.getText().equals("Search Products.....")) {
-                Searchbar.setText("");
-                Searchbar.setForeground(java.awt.Color.BLACK);
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent e) {
-            if (Searchbar.getText().isEmpty()) {
+        // Logo clickable — resets filters
+        Logo_productcatalog.setCursor(
+            new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        Logo_productcatalog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                categoryGroup.clearSelection();
+                priceGroup.clearSelection();
                 Searchbar.setText("Search Products.....");
                 Searchbar.setForeground(java.awt.Color.GRAY);
-            }
-        }
-    });
-
-    Searchbar.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyPressed(java.awt.event.KeyEvent e) {
-            if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
                 loadProducts();
             }
-        }
-    });
+        });
 
-    loadProducts();
-}
+        // Adjust Home and Shop button positions
+        Home_btn_productcatalog.setBounds(10, 63, 80, 30);
+        shop_btn_productcatalog.setBounds(115, 63, 80, 30);
+
+        // Arrow label between Home and Shop
+        javax.swing.JLabel arrowLabel = new javax.swing.JLabel("›");
+        arrowLabel.setFont(new java.awt.Font("Arial Black", 1, 18));
+        arrowLabel.setForeground(new java.awt.Color(58, 125, 68));
+        Main_panal_productcatalog.add(arrowLabel);
+        arrowLabel.setBounds(93, 63, 20, 30);
+
+        // Adjust scroll and side panel start
+        Scrollpanal_productcatalog.setBounds(240, 110, 1290, 780);
+        sidepanal_productcatalog.setBounds(0, 110, 240, 780);
+
+        // Resize panels when window size changes
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                int frameWidth = getContentPane().getWidth();
+                int frameHeight = getContentPane().getHeight();
+                int sideWidth = 240;
+                int topHeight = 110;
+
+                Main_panal_productcatalog.setPreferredSize(
+                    new java.awt.Dimension(frameWidth, frameHeight));
+
+                Scrollpanal_productcatalog.setBounds(
+                    sideWidth,
+                    topHeight,
+                    frameWidth - sideWidth,
+                    frameHeight - topHeight);
+
+                sidepanal_productcatalog.setBounds(
+                    0, topHeight, sideWidth, frameHeight - topHeight);
+
+                navbar_product_catalog.setBounds(
+                    0, 0, frameWidth, 48);
+
+                sortComboBox.setBounds(frameWidth - 200, 57, 160, 30);
+                sortLabel.setBounds(frameWidth - 270, 57, 70, 30);
+                searchResultLabel.setBounds(240, 57, frameWidth - 650, 25);
+                Home_btn_productcatalog.setBounds(10, 63, 80, 30);
+                shop_btn_productcatalog.setBounds(125, 63, 80, 30);
+
+                Main_panal_productcatalog.revalidate();
+                Main_panal_productcatalog.repaint();
+            }
+        });
+    }
+
+    // Helper method: safely loads icon, falls back to text
+    private void setupButtonSafely(javax.swing.JButton btn, 
+            String iconPath, String fallbackText) {
+        try {
+            java.net.URL url = getClass().getResource(iconPath);
+            if (url != null) {
+                javax.swing.ImageIcon icon = 
+                    new javax.swing.ImageIcon(url);
+                java.awt.Image scaled = icon.getImage()
+                    .getScaledInstance(20, 20, 
+                        java.awt.Image.SCALE_SMOOTH);
+                btn.setIcon(new javax.swing.ImageIcon(scaled));
+                btn.setText("");
+            } else {
+                btn.setIcon(null);
+                btn.setText(fallbackText);
+                btn.setForeground(java.awt.Color.WHITE);
+            }
+        } catch (Exception ex) {
+            btn.setIcon(null);
+            btn.setText(fallbackText);
+            btn.setForeground(java.awt.Color.WHITE);
+        }
+    }
+
+    private void initBackend() {
+
+        women_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        men_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        children_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        unisex_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+
+        g100to500g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        g500to1000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        g1000to2000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        g2000to5000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+        g5000to10000g_price_RadioButton_productcatalog.addActionListener(e -> loadProducts());
+
+        Searchbar.setForeground(java.awt.Color.GRAY);
+        Searchbar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (Searchbar.getText().equals("Search Products.....")) {
+                    Searchbar.setText("");
+                    Searchbar.setForeground(java.awt.Color.BLACK);
+                }
+            }
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (Searchbar.getText().isEmpty()) {
+                    Searchbar.setText("Search Products.....");
+                    Searchbar.setForeground(java.awt.Color.GRAY);
+                }
+            }
+        });
+
+        Searchbar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+                    loadProducts();
+                }
+            }
+        });
+
+        loadProducts();
+    }
 
 private void loadProducts() {
-    String category = getSelectedCategory();
-    double[] range = getSelectedPriceRange();
-    String search = getSearchText();
+    try {
+        String category = getSelectedCategory();
+        double[] range = getSelectedPriceRange();
+        String search = getSearchText();
 
-    java.util.List<model.Product> products = productController
-        .getFilteredProducts(category, range[0], range[1], search);
+        System.out.println("Searching for: " + search);
 
-    products = sortProducts(products);
+        java.util.List<model.Product> products = productController
+            .getFilteredProducts(category, range[0], range[1], search);
 
-    if (search != null && !search.isEmpty()) {
-        searchResultLabel.setText(
-            "Search results for: \"" + search + "\"");
-        searchResultLabel.setVisible(true);
-    } else {
-        searchResultLabel.setVisible(false);
-    }
+        if (products == null) {
+            products = new java.util.ArrayList<>();
+        }
 
-    updateFilterLabel(category, range, search);
-    productCountLabel.setText(products.size() + " products found");
-    displayProducts(products);
-}
+        products = sortProducts(products);
 
-private java.util.List<model.Product> sortProducts(
-        java.util.List<model.Product> products) {
-    String selected = (String) sortComboBox.getSelectedItem();
-    if (selected.equals("Price: Low to High")) {
-        products.sort((a, b) ->
-            Double.compare(a.getPrice(), b.getPrice()));
-    } else if (selected.equals("Price: High to Low")) {
-        products.sort((a, b) ->
-            Double.compare(b.getPrice(), a.getPrice()));
-    }
-    return products;
-}
+        if (search != null && !search.isEmpty()) {
+            searchResultLabel.setText("Search results for: \"" + search + "\"");
+            searchResultLabel.setVisible(true);
+        } else {
+            searchResultLabel.setVisible(false);
+        }
 
-private String getSelectedCategory() {
-    if (women_RadioButton_productcatalog.isSelected()) return "Women";
-    if (men_RadioButton_productcatalog.isSelected()) return "Men";
-    if (children_RadioButton_productcatalog.isSelected()) return "Children";
-    if (unisex_RadioButton_productcatalog.isSelected()) return "Unisex";
-    return null;
-}
-
-private double[] getSelectedPriceRange() {
-    if (g100to500g_price_RadioButton_productcatalog.isSelected())
-        return new double[]{100, 500};
-    if (g500to1000g_price_RadioButton_productcatalog.isSelected())
-        return new double[]{500, 1000};
-    if (g1000to2000g_price_RadioButton_productcatalog.isSelected())
-        return new double[]{1000, 2000};
-    if (g2000to5000g_price_RadioButton_productcatalog.isSelected())
-        return new double[]{2000, 5000};
-    if (g5000to10000g_price_RadioButton_productcatalog.isSelected())
-        return new double[]{5000, 10000};
-    return new double[]{0, Double.MAX_VALUE};
-}
-
-private String getSearchText() {
-    String text = Searchbar.getText().trim();
-    return text.equals("Search Products.....") ? "" : text;
-}
-
-private void updateFilterLabel(String category,
-                                double[] range, String search) {
-    if (search != null && !search.isEmpty()) {
-        currentFilterLabel.setText("<html>Currently showing:<br>"
-            + "<b>Search: \"" + search + "\"</b></html>");
-        return;
-    }
-    boolean hasCategory = category != null;
-    boolean hasPrice = range[0] > 0 || range[1] < Double.MAX_VALUE;
-
-    if (hasCategory && hasPrice) {
-        currentFilterLabel.setText("<html>Currently showing:<br><b>"
-            + category + "</b><br>Rs "
-            + (int) range[0] + " - " + (int) range[1] + "</html>");
-    } else if (hasCategory) {
-        currentFilterLabel.setText("<html>Currently showing:<br><b>"
-            + category + "</b></html>");
-    } else if (hasPrice) {
-        currentFilterLabel.setText("<html>Currently showing:<br><b>Rs "
-            + (int) range[0] + " - " + (int) range[1] + "</b></html>");
-    } else {
-        currentFilterLabel.setText("<html>Currently showing:"
-            + "<br><b>All Products</b></html>");
+        updateFilterLabel(category, range, search);
+        productCountLabel.setText(products.size() + " products found");
+        displayProducts(products);
+    } catch (Exception ex) {
+        System.out.println("Error: " + ex.getMessage());
+        ex.printStackTrace();
     }
 }
 
-private void displayProducts(java.util.List<model.Product> products) {
-    panal_forscroll.removeAll();
+    private java.util.List<model.Product> sortProducts(
+            java.util.List<model.Product> products) {
+        String selected = (String) sortComboBox.getSelectedItem();
+        if (selected == null) return products;
+        if (selected.equals("Price: Low to High")) {
+            products.sort((a, b) ->
+                Double.compare(a.getPrice(), b.getPrice()));
+        } else if (selected.equals("Price: High to Low")) {
+            products.sort((a, b) ->
+                Double.compare(b.getPrice(), a.getPrice()));
+        }
+        return products;
+    }
 
-    if (products.isEmpty()) {
-        panal_forscroll.setLayout(
-            new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 20));
-        javax.swing.JLabel none =
-            new javax.swing.JLabel("No products found.");
-        none.setFont(new java.awt.Font("Candara", 1, 28));
-        none.setForeground(java.awt.Color.BLACK);
-        panal_forscroll.add(none);
-    } else {
-        panal_forscroll.setLayout(
-            new java.awt.GridLayout(0, 3, 20, 20));
-        for (model.Product p : products) {
-            panal_forscroll.add(createProductCard(p));
+    private String getSelectedCategory() {
+        if (women_RadioButton_productcatalog.isSelected()) return "Women";
+        if (men_RadioButton_productcatalog.isSelected()) return "Men";
+        if (children_RadioButton_productcatalog.isSelected()) return "Children";
+        if (unisex_RadioButton_productcatalog.isSelected()) return "Unisex";
+        return null;
+    }
+
+    private double[] getSelectedPriceRange() {
+        if (g100to500g_price_RadioButton_productcatalog.isSelected())
+            return new double[]{100, 500};
+        if (g500to1000g_price_RadioButton_productcatalog.isSelected())
+            return new double[]{500, 1000};
+        if (g1000to2000g_price_RadioButton_productcatalog.isSelected())
+            return new double[]{1000, 2000};
+        if (g2000to5000g_price_RadioButton_productcatalog.isSelected())
+            return new double[]{2000, 5000};
+        if (g5000to10000g_price_RadioButton_productcatalog.isSelected())
+            return new double[]{5000, 10000};
+        return new double[]{0, Double.MAX_VALUE};
+    }
+
+    private String getSearchText() {
+        String text = Searchbar.getText().trim();
+        return text.equals("Search Products.....") ? "" : text;
+    }
+
+    private void updateFilterLabel(String category,
+                                    double[] range, String search) {
+        if (search != null && !search.isEmpty()) {
+            currentFilterLabel.setText("<html>Currently showing:<br>"
+                + "<b>Search: \"" + search + "\"</b></html>");
+            return;
+        }
+        boolean hasCategory = category != null;
+        boolean hasPrice = range[0] > 0 || range[1] < Double.MAX_VALUE;
+
+        if (hasCategory && hasPrice) {
+            currentFilterLabel.setText("<html>Currently showing:<br><b>"
+                + category + "</b><br>Rs "
+                + (int) range[0] + " - " + (int) range[1] + "</html>");
+        } else if (hasCategory) {
+            currentFilterLabel.setText("<html>Currently showing:<br><b>"
+                + category + "</b></html>");
+        } else if (hasPrice) {
+            currentFilterLabel.setText("<html>Currently showing:<br><b>Rs "
+                + (int) range[0] + " - " + (int) range[1] + "</b></html>");
+        } else {
+            currentFilterLabel.setText("<html>Currently showing:"
+                + "<br><b>All Products</b></html>");
         }
     }
 
-    panal_forscroll.revalidate();
-    panal_forscroll.repaint();
-}
-private javax.swing.JPanel createProductCard(model.Product p) {
-    javax.swing.JPanel card = new javax.swing.JPanel();
-    card.setLayout(new java.awt.BorderLayout());
-    card.setPreferredSize(new java.awt.Dimension(200, 260));
-    card.setBackground(java.awt.Color.WHITE);
-    card.setBorder(javax.swing.BorderFactory.createLineBorder(
-        new java.awt.Color(200, 200, 200)));
+    private void displayProducts(java.util.List<model.Product> products) {
+        panal_forscroll.removeAll();
 
-    // Image
-    javax.swing.JLabel imgLabel = new javax.swing.JLabel();
-    imgLabel.setPreferredSize(new java.awt.Dimension(200, 200));
-    imgLabel.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-    imgLabel.setBackground(new java.awt.Color(240, 240, 240));
-    imgLabel.setOpaque(true);
-
-    try {
-        java.net.URL imgURL = getClass()
-            .getResource("/" + p.getImagePath());
-        if (imgURL != null) {
-            javax.swing.ImageIcon icon =
-                new javax.swing.ImageIcon(imgURL);
-            java.awt.Image scaled = icon.getImage()
-                .getScaledInstance(200, 200,
-                    java.awt.Image.SCALE_SMOOTH);
-            imgLabel.setIcon(new javax.swing.ImageIcon(scaled));
+        if (products == null || products.isEmpty()) {
+            panal_forscroll.setLayout(
+                new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 20));
+            javax.swing.JLabel none =
+                new javax.swing.JLabel("No products found.");
+            none.setFont(new java.awt.Font("Candara", 1, 28));
+            none.setForeground(java.awt.Color.BLACK);
+            panal_forscroll.add(none);
         } else {
+            panal_forscroll.setLayout(
+                new java.awt.GridLayout(0, 3, 20, 20));
+            for (model.Product p : products) {
+                panal_forscroll.add(createProductCard(p));
+            }
+        }
+
+        panal_forscroll.revalidate();
+        panal_forscroll.repaint();
+    }
+
+    private javax.swing.JPanel createProductCard(model.Product p) {
+        javax.swing.JPanel card = new javax.swing.JPanel();
+        card.setLayout(new java.awt.BorderLayout());
+        card.setPreferredSize(new java.awt.Dimension(200, 260));
+        card.setBackground(java.awt.Color.WHITE);
+        card.setBorder(javax.swing.BorderFactory.createLineBorder(
+            new java.awt.Color(200, 200, 200)));
+
+        // Image
+        javax.swing.JLabel imgLabel = new javax.swing.JLabel();
+        imgLabel.setPreferredSize(new java.awt.Dimension(200, 200));
+        imgLabel.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+        imgLabel.setBackground(new java.awt.Color(240, 240, 240));
+        imgLabel.setOpaque(true);
+
+        try {
+            if (p.getImagePath() != null && !p.getImagePath().isEmpty()) {
+                java.net.URL imgURL = getClass()
+                    .getResource("/" + p.getImagePath());
+                if (imgURL != null) {
+                    javax.swing.ImageIcon icon =
+                        new javax.swing.ImageIcon(imgURL);
+                    java.awt.Image scaled = icon.getImage()
+                        .getScaledInstance(200, 200,
+                            java.awt.Image.SCALE_SMOOTH);
+                    imgLabel.setIcon(new javax.swing.ImageIcon(scaled));
+                } else {
+                    imgLabel.setText("No Image");
+                }
+            } else {
+                imgLabel.setText("No Image");
+            }
+        } catch (Exception e) {
             imgLabel.setText("No Image");
         }
-    } catch (Exception e) {
-        imgLabel.setText("No Image");
+
+        // Bottom info panel with name and price separate
+        javax.swing.JPanel infoPanel = new javax.swing.JPanel();
+        infoPanel.setLayout(new java.awt.BorderLayout());
+        infoPanel.setBackground(java.awt.Color.WHITE);
+        infoPanel.setBorder(javax.swing.BorderFactory
+            .createEmptyBorder(5, 8, 5, 8));
+
+        // Product name
+        javax.swing.JLabel nameLabel = new javax.swing.JLabel(p.getName());
+        nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        nameLabel.setForeground(java.awt.Color.BLACK);
+        nameLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
+
+        // Price with green color
+        javax.swing.JLabel priceLabel = new javax.swing.JLabel(
+            "Rs " + (int) p.getPrice());
+        priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
+        priceLabel.setForeground(new java.awt.Color(58, 125, 68));
+        priceLabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
+
+        infoPanel.add(nameLabel, java.awt.BorderLayout.WEST);
+        infoPanel.add(priceLabel, java.awt.BorderLayout.EAST);
+
+        card.add(imgLabel, java.awt.BorderLayout.CENTER);
+        card.add(infoPanel, java.awt.BorderLayout.SOUTH);
+
+        return card;
     }
-
-    // Bottom info panel with name and price separate
-    javax.swing.JPanel infoPanel = new javax.swing.JPanel();
-    infoPanel.setLayout(new java.awt.BorderLayout());
-    infoPanel.setBackground(java.awt.Color.WHITE);
-    infoPanel.setBorder(javax.swing.BorderFactory
-        .createEmptyBorder(5, 8, 5, 8));
-
-    // Product name
-    javax.swing.JLabel nameLabel = new javax.swing.JLabel(p.getName());
-    nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-    nameLabel.setForeground(java.awt.Color.BLACK);
-    nameLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
-
-    // Price with green color
-    javax.swing.JLabel priceLabel = new javax.swing.JLabel(
-        "Rs " + (int) p.getPrice());
-    priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-    priceLabel.setForeground(new java.awt.Color(58, 125, 68));
-    priceLabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
-
-    infoPanel.add(nameLabel, java.awt.BorderLayout.WEST);
-    infoPanel.add(priceLabel, java.awt.BorderLayout.EAST);
-
-    card.add(imgLabel, java.awt.BorderLayout.CENTER);
-    card.add(infoPanel, java.awt.BorderLayout.SOUTH);
-
-    return card;
-}
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -392,9 +406,10 @@ private javax.swing.JPanel createProductCard(model.Product p) {
         Logo_productcatalog = new javax.swing.JLabel();
         Searchbar = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
+        profileBtn1 = new javax.swing.JButton();
+        cartBtn = new javax.swing.JButton();
         profileBtn = new javax.swing.JButton();
         bellBtn = new javax.swing.JButton();
-        cartBtn = new javax.swing.JButton();
         Home_btn_productcatalog = new javax.swing.JButton();
         shop_btn_productcatalog = new javax.swing.JButton();
         sidepanal_productcatalog = new javax.swing.JPanel();
@@ -427,7 +442,7 @@ private javax.swing.JPanel createProductCard(model.Product p) {
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
         navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
-        Logo_productcatalog.setText("Logo");
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         Searchbar.setText("Search Products.....");
         Searchbar.addActionListener(this::SearchbarActionPerformed);
@@ -436,56 +451,58 @@ private javax.swing.JPanel createProductCard(model.Product p) {
         searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
         searchBtn.addActionListener(this::searchBtnActionPerformed);
 
+        profileBtn1.setBackground(new java.awt.Color(58, 125, 68));
+        profileBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
+        profileBtn1.addActionListener(this::profileBtn1ActionPerformed);
+
+        cartBtn.setBackground(new java.awt.Color(58, 125, 68));
+        cartBtn.setForeground(new java.awt.Color(58, 125, 68));
+        cartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        cartBtn.addActionListener(this::cartBtnActionPerformed);
+
         profileBtn.setBackground(new java.awt.Color(58, 125, 68));
-        profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Vector (1).png"))); // NOI18N
+        profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellicon.png"))); // NOI18N
         profileBtn.addActionListener(this::profileBtnActionPerformed);
 
         bellBtn.setBackground(new java.awt.Color(58, 125, 68));
-        bellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Group (1).png"))); // NOI18N
+        bellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
         bellBtn.addActionListener(this::bellBtnActionPerformed);
-
-        cartBtn.setBackground(new java.awt.Color(58, 125, 68));
-        cartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Group.png"))); // NOI18N
-        cartBtn.addActionListener(this::cartBtnActionPerformed);
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
         navbar_product_catalog.setLayout(navbar_product_catalogLayout);
         navbar_product_catalogLayout.setHorizontalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbar_product_catalogLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(170, 170, 170)
-                .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addGap(42, 42, 42)
+                .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(searchBtn)
+                    .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(profileBtn1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 527, Short.MAX_VALUE)
+                .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(searchBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 592, Short.MAX_VALUE)
-                .addComponent(cartBtn)
-                .addGap(18, 18, 18)
-                .addComponent(profileBtn)
-                .addGap(18, 18, 18)
-                .addComponent(bellBtn)
-                .addGap(18, 18, 18))
+                .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         navbar_product_catalogLayout.setVerticalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(Searchbar))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navbar_product_catalogLayout.createSequentialGroup()
+            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(navbar_product_catalogLayout.createSequentialGroup()
-                        .addComponent(bellBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navbar_product_catalogLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(searchBtn)
-                            .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(profileBtn)
-                                .addComponent(cartBtn)))
-                        .addGap(8, 8, 8))))
+                    .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(profileBtn1)
+                        .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(170, 170, 170)
+                .addComponent(searchBtn))
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -622,8 +639,14 @@ private javax.swing.JPanel createProductCard(model.Product p) {
     }//GEN-LAST:event_Home_btn_productcatalogActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-     String search = getSearchText();
-    if (search == null || search.isEmpty()) {
+    
+    System.out.println("🔍 Search button clicked!");
+    
+    // Get text from search bar
+    String search = Searchbar.getText().trim();
+    
+    // Check if empty or still showing placeholder
+    if (search.isEmpty() || search.equals("Search Products.....")) {
         javax.swing.JOptionPane.showMessageDialog(
             this,
             "Please enter a product name to search!",
@@ -631,7 +654,10 @@ private javax.swing.JPanel createProductCard(model.Product p) {
             javax.swing.JOptionPane.WARNING_MESSAGE);
         return;
     }
+    
+    // Load products with search filter
     loadProducts();
+
 
     }//GEN-LAST:event_searchBtnActionPerformed
 
@@ -642,10 +668,6 @@ private javax.swing.JPanel createProductCard(model.Product p) {
         "Info",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_profileBtnActionPerformed
-
-    private void bellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bellBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bellBtnActionPerformed
 
     private void SearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchbarActionPerformed
        loadProducts();
@@ -678,6 +700,32 @@ private javax.swing.JPanel createProductCard(model.Product p) {
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_shop_btn_productcatalogActionPerformed
+
+    private void bellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bellBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bellBtnActionPerformed
+
+    private void profileBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBtn1ActionPerformed
+    
+    System.out.println("🔍 Search button clicked!");
+    
+    // Get text from search bar
+    String search = Searchbar.getText().trim();
+    
+    // Check if empty or still showing placeholder
+    if (search.isEmpty() || search.equals("Search Products.....")) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Please enter a product name to search!",
+            "Search",
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+    
+    // Load products with search filter
+    loadProducts();
+
+    }//GEN-LAST:event_profileBtn1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -730,6 +778,7 @@ private javax.swing.JPanel createProductCard(model.Product p) {
     private javax.swing.ButtonGroup priceGroup;
     private javax.swing.JLabel productCountLabel;
     private javax.swing.JButton profileBtn;
+    private javax.swing.JButton profileBtn1;
     private javax.swing.JButton searchBtn;
     private javax.swing.JLabel searchResultLabel;
     private javax.swing.JButton shop_btn_productcatalog;

@@ -15,17 +15,22 @@ public class Resetpassword extends javax.swing.JFrame {
 
     private String userEmail;
 
-    // ✅ Default constructor (KEEP THIS)
-   public Resetpassword() {
+   
+public Resetpassword() {
     initComponents();
-    setupPasswordFields();  // ← ADD THIS LINE
+    setupPasswordFields();
+    
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
 }
 
-    // ✅ Constructor with email
-    public Resetpassword(String email) {
+public Resetpassword(String email) {
     initComponents();
     this.userEmail = email;
-    setupPasswordFields();  // ← ADD THIS LINE
+    setupPasswordFields();
+    
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
 }
 
 private void setupPasswordFields() {
@@ -84,6 +89,7 @@ private void setupPasswordFields() {
         Confirmpassword_textfield = new javax.swing.JPasswordField();
         Reset_btn = new javax.swing.JButton();
         Logo = new javax.swing.JLabel();
+        Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,14 +117,16 @@ private void setupPasswordFields() {
         Reset_btn.setText("Reset");
         Reset_btn.addActionListener(this::Reset_btnActionPerformed);
 
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
+        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.jpeg"))); // NOI18N
+
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout MainpanalLayout = new javax.swing.GroupLayout(Mainpanal);
         Mainpanal.setLayout(MainpanalLayout);
         MainpanalLayout.setHorizontalGroup(
             MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainpanalLayout.createSequentialGroup()
-                .addGap(138, 562, Short.MAX_VALUE)
+                .addContainerGap(564, Short.MAX_VALUE)
                 .addGroup(MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Resetpassword_text)
                     .addGroup(MainpanalLayout.createSequentialGroup()
@@ -131,14 +139,21 @@ private void setupPasswordFields() {
                             .addComponent(Reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(524, 524, 524))
             .addGroup(MainpanalLayout.createSequentialGroup()
-                .addComponent(Logo)
+                .addGap(17, 17, 17)
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainpanalLayout.setVerticalGroup(
             MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(MainpanalLayout.createSequentialGroup()
-                .addComponent(Logo)
-                .addGap(4, 4, 4)
+                .addGroup(MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(MainpanalLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(51, 51, 51)
                 .addComponent(Resetpassword_text, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Newpassword_text)
@@ -150,7 +165,7 @@ private void setupPasswordFields() {
                 .addComponent(Confirmpassword_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(36, 36, 36)
                 .addComponent(Reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(409, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,6 +261,7 @@ if (controller.resetPassword(userEmail, newPassword)) {
     private javax.swing.JLabel ConfirmPassword_text;
     private javax.swing.JPasswordField Confirmpassword_textfield;
     private javax.swing.JLabel Logo;
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JPanel Mainpanal;
     private javax.swing.JLabel Newpassword_text;
     private javax.swing.JPasswordField Newpassword_textfield;

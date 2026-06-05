@@ -1,20 +1,146 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
-/**
- *
- * @author Lenovo
- */
-public class AdminDashboard extends javax.swing.JPanel {
+public class AdminDashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminDashboard
-     */
+    private String adminUsername;
+    private dao.AdminDAO adminDAO = new dao.AdminDAO();
+
     public AdminDashboard() {
+        this("Admin");
+    }
+
+    public AdminDashboard(String username) {
         initComponents();
+        this.adminUsername = username;
+
+        // Smart sizing
+        java.awt.Dimension screen =
+            java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        if (screen.width < 1600 || screen.height < 900) {
+            this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        } else {
+            this.setSize(1550, 840);
+            this.setLocationRelativeTo(null);
+        }
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ReWear - Admin Dashboard");
+        initBackend();
+
+        // Resize panels with window
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                int w = getContentPane().getWidth();
+                int h = getContentPane().getHeight();
+
+                // Navbar
+                jPanel2.setBounds(0, 0, w, 48);
+
+                // Sidebar height
+                jPanel3.setBounds(0, 52, 200, h - 52);
+
+                // Stat panels
+                int statWidth = (w - 260) / 4 - 10;
+                jPanel1.setBounds(240, 170, statWidth, 130);
+                jPanel4.setBounds(240 + statWidth + 13, 170, statWidth, 130);
+                jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
+                jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
+
+                // Recent orders panel
+                jPanel7.setBounds(w - 540, 410, 500, h - 460);
+
+                revalidate();
+                repaint();
+            }
+        });
+    }
+
+    private void initBackend() {
+        updateStats();
+
+        jButton3.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "You are currently on the Dashboard!",
+                "Dashboard",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        // Add Product — opens Addproduct page
+        jButton1.addActionListener(e -> {
+            Addproduct addPage = new Addproduct(adminUsername);
+            addPage.showInFrame();
+            this.dispose();
+        });
+
+        jButton4.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Edit Product page coming soon!",
+                "Edit Product",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        jButton2.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Orders page coming soon!",
+                "Orders",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        jButton5.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Inventory page coming soon!",
+                "Inventory",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        jButton7.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Reports page coming soon!",
+                "Reports",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        jButton6.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Full orders page coming soon!",
+                "Orders",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+    
+
+    }
+
+    private void updateStats() {
+        try {
+            double totalSales = adminDAO.getTotalSales();
+            jLabel3.setText("Rs " + String.format("%,.0f", totalSales));
+
+            int totalOrders = adminDAO.getTotalOrders();
+            jLabel5.setText(String.valueOf(totalOrders));
+
+            int totalUsers = adminDAO.getTotalUsers();
+            jLabel7.setText(String.valueOf(totalUsers));
+
+            int totalProducts = adminDAO.getTotalProducts();
+            jLabel9.setText(String.valueOf(totalProducts));
+
+            java.util.List<String[]> recentOrders = adminDAO.getRecentOrders();
+            if (recentOrders.size() >= 1) {
+                jLabel12.setText(recentOrders.get(0)[0]);
+                jLabel15.setText(recentOrders.get(0)[1]);
+                jLabel18.setText(recentOrders.get(0)[2]);
+                jLabel21.setText(recentOrders.get(0)[3]);
+            }
+            if (recentOrders.size() >= 2) {
+                jLabel13.setText(recentOrders.get(1)[0]);
+                jLabel16.setText(recentOrders.get(1)[1]);
+                jLabel19.setText(recentOrders.get(1)[2]);
+                jLabel22.setText(recentOrders.get(1)[3]);
+            }
+            if (recentOrders.size() >= 3) {
+                jLabel14.setText(recentOrders.get(2)[0]);
+                jLabel17.setText(recentOrders.get(2)[1]);
+                jLabel20.setText(recentOrders.get(2)[2]);
+                jLabel23.setText(recentOrders.get(2)[3]);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error updating stats: " + ex.getMessage());
+        }
     }
 
     /**
@@ -35,6 +161,7 @@ public class AdminDashboard extends javax.swing.JPanel {
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        Logo_productcatalog = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -67,8 +194,7 @@ public class AdminDashboard extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(232, 255, 233));
         setMinimumSize(new java.awt.Dimension(1550, 840));
-        setPreferredSize(new java.awt.Dimension(1550, 840));
-        setLayout(null);
+        getContentPane().setLayout(null);
 
         jPanel3.setBackground(new java.awt.Color(170, 218, 172));
 
@@ -101,6 +227,7 @@ public class AdminDashboard extends javax.swing.JPanel {
         jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton8.setText("Log out");
+        jButton8.addActionListener(this::jButton8ActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -138,29 +265,37 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addGap(162, 162, 162))
         );
 
-        add(jPanel3);
+        getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 52, 200, 940);
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
+
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1550, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addContainerGap(1328, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        add(jPanel2);
+        getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 0, 1550, 48);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(58, 125, 68));
         jLabel1.setText("Dashboard Overview");
-        add(jLabel1);
+        getContentPane().add(jLabel1);
         jLabel1.setBounds(240, 100, 250, 40);
 
         jPanel1.setBackground(new java.awt.Color(170, 218, 172));
@@ -194,7 +329,7 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(29, Short.MAX_VALUE))
         );
 
-        add(jPanel1);
+        getContentPane().add(jPanel1);
         jPanel1.setBounds(240, 170, 230, 130);
 
         jPanel4.setBackground(new java.awt.Color(170, 218, 172));
@@ -230,7 +365,7 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
-        add(jPanel4);
+        getContentPane().add(jPanel4);
         jPanel4.setBounds(560, 170, 220, 130);
 
         jPanel5.setBackground(new java.awt.Color(170, 218, 172));
@@ -267,7 +402,7 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        add(jPanel5);
+        getContentPane().add(jPanel5);
         jPanel5.setBounds(850, 170, 230, 130);
 
         jPanel6.setBackground(new java.awt.Color(170, 218, 172));
@@ -304,13 +439,13 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
-        add(jPanel6);
+        getContentPane().add(jPanel6);
         jPanel6.setBounds(1160, 170, 240, 130);
 
         jLabel10.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(58, 125, 68));
         jLabel10.setText("Sales Overview");
-        add(jLabel10);
+        getContentPane().add(jLabel10);
         jLabel10.setBounds(240, 350, 190, 50);
 
         jPanel7.setBackground(new java.awt.Color(170, 218, 172));
@@ -438,7 +573,7 @@ public class AdminDashboard extends javax.swing.JPanel {
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        add(jPanel7);
+        getContentPane().add(jPanel7);
         jPanel7.setBounds(900, 410, 500, 350);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -450,8 +585,30 @@ public class AdminDashboard extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+   
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to logout?",
+        "Confirm Logout",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.QUESTION_MESSAGE);
+    
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+           javax.swing.JOptionPane.showMessageDialog(this,
+                    "Logging out... See you soon!",
+                    "Goodbye",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                new Login().setVisible(true);
+                this.dispose();
+            }
+    
+
+    }//GEN-LAST:event_jButton8ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

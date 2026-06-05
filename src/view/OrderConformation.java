@@ -27,13 +27,13 @@ public class OrderConformation extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
+        Logo_productcatalog = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(170, 218, 172));
         setMaximumSize(new java.awt.Dimension(1550, 840));
@@ -43,22 +43,30 @@ public class OrderConformation extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
 
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1350, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addContainerGap(1328, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 48, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         add(jPanel2);
-        jPanel2.setBounds(200, 0, 1350, 48);
+        jPanel2.setBounds(0, 0, 1550, 48);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
-        jLabel1.setText("Thank You !!");
+        jLabel1.setText("Thank You !!!");
         jLabel1.setMaximumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setMinimumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setPreferredSize(new java.awt.Dimension(1550, 840));
@@ -66,7 +74,7 @@ public class OrderConformation extends javax.swing.JPanel {
         jLabel1.setBounds(620, 370, 350, 60);
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel2.setText("Your Order Has Been Placed Successfully");
+        jLabel2.setText("Your Order Has Been Placed Successfully.");
         add(jLabel2);
         jLabel2.setBounds(580, 460, 510, 40);
 
@@ -76,7 +84,7 @@ public class OrderConformation extends javax.swing.JPanel {
         jLabel3.setBounds(580, 510, 410, 60);
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel4.setText("We have sent your order details via email");
+        jLabel4.setText("We have sent your order details via email.");
         add(jLabel4);
         jLabel4.setBounds(580, 590, 430, 30);
 
@@ -94,11 +102,6 @@ public class OrderConformation extends javax.swing.JPanel {
         jButton2.addActionListener(this::jButton2ActionPerformed);
         add(jButton2);
         jButton2.setBounds(680, 660, 220, 60);
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
-        jLabel5.setText("jLabel5");
-        add(jLabel5);
-        jLabel5.setBounds(0, 0, 200, 50);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -111,13 +114,13 @@ public class OrderConformation extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

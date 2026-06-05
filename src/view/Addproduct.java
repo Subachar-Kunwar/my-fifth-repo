@@ -1,21 +1,185 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
-/**
- *
- * @author Lenovo
- */
 public class Addproduct extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Addproduct
-     */
+    private String adminUsername;
+    private String selectedImagePath = "";
+
     public Addproduct() {
-        initComponents();
+        this("Admin");
     }
+
+    public Addproduct(String username) {
+        initComponents();
+        this.adminUsername = username;
+        initBackend();
+    }
+
+    // Call this to show in a frame
+    public void showInFrame() {
+        javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - Add Product");
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(this);
+        frame.pack();
+
+        java.awt.Dimension screen =
+            java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        if (screen.width < 1600 || screen.height < 900) {
+            frame.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        } else {
+            frame.setSize(1550, 840);
+            frame.setLocationRelativeTo(null);
+        }
+        frame.setVisible(true);
+    }
+
+    private void initBackend() {
+
+       
+        // Edit Product button
+        jButton4.addActionListener(e ->
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Edit Product page coming soon!",
+                "Edit Product",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE));
+
+        // Add Image button — opens file chooser
+        jButton6.addActionListener(e -> {
+            javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+            chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                "Image files", "jpg", "jpeg", "png"));
+            int result = chooser.showOpenDialog(this);
+            if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
+                java.io.File file = chooser.getSelectedFile();
+                selectedImagePath = file.getAbsolutePath();
+
+                // Show preview
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon(selectedImagePath);
+                java.awt.Image scaled = icon.getImage()
+                    .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
+                jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
+                jLabel1.setText("");
+            }
+        });
+
+        // Save button (jButton9 — first button in bottom panel)
+        jButton9.setText("Save Product");
+        jButton9.addActionListener(e -> saveProduct());
+
+        // Cancel button (jButton8 — second button in bottom panel)
+        jButton8.setText("Cancel");
+        jButton8.addActionListener(e -> {
+            int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                this,
+                "Discard changes and go back?",
+                "Cancel",
+                javax.swing.JOptionPane.YES_NO_OPTION);
+            if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                new AdminDashboard(adminUsername).setVisible(true);
+                javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+            }
+        });
+    }
+
+    private void saveProduct() {
+        // Get values from fields
+        String name = jTextField1.getText().trim();
+        String priceText = jTextField3.getText().trim();
+        String category = jTextField5.getText().trim();
+        String description = jTextField2.getText().trim();
+        String stockText = jTextField6.getText().trim();
+
+        // Validate
+        if (name.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product name is required!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (priceText.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Price is required!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (category.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Category is required!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (selectedImagePath.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Please add a product image!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        double price;
+        int stock;
+        try {
+            price = Double.parseDouble(priceText);
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Price must be a valid number!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            stock = Integer.parseInt(stockText);
+        } catch (NumberFormatException ex) {
+            stock = 0;
+        }
+
+        // Copy image to project images folder
+        String imageName = new java.io.File(selectedImagePath).getName();
+        String destPath = "src/images/" + imageName;
+        try {
+            // Automatically make the target directory if it's missing
+            java.io.File dir = new java.io.File("src/images");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            java.nio.file.Files.copy(
+                java.nio.file.Paths.get(selectedImagePath),
+                java.nio.file.Paths.get(destPath),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+        } catch (java.io.IOException ex) {
+            System.out.println("Image copy error: " + ex.getMessage());
+        }
+
+        // Save to database
+        dao.ProductcatalogDAO productcatalogDAO = new dao.ProductcatalogDAO();
+        
+        // Match the 7 parameters expected by your updated DAO method
+        boolean success = productcatalogDAO.addProduct(name, category, price,
+            "images/" + imageName, description, stock, 1);
+
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product added successfully!",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            clearFields();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Failed to add product. Try again.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void clearFields() {
+        jTextField1.setText("");
+        jTextField3.setText("");
+        jTextField5.setText("");
+        jTextField2.setText("");
+        jTextField6.setText("");
+        jLabel1.setIcon(null);
+        jLabel1.setText("");
+        selectedImagePath = "";
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,6 +193,7 @@ public class Addproduct extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        Logo_productcatalog = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -54,7 +219,6 @@ public class Addproduct extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(232, 255, 233));
         setPreferredSize(new java.awt.Dimension(1550, 840));
@@ -66,25 +230,34 @@ public class Addproduct extends javax.swing.JPanel {
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
 
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addContainerGap(1328, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 72, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(11, 11, 11))
         );
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(200, 0, 1350, 72);
+        jPanel2.setBounds(0, 0, 1550, 48);
 
         jPanel3.setBackground(new java.awt.Color(170, 218, 172));
 
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jButton1.setText("Add Product");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -138,11 +311,11 @@ public class Addproduct extends javax.swing.JPanel {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(362, Short.MAX_VALUE))
+                .addContainerGap(392, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(0, 72, 200, 920);
+        jPanel3.setBounds(0, 42, 200, 950);
 
         jPanel6.setBackground(new java.awt.Color(232, 255, 233));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
@@ -156,24 +329,25 @@ public class Addproduct extends javax.swing.JPanel {
 
         jButton6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton6.setText("Add Image ");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(58, 125, 68));
         jLabel3.setText("PRODUCT DETAILS");
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel4.setText("Product Name");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel5.setText("Price ( Rs.)");
 
-        jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel6.setText("Category");
 
-        jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel7.setText("Description");
 
-        jLabel8.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel8.setText("Stock");
 
         jLabel9.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
@@ -210,7 +384,7 @@ public class Addproduct extends javax.swing.JPanel {
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,11 +454,6 @@ public class Addproduct extends javax.swing.JPanel {
         jPanel1.add(jPanel5);
         jPanel5.setBounds(230, 780, 1300, 90);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
-        jLabel2.setText("jLabel2");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(0, 0, 200, 70);
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -311,7 +480,13 @@ public class Addproduct extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    
+    // Dashboard button - acts as back button to Admin Dashboard
+    new AdminDashboard(adminUsername).setVisible(true);
+    
+    // Close current Add Product window
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -326,8 +501,24 @@ public class Addproduct extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+    // User is already on Add Product page
+    javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "You are already on the Add Product page!",
+        "Add Product",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -338,7 +529,6 @@ public class Addproduct extends javax.swing.JPanel {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
