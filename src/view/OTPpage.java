@@ -271,8 +271,6 @@ public OTPpage(String email, String otp) {
         Text1.setFont(new java.awt.Font("Arial Black", 1, 50)); // NOI18N
         Text1.setText("Verify OTP");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.jpeg"))); // NOI18N
-
         Text3.setFont(new java.awt.Font("Candara", 1, 24)); // NOI18N
         Text3.setText("Enter the OTP");
 
@@ -330,12 +328,12 @@ public OTPpage(String email, String otp) {
                         .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(verify_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(Text8)
                         .addGap(18, 18, 18)
-                        .addComponent(Button3)))
+                        .addComponent(Button3))
+                    .addComponent(verify_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(643, 643, 643))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()

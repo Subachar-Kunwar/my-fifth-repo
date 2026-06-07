@@ -40,15 +40,16 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
               <Component id="mainpanal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
+          <Group type="102" alignment="1" attributes="0">
               <Component id="mainpanal" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
@@ -80,39 +81,41 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="logo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="353" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="welcomebacktext" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="forgetpassword_btn" min="-2" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="usernametext" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                                          <Component id="Emailtext" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
-                                          <Component id="Logintocontinuetext" min="-2" pref="248" max="-2" attributes="0"/>
-                                          <Component id="Username_textfield" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
-                                          <Component id="Email_textfield" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="password_textfield" max="32767" attributes="0"/>
-                                                  <Component id="passwordtext" alignment="1" pref="248" max="32767" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="show_hide_btn" min="-2" pref="89" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="Login_btn" alignment="0" min="-2" pref="335" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="408" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="forgetpassword_btn" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="usernametext" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                                  <Component id="Emailtext" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
+                                  <Component id="Logintocontinuetext" min="-2" pref="248" max="-2" attributes="0"/>
+                                  <Component id="Username_textfield" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
+                                  <Component id="Email_textfield" alignment="0" min="-2" pref="336" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="password_textfield" max="32767" attributes="0"/>
+                                          <Component id="passwordtext" alignment="1" pref="248" max="32767" attributes="0"/>
                                       </Group>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="show_hide_btn" min="-2" pref="89" max="-2" attributes="0"/>
                                   </Group>
+                                  <Component id="Login_btn" alignment="0" min="-2" pref="335" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="575" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="634" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                  <Component id="Logo_productcatalog" min="-2" pref="239" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="Logo_productcatalog" min="-2" pref="239" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="514" max="-2" attributes="0"/>
+                          <Component id="welcomebacktext" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -120,17 +123,11 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-                          <Component id="welcomebacktext" min="-2" pref="105" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="logo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="Logo_productcatalog" min="-2" pref="54" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="logo" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="Logo_productcatalog" min="-2" pref="54" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+                  <Component id="welcomebacktext" min="-2" pref="105" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="Logintocontinuetext" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
@@ -254,7 +251,7 @@
               <Font name="Arial Black" size="12" style="0"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="66" red="ff" type="rgb"/>
+              <Color blue="cc" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Register"/>
           </Properties>

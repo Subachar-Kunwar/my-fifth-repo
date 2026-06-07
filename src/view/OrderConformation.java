@@ -10,12 +10,73 @@ package view;
  */
 public class OrderConformation extends javax.swing.JPanel {
 
-    /**
-     * Creates new form OrderConformation
-     */
-    public OrderConformation() {
-        initComponents();
+private int orderId;
+private String loggedUsername;
+private int loggedUserId;
+
+public OrderConformation() {
+    this(0, "Guest", -1);
+}
+
+public OrderConformation(int orderId, String username, int userId) {
+    initComponents();
+    this.orderId = orderId;
+    this.loggedUsername = username;
+    this.loggedUserId = userId;
+
+    // Smart sizing
+    java.awt.Dimension screen =
+        java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    if (screen.width < 1600 || screen.height < 900) {
+        // wrap in frame and maximize
+    } else {
+        // normal size
     }
+
+    initBackend();
+}
+
+private void initBackend() {
+
+    // Show actual order ID
+    jLabel3.setText("Order ID : #" + orderId);
+
+    // Continue Shopping — go to Product Catalog
+    jButton2.addActionListener(e -> {
+        new Product_catalog(loggedUsername, loggedUserId)
+            .setVisible(true);
+        javax.swing.SwingUtilities
+            .getWindowAncestor(this).dispose();
+    });
+
+    // View Order — coming soon
+    jButton1.addActionListener(e ->
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Order page coming soon!",
+            "View Order",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE));
+}
+
+public void showInFrame() {
+    javax.swing.JFrame frame = new javax.swing.JFrame(
+        "ReWear - Order Confirmation");
+    frame.setDefaultCloseOperation(
+        javax.swing.JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(this);
+    frame.pack();
+
+    java.awt.Dimension screen =
+        java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    if (screen.width < 1600 || screen.height < 900) {
+        frame.setExtendedState(
+            javax.swing.JFrame.MAXIMIZED_BOTH);
+    } else {
+        frame.setSize(1550, 840);
+        frame.setLocationRelativeTo(null);
+    }
+    frame.setVisible(true);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,6 +95,7 @@ public class OrderConformation extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(170, 218, 172));
         setMaximumSize(new java.awt.Dimension(1550, 840));
@@ -52,7 +114,7 @@ public class OrderConformation extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Logo_productcatalog)
-                .addContainerGap(1328, Short.MAX_VALUE))
+                .addContainerGap(1338, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -63,45 +125,51 @@ public class OrderConformation extends javax.swing.JPanel {
         );
 
         add(jPanel2);
-        jPanel2.setBounds(0, 0, 1550, 48);
+        jPanel2.setBounds(0, 0, 1560, 48);
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 50)); // NOI18N
         jLabel1.setText("Thank You !!!");
         jLabel1.setMaximumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setMinimumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setPreferredSize(new java.awt.Dimension(1550, 840));
         add(jLabel1);
-        jLabel1.setBounds(620, 370, 350, 60);
+        jLabel1.setBounds(650, 300, 350, 60);
 
-        jLabel2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel2.setText("Your Order Has Been Placed Successfully.");
         add(jLabel2);
-        jLabel2.setBounds(580, 460, 510, 40);
+        jLabel2.setBounds(580, 400, 630, 40);
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 204));
         jLabel3.setText("Order ID : ");
         add(jLabel3);
-        jLabel3.setBounds(580, 510, 410, 60);
+        jLabel3.setBounds(580, 460, 410, 60);
 
-        jLabel4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel4.setText("We have sent your order details via email.");
         add(jLabel4);
-        jLabel4.setBounds(580, 590, 430, 30);
+        jLabel4.setBounds(580, 540, 610, 30);
 
         jButton1.setBackground(new java.awt.Color(232, 255, 233));
-        jButton1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 204));
         jButton1.setText("View Order");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 2));
         jButton1.addActionListener(this::jButton1ActionPerformed);
         add(jButton1);
-        jButton1.setBounds(720, 750, 150, 50);
+        jButton1.setBounds(720, 720, 150, 50);
 
         jButton2.setBackground(new java.awt.Color(232, 255, 233));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jButton2.setText("Continue shopping");
         jButton2.addActionListener(this::jButton2ActionPerformed);
         add(jButton2);
-        jButton2.setBounds(680, 660, 220, 60);
+        jButton2.setBounds(680, 620, 220, 60);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/tick.png"))); // NOI18N
+        add(jLabel5);
+        jLabel5.setBounds(750, 100, 150, 160);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -121,6 +189,7 @@ public class OrderConformation extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

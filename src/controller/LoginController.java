@@ -1,37 +1,38 @@
 package controller;
 
 import dao.UserDAO;
-import model.logindata;
 import view.Login;
 
+/**
+ * LoginController - handles login view logic
+ */
 public class LoginController {
-    UserDAO dao = new UserDAO();
 
-    LoginController(Login loginView) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private final UserDAO dao = new UserDAO();
+    private final Login loginView;
+
+    /**
+     * ✅ Primary constructor - properly initializes
+     */
+    public LoginController(Login loginView) {
+        this.loginView = loginView;
     }
 
-    public boolean loginUser(String usernameOrEmail, String password, String confirmPassword) {
-        // check if passwords match
-        if (!password.equals(confirmPassword)) {
-            return false;
-        }
-        
-        // Use the existing constructor with 4 parameters
-        logindata user = new logindata(usernameOrEmail, usernameOrEmail, password, confirmPassword);
-        
-        return dao.checkUser(user);
+    public void open() {
+        this.loginView.setVisible(true);
     }
 
-    public LoginController(String email, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void close() {
+        this.loginView.dispose();
     }
 
-    void open() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public boolean login(String email, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    /**
+     * Optional: validate login credentials
+     */
+    public boolean loginUser(String username, String email, String password) {
+        if (username == null || username.isEmpty()) return false;
+        if (email == null || !email.contains("@")) return false;
+        if (password == null || password.length() < 8) return false;
+        return dao.checkUser(new model.logindata(username, email, password));
     }
 }

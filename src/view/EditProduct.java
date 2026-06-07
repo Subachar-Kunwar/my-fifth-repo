@@ -10,11 +10,292 @@ package view;
  */
 public class EditProduct extends javax.swing.JPanel {
 
-    /**
-     * Creates new form EditProduct
-     */
+
+    private String adminUsername;
+    private int currentProductId = -1;
+    private String selectedImagePath = "";
+
     public EditProduct() {
+        this("Admin");
+    }
+
+    public EditProduct(String username) {
         initComponents();
+        this.adminUsername = username;
+    }
+
+    public void showInFrame() {
+        javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - Edit Product");
+        frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+        
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(this);
+        scrollPane.setVerticalScrollBarPolicy(
+            javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(
+            javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        
+        frame.getContentPane().add(scrollPane);
+        frame.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        frame.setMinimumSize(new java.awt.Dimension(1000, 600));
+        frame.setVisible(true);
+    }
+
+    // ✅ NEW METHOD: Show all products with their IDs
+    private void showAllProducts() {
+        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
+        java.util.List<model.Product> products = productDAO.getAllProducts();
+        
+        if (products.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No products found in database!",
+                "Empty",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID  | Name                  | Category    | Price\n");
+        sb.append("─────────────────────────────────────────────\n");
+        for (model.Product p : products) {
+            sb.append(p.getId())
+              .append("   | ").append(p.getName())
+              .append(" | ").append(p.getCategory())
+              .append(" | Rs ").append(p.getPrice())
+              .append("\n");
+        }
+        
+        javax.swing.JTextArea textArea = new javax.swing.JTextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
+        
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(textArea);
+        scrollPane.setPreferredSize(new java.awt.Dimension(600, 400));
+        
+        javax.swing.JOptionPane.showMessageDialog(this,
+            scrollPane,
+            "All Products - Note the ID",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    // ✅ UPDATED: Now shows product list before asking for ID
+    private boolean askForProductId() {
+        // Show product list first
+        showAllProducts();
+        
+        String input = javax.swing.JOptionPane.showInputDialog(
+            this,
+            "Enter Product ID from the list:",
+            "Product ID",
+            javax.swing.JOptionPane.QUESTION_MESSAGE);
+        
+        if (input == null || input.trim().isEmpty()) {
+            return false;
+        }
+        
+        try {
+            currentProductId = Integer.parseInt(input.trim());
+            return true;
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Invalid Product ID! Must be a number.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    // ✅ Helper: Load product data into fields
+    private boolean loadProductIntoFields(int productId) {
+        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
+        model.Product product = productDAO.getProductById(productId);
+        
+        if (product == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product with ID " + productId + " not found!",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            currentProductId = -1;
+            return false;
+        }
+        
+        jTextField1.setText(product.getName());
+        jTextField3.setText(String.valueOf(product.getPrice()));
+        jTextField5.setText(product.getCategory());
+        
+        if (product.getImagePath() != null && !product.getImagePath().isEmpty()) {
+            try {
+                javax.swing.ImageIcon icon = new javax.swing.ImageIcon("src/" + product.getImagePath());
+                java.awt.Image scaled = icon.getImage()
+                    .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
+                jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
+            } catch (Exception ex) {
+                System.out.println("Image load error: " + ex.getMessage());
+            }
+        }
+        
+        return true;
+    }
+
+    // ✅ Helper: Clear all input fields
+    private void clearFields() {
+        jTextField1.setText("");
+        jTextField3.setText("");
+        jTextField5.setText("");
+        jTextField2.setText("");
+        jTextField6.setText("");
+        jLabel1.setIcon(null);
+        selectedImagePath = "";
+    }
+
+   private void updateProduct() {
+    // If no product loaded, prompt for ID first
+    if (currentProductId == -1) {
+        if (!askForProductId()) return;
+        if (loadProductIntoFields(currentProductId)) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product loaded! Edit fields and click Update Product again.",
+                "Loaded",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        }
+        return;
+    }
+
+    String name = jTextField1.getText().trim();
+    String priceText = jTextField3.getText().trim();
+    String category = jTextField5.getText().trim();
+    String description = jTextField2.getText().trim();
+    String stockText = jTextField6.getText().trim();
+
+    // ✅ Separate validation for each field
+    if (name.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product name is required!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    if (priceText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Price is required!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    if (category.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Category is required!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    if (description.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Description is required!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    double price;
+    int stock;
+    try {
+        price = Double.parseDouble(priceText);
+    } catch (NumberFormatException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Price must be a valid number!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+        // ✅ ADDED: Stock validation
+    if (stockText.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Stock quantity is required!", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
+    
+       // ✅ IMPROVED: Stock validation - must be valid number and not negative
+    try {
+        stock = Integer.parseInt(stockText);
+        if (stock < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Stock cannot be negative!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    } catch (NumberFormatException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Stock must be a valid whole number!", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String imagePath = "";
+    if (!selectedImagePath.isEmpty()) {
+        String imageName = new java.io.File(selectedImagePath).getName();
+        String destPath = "src/images/" + imageName;
+        try {
+            java.io.File dir = new java.io.File("src/images");
+            if (!dir.exists()) dir.mkdirs();
+            java.nio.file.Files.copy(
+                java.nio.file.Paths.get(selectedImagePath),
+                java.nio.file.Paths.get(destPath),
+                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            imagePath = "images/" + imageName;
+        } catch (java.io.IOException ex) {
+            System.out.println("Image copy error: " + ex.getMessage());
+        }
+    }
+
+    dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
+    boolean success = productDAO.updateProduct(
+        currentProductId, name, category, price,
+        imagePath, description, stock);
+
+    if (success) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product updated successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        clearFields();
+        currentProductId = -1;
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Failed to update product.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    private void deleteProduct() {
+        // If no product loaded, prompt for ID
+        if (currentProductId == -1) {
+            if (!askForProductId()) return;
+        }
+
+        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
+        boolean success = productDAO.deleteProduct(currentProductId);
+
+        if (success) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product deleted successfully!",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            clearFields();
+            currentProductId = -1;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Failed to delete product. Product ID may not exist.",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -29,6 +310,7 @@ public class EditProduct extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         Logo_productcatalog = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -54,61 +336,54 @@ public class EditProduct extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(232, 255, 233));
         jPanel1.setPreferredSize(new java.awt.Dimension(1550, 840));
         jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
+        jPanel2.setLayout(null);
 
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        jPanel2.add(Logo_productcatalog);
+        Logo_productcatalog.setBounds(0, 0, 216, 40);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addContainerGap(1328, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel2.setText("Admin");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(1474, 7, 70, 30);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 1550, 48);
+        jPanel2.setBounds(0, 0, 1550, 50);
 
         jPanel3.setBackground(new java.awt.Color(170, 218, 172));
 
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
-        jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton1.setText("Add Product");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
-        jButton2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton2.setText("Orders ");
 
         jButton3.setBackground(new java.awt.Color(170, 218, 172));
-        jButton3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton3.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton3.setText("Dashboard");
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setBackground(new java.awt.Color(170, 218, 172));
-        jButton4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton4.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton4.setText("Edit Product");
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setBackground(new java.awt.Color(170, 218, 172));
-        jButton5.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton5.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton5.setText("Inventory");
 
         jButton7.setBackground(new java.awt.Color(170, 218, 172));
-        jButton7.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton7.setText("Reports");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -116,32 +391,32 @@ public class EditProduct extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(33, 33, 33)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(18, 18, 18)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGap(18, 18, 18)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(382, Short.MAX_VALUE))
+                .addContainerGap(517, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
@@ -159,6 +434,7 @@ public class EditProduct extends javax.swing.JPanel {
 
         jButton6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jButton6.setText("Add Image ");
+        jButton6.addActionListener(this::jButton6ActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(58, 125, 68));
@@ -255,9 +531,19 @@ public class EditProduct extends javax.swing.JPanel {
         jPanel5.setBackground(new java.awt.Color(232, 255, 233));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
-        jButton8.setText("jButton6");
+        jButton8.setBackground(new java.awt.Color(170, 218, 172));
+        jButton8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton8.setText("Update Product");
+        jButton8.addActionListener(this::jButton8ActionPerformed);
 
-        jButton9.setText("jButton6");
+        jButton9.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton9.setForeground(new java.awt.Color(255, 0, 0));
+        jButton9.setText("Delete Product");
+        jButton9.addActionListener(this::jButton9ActionPerformed);
+
+        jButton10.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton10.setText("Cancel");
+        jButton10.addActionListener(this::jButton10ActionPerformed);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -266,17 +552,20 @@ public class EditProduct extends javax.swing.JPanel {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(804, Short.MAX_VALUE))
+                .addContainerGap(754, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -287,25 +576,37 @@ public class EditProduct extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 874, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    
+    // Dashboard button - acts as back button to Admin Dashboard
+    new AdminDashboard(adminUsername).setVisible(true);
+    
+    // Close current Add Product window
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+    
+    // User is already on Add Product page
+    javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "You are already on the Edit Product page!",
+        "Edit Product",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -316,10 +617,67 @@ public class EditProduct extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField6ActionPerformed
 
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+     // Delete Product
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "Are you sure you want to delete this product?",
+        "Delete Product",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.WARNING_MESSAGE);
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        deleteProduct();
+    }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    new Addproduct(adminUsername).showInFrame();
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose(); 
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    updateProduct();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+                                         
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(
+        this,
+        "Clear all fields and start over?",
+        "Cancel",
+        javax.swing.JOptionPane.YES_NO_OPTION);
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        clearFields();
+        currentProductId = -1;  // ✅ Reset product ID too
+    }
+
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    
+    javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+    chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+        "Image files", "jpg", "jpeg", "png"));
+    int result = chooser.showOpenDialog(this);
+    if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
+        java.io.File file = chooser.getSelectedFile();
+        selectedImagePath = file.getAbsolutePath();
+        javax.swing.ImageIcon icon =
+            new javax.swing.ImageIcon(selectedImagePath);
+        java.awt.Image scaled = icon.getImage()
+            .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
+        jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
+        jLabel1.setText("");
+    
+}
+    }//GEN-LAST:event_jButton6ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -329,6 +687,7 @@ public class EditProduct extends javax.swing.JPanel {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

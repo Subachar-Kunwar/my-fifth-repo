@@ -87,16 +87,7 @@ javax.swing.SwingUtilities.invokeLater(() -> {
             }
         });
 
-        // Adjust Home and Shop button positions
-        Home_btn_productcatalog.setBounds(10, 63, 80, 30);
-        shop_btn_productcatalog.setBounds(115, 63, 80, 30);
 
-        // Arrow label between Home and Shop
-        javax.swing.JLabel arrowLabel = new javax.swing.JLabel("›");
-        arrowLabel.setFont(new java.awt.Font("Arial Black", 1, 18));
-        arrowLabel.setForeground(new java.awt.Color(58, 125, 68));
-        Main_panal_productcatalog.add(arrowLabel);
-        arrowLabel.setBounds(93, 63, 20, 30);
 
         // Adjust scroll and side panel start
         Scrollpanal_productcatalog.setBounds(240, 110, 1290, 780);
@@ -128,8 +119,7 @@ javax.swing.SwingUtilities.invokeLater(() -> {
                 sortComboBox.setBounds(frameWidth - 200, 57, 160, 30);
                 sortLabel.setBounds(frameWidth - 270, 57, 70, 30);
                 searchResultLabel.setBounds(240, 57, frameWidth - 650, 25);
-                Home_btn_productcatalog.setBounds(10, 63, 80, 30);
-                shop_btn_productcatalog.setBounds(125, 63, 80, 30);
+                
 
                 Main_panal_productcatalog.revalidate();
                 Main_panal_productcatalog.repaint();
@@ -328,7 +318,7 @@ private void loadProducts() {
     private javax.swing.JPanel createProductCard(model.Product p) {
         javax.swing.JPanel card = new javax.swing.JPanel();
         card.setLayout(new java.awt.BorderLayout());
-        card.setPreferredSize(new java.awt.Dimension(200, 260));
+        card.setPreferredSize(new java.awt.Dimension(200, 275));
         card.setBackground(java.awt.Color.WHITE);
         card.setBorder(javax.swing.BorderFactory.createLineBorder(
             new java.awt.Color(200, 200, 200)));
@@ -361,31 +351,46 @@ private void loadProducts() {
             imgLabel.setText("No Image");
         }
 
-        // Bottom info panel with name and price separate
-        javax.swing.JPanel infoPanel = new javax.swing.JPanel();
-        infoPanel.setLayout(new java.awt.BorderLayout());
-        infoPanel.setBackground(java.awt.Color.WHITE);
-        infoPanel.setBorder(javax.swing.BorderFactory
-            .createEmptyBorder(5, 8, 5, 8));
+// Bottom info panel
+javax.swing.JPanel infoPanel = new javax.swing.JPanel();
+infoPanel.setLayout(new java.awt.BorderLayout());
+infoPanel.setBackground(java.awt.Color.WHITE);
+infoPanel.setBorder(javax.swing.BorderFactory
+    .createEmptyBorder(5, 8, 5, 8));
 
-        // Product name
-        javax.swing.JLabel nameLabel = new javax.swing.JLabel(p.getName());
-        nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-        nameLabel.setForeground(java.awt.Color.BLACK);
-        nameLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
+// Product name
+javax.swing.JLabel nameLabel = new javax.swing.JLabel(p.getName());
+nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
+nameLabel.setForeground(java.awt.Color.BLACK);
+nameLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
 
-        // Price with green color
-        javax.swing.JLabel priceLabel = new javax.swing.JLabel(
-            "Rs " + (int) p.getPrice());
-        priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-        priceLabel.setForeground(new java.awt.Color(58, 125, 68));
-        priceLabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
+// Price
+javax.swing.JLabel priceLabel = new javax.swing.JLabel(
+    "Rs " + (int) p.getPrice());
+priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
+priceLabel.setForeground(new java.awt.Color(58, 125, 68));
+priceLabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
 
-        infoPanel.add(nameLabel, java.awt.BorderLayout.WEST);
-        infoPanel.add(priceLabel, java.awt.BorderLayout.EAST);
+// Stock
+javax.swing.JLabel stockLabel = new javax.swing.JLabel(
+    "Stock: " + p.getStock());
+stockLabel.setFont(new java.awt.Font("Segoe UI", 0, 11));
+stockLabel.setForeground(p.getStock() > 0 ? 
+    new java.awt.Color(100, 100, 100) : java.awt.Color.RED);
+stockLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
 
-        card.add(imgLabel, java.awt.BorderLayout.CENTER);
-        card.add(infoPanel, java.awt.BorderLayout.SOUTH);
+// Name + price row
+javax.swing.JPanel topRow = new javax.swing.JPanel(
+    new java.awt.BorderLayout());
+topRow.setBackground(java.awt.Color.WHITE);
+topRow.add(nameLabel, java.awt.BorderLayout.WEST);
+topRow.add(priceLabel, java.awt.BorderLayout.EAST);
+
+infoPanel.add(topRow, java.awt.BorderLayout.NORTH);
+infoPanel.add(stockLabel, java.awt.BorderLayout.SOUTH);
+
+card.add(imgLabel, java.awt.BorderLayout.CENTER);
+card.add(infoPanel, java.awt.BorderLayout.SOUTH);
 
         return card;
     }
@@ -408,8 +413,8 @@ private void loadProducts() {
         searchBtn = new javax.swing.JButton();
         profileBtn1 = new javax.swing.JButton();
         cartBtn = new javax.swing.JButton();
-        profileBtn = new javax.swing.JButton();
         bellBtn = new javax.swing.JButton();
+        profileBtn = new javax.swing.JButton();
         Home_btn_productcatalog = new javax.swing.JButton();
         shop_btn_productcatalog = new javax.swing.JButton();
         sidepanal_productcatalog = new javax.swing.JPanel();
@@ -432,6 +437,7 @@ private void loadProducts() {
         jScrollBar1 = new javax.swing.JScrollBar();
         searchResultLabel = new javax.swing.JLabel();
         sortComboBox = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -460,13 +466,13 @@ private void loadProducts() {
         cartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
         cartBtn.addActionListener(this::cartBtnActionPerformed);
 
-        profileBtn.setBackground(new java.awt.Color(58, 125, 68));
-        profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellicon.png"))); // NOI18N
-        profileBtn.addActionListener(this::profileBtnActionPerformed);
-
         bellBtn.setBackground(new java.awt.Color(58, 125, 68));
         bellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
         bellBtn.addActionListener(this::bellBtnActionPerformed);
+
+        profileBtn.setBackground(new java.awt.Color(58, 125, 68));
+        profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        profileBtn.addActionListener(this::profileBtnActionPerformed);
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
         navbar_product_catalog.setLayout(navbar_product_catalogLayout);
@@ -475,34 +481,36 @@ private void loadProducts() {
             .addGroup(navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Logo_productcatalog)
-                .addGap(42, 42, 42)
+                .addGap(38, 38, 38)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(searchBtn)
-                    .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 561, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(profileBtn1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 527, Short.MAX_VALUE)
-                .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 500, Short.MAX_VALUE)
+                .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
         navbar_product_catalogLayout.setVerticalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(profileBtn1)
-                        .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(170, 170, 170)
-                .addComponent(searchBtn))
+                    .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                        .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(profileBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Searchbar))
+                        .addGap(184, 184, 184)
+                        .addComponent(searchBtn))
+                    .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(cartBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(profileBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -512,14 +520,14 @@ private void loadProducts() {
         Home_btn_productcatalog.setText("Home");
         Home_btn_productcatalog.addActionListener(this::Home_btn_productcatalogActionPerformed);
         Main_panal_productcatalog.add(Home_btn_productcatalog);
-        Home_btn_productcatalog.setBounds(10, 60, 70, 25);
+        Home_btn_productcatalog.setBounds(10, 60, 70, 30);
 
         shop_btn_productcatalog.setBackground(new java.awt.Color(170, 218, 172));
         shop_btn_productcatalog.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         shop_btn_productcatalog.setText("Shop");
         shop_btn_productcatalog.addActionListener(this::shop_btn_productcatalogActionPerformed);
         Main_panal_productcatalog.add(shop_btn_productcatalog);
-        shop_btn_productcatalog.setBounds(90, 60, 70, 25);
+        shop_btn_productcatalog.setBounds(100, 60, 70, 30);
 
         sidepanal_productcatalog.setBackground(new java.awt.Color(232, 255, 233));
         sidepanal_productcatalog.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -617,6 +625,12 @@ private void loadProducts() {
         Main_panal_productcatalog.add(sortComboBox);
         sortComboBox.setBounds(1390, 110, 72, 22);
 
+        jLabel1.setBackground(new java.awt.Color(58, 125, 68));
+        jLabel1.setForeground(new java.awt.Color(58, 125, 68));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/arrow.png"))); // NOI18N
+        Main_panal_productcatalog.add(jLabel1);
+        jLabel1.setBounds(80, 60, 24, 30);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -688,7 +702,13 @@ private void loadProducts() {
     }//GEN-LAST:event_sortComboBoxActionPerformed
 
     private void cartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartBtnActionPerformed
-        // TODO add your handling code here:
+    
+    javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "Redirecting to User Profile!",
+        "User Profile",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_cartBtnActionPerformed
 
     private void shop_btn_productcatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_btn_productcatalogActionPerformed
@@ -702,7 +722,13 @@ private void loadProducts() {
     }//GEN-LAST:event_shop_btn_productcatalogActionPerformed
 
     private void bellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bellBtnActionPerformed
-        // TODO add your handling code here:
+    
+    javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "Redirecting to Cart page !",
+        "My Cart",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_bellBtnActionPerformed
 
     private void profileBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBtn1ActionPerformed
@@ -771,6 +797,7 @@ private void loadProducts() {
     private javax.swing.JRadioButton g2000to5000g_price_RadioButton_productcatalog;
     private javax.swing.JRadioButton g5000to10000g_price_RadioButton_productcatalog;
     private javax.swing.JRadioButton g500to1000g_price_RadioButton_productcatalog;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JRadioButton men_RadioButton_productcatalog;

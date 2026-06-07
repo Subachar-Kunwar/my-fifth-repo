@@ -66,13 +66,13 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jTextField5" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="verify_btn" alignment="0" min="-2" pref="310" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Component id="Text8" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="Button3" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="verify_btn" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="643" max="-2" attributes="0"/>
               </Group>
@@ -128,11 +128,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
-          <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/view/Logore.jpeg"/>
-            </Property>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="Text3">
           <Properties>

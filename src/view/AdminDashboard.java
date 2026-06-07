@@ -23,10 +23,18 @@ public class AdminDashboard extends javax.swing.JFrame {
             this.setLocationRelativeTo(null);
         }
 
+        
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReWear - Admin Dashboard");
-        initBackend();
+        updateStats();
+        // Sales overview text
+    jLabel10.setText("Sales Overview — " + 
+    java.time.LocalDate.now().getMonth() + " " + 
+    java.time.LocalDate.now().getYear());
 
+    
+    
         // Resize panels with window
         this.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override
@@ -56,54 +64,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         });
     }
 
-    private void initBackend() {
-        updateStats();
-
-        jButton3.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "You are currently on the Dashboard!",
-                "Dashboard",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-
-        // Add Product — opens Addproduct page
-        jButton1.addActionListener(e -> {
-            Addproduct addPage = new Addproduct(adminUsername);
-            addPage.showInFrame();
-            this.dispose();
-        });
-
-        jButton4.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Edit Product page coming soon!",
-                "Edit Product",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-
-        jButton2.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Orders page coming soon!",
-                "Orders",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-
-        jButton5.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Inventory page coming soon!",
-                "Inventory",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-
-        jButton7.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Reports page coming soon!",
-                "Reports",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-
-        jButton6.addActionListener(e ->
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Full orders page coming soon!",
-                "Orders",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE));
-    
-
-    }
+   
 
     private void updateStats() {
         try {
@@ -162,6 +123,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         Logo_productcatalog = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -201,6 +163,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton1.setText("Add Product");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
@@ -223,9 +186,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton7.setBackground(new java.awt.Color(170, 218, 172));
         jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton7.setText("Reports");
+        jButton7.addActionListener(this::jButton7ActionPerformed);
 
         jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(0, 0, 204));
         jButton8.setText("Log out");
         jButton8.addActionListener(this::jButton8ActionPerformed);
 
@@ -235,15 +200,18 @@ public class AdminDashboard extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton4)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,6 +240,9 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
+        jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        jLabel24.setText("Admin");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -279,18 +250,22 @@ public class AdminDashboard extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Logo_productcatalog)
-                .addContainerGap(1328, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1252, Short.MAX_VALUE)
+                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Logo_productcatalog))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel2);
-        jPanel2.setBounds(0, 0, 1550, 48);
+        jPanel2.setBounds(0, 0, 1550, 50);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(58, 125, 68));
@@ -578,11 +553,19 @@ public class AdminDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+    
+    // User is already on Add Product page
+    javax.swing.JOptionPane.showMessageDialog(
+        this,
+        "You are already on the Dashboard !",
+        "Admin Dashboard",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+    new EditProduct(adminUsername).showInFrame();
+    this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -605,6 +588,15 @@ public class AdminDashboard extends javax.swing.JFrame {
     
 
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    new Addproduct(adminUsername).showInFrame();
+    this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -633,6 +625,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

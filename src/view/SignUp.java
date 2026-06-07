@@ -23,16 +23,22 @@ public class SignUp extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-    public SignUp() {
+public SignUp() {
     initComponents();
-    setupUserTypeButtons();  
+    setupUserTypeButtons();
     setupPasswordFields();
-    Button2.addActionListener(this::Button2ActionPerformed);  
+
+    // Smart sizing
+    java.awt.Dimension screen =
+        java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    if (screen.width < 1600 || screen.height < 900) {
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    } else {
+        this.setSize(1550, 840);
+        this.setLocationRelativeTo(null);
+    }
 }
-    private void Button2ActionPerformed(java.awt.event.ActionEvent evt) {
-    new Login().setVisible(true);
-    this.dispose();
-}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,7 +77,7 @@ public class SignUp extends javax.swing.JFrame {
         txt1.setFont(new java.awt.Font("Arial Black", 1, 48)); // NOI18N
         txt1.setText("CREATE ACCOUNT");
 
-        Text2.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        Text2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         Text2.setText("Fill in to register");
 
         Text3.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
@@ -88,9 +94,13 @@ public class SignUp extends javax.swing.JFrame {
         Text6.setFont(new java.awt.Font("Candara", 1, 18)); // NOI18N
         Text6.setText("Confirm Password");
 
+        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jRadioButton1.setForeground(new java.awt.Color(0, 0, 204));
         jRadioButton1.setText("Buyer");
         jRadioButton1.addActionListener(this::jRadioButton1ActionPerformed);
 
+        jRadioButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jRadioButton2.setForeground(new java.awt.Color(0, 0, 204));
         jRadioButton2.setText("Seller");
         jRadioButton2.addActionListener(this::jRadioButton2ActionPerformed);
 
@@ -107,14 +117,13 @@ public class SignUp extends javax.swing.JFrame {
         Button2.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         Button2.setForeground(new java.awt.Color(255, 0, 51));
         Button2.setText("Login");
+        Button2.addActionListener(this::Button2ActionPerformed);
 
         txtConfirmPassword.setText("jPasswordField1");
 
         txtPassword.setText("jPasswordField2");
 
         txtEmail.addActionListener(this::txtEmailActionPerformed);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.png"))); // NOI18N
 
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
@@ -152,7 +161,7 @@ public class SignUp extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(609, Short.MAX_VALUE))
         );
@@ -168,8 +177,8 @@ public class SignUp extends javax.swing.JFrame {
                         .addGap(15, 15, 15)
                         .addComponent(Logo_productcatalog)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Text2)
-                .addGap(41, 41, 41)
+                .addComponent(Text2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(Text3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,7 +204,7 @@ public class SignUp extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Button2)
                     .addComponent(Text8))
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -329,6 +338,13 @@ try {
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void Button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button2ActionPerformed
+                                       
+    new Login().setVisible(true);
+    this.dispose();
+
+    }//GEN-LAST:event_Button2ActionPerformed
 // In your initComponents() or constructor
 
 private ButtonGroup userTypeGroup;
@@ -435,7 +451,7 @@ public void LoginListener(ActionListener listener){
     Button2.addActionListener(listener);
 }
 
-public javax.swing.JTextField getPasswordField(){
+public javax.swing.JPasswordField getPasswordField(){
     return txtPassword;
 }
 
@@ -446,7 +462,7 @@ public javax.swing.JTextField getEmailField(){
 public javax.swing.JTextField getUsernameField(){
     return txtUsername;
 }
-public javax.swing.JTextField getConfirmPasswordField(){
+public javax.swing.JPasswordField getConfirmPasswordField(){
     return txtConfirmPassword;
 }
 }
