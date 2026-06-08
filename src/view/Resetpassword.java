@@ -117,8 +117,6 @@ private void setupPasswordFields() {
         Reset_btn.setText("Reset");
         Reset_btn.addActionListener(this::Reset_btnActionPerformed);
 
-        Logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/Logore.jpeg"))); // NOI18N
-
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout MainpanalLayout = new javax.swing.GroupLayout(Mainpanal);

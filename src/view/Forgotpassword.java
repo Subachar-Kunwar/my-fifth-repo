@@ -69,7 +69,7 @@ public Forgotpassword() {
 
         jButton2.setBackground(new java.awt.Color(232, 255, 233));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 0, 51));
+        jButton2.setForeground(new java.awt.Color(0, 51, 153));
         jButton2.setText("Back To Login");
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
@@ -142,83 +142,64 @@ public Forgotpassword() {
     }//GEN-LAST:event_Fill1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                                            
-    String email = Fill1.getText().trim();
-    
-    if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter email", "Error", JOptionPane.ERROR_MESSAGE);
+String email = Fill1.getText().trim();
+
+if (email.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Please enter email", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+if (!email.contains("@")) {
+    JOptionPane.showMessageDialog(this, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+jButton1.setEnabled(false);
+
+new Thread(() -> {
+    controller.ResetController resetController = new controller.ResetController();
+    if (!resetController.emailExists(email)) {
+        java.awt.EventQueue.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this, "Email not found!",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            jButton1.setEnabled(true);
+        });
         return;
     }
-    
-    if (!email.contains("@")) {
-        JOptionPane.showMessageDialog(this, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
+
+    // Generate and Save OTP
+    String otp = emailService.generateOTP();
+    if (!emailService.saveOTP(email, otp)) {
+        java.awt.EventQueue.invokeLater(() -> {
+            JOptionPane.showMessageDialog(this, "Failed to generate OTP",
+                "Error", JOptionPane.ERROR_MESSAGE);
+            jButton1.setEnabled(true);
+        });
         return;
     }
-    
-    // Disable button to prevent double-clicks during thread execution
-    jButton1.setEnabled(false);
-    
-    // Run network and database tasks in a background thread to prevent UI freezing
-    new Thread(() -> {
-        Database.MySqlConnector conn = new Database.MySqlConnector();
-        java.sql.Connection c = null;
-        try {
-            c = conn.openConnection();
-            java.sql.PreparedStatement ps = c.prepareStatement("SELECT * FROM users WHERE email = ?");
-            ps.setString(1, email);
-            java.sql.ResultSet rs = ps.executeQuery();
-            
-            if (!rs.next()) {
-                java.awt.EventQueue.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(this, "Email not found!", "Error", JOptionPane.ERROR_MESSAGE);
-                    jButton1.setEnabled(true);
-                });
-                return;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-            java.awt.EventQueue.invokeLater(() -> jButton1.setEnabled(true));
-            return;
-        } finally {
-            try { if (c != null) conn.closeConnection(c); } catch (Exception e) {}
-        }
-        
-        // Generate and Save OTP
-        String otp = emailService.generateOTP();
-        if (!emailService.saveOTP(email, otp)) {
-            java.awt.EventQueue.invokeLater(() -> {
-                JOptionPane.showMessageDialog(this, "Failed to generate OTP", "Error", JOptionPane.ERROR_MESSAGE);
-                jButton1.setEnabled(true);
-            });
-            return;
-        }
-        
-        // Send email in background
-        boolean emailSent = emailService.sendOTPEmail(email, otp);
-        
-        // Return to UI thread for window management and rendering
-// Return to UI thread for window management and rendering
-java.awt.EventQueue.invokeLater(() -> {
-    if (emailSent) {
-        JOptionPane.showMessageDialog(this, "✓ OTP sent successfully to " + email, "Success", JOptionPane.INFORMATION_MESSAGE);
-    } else {
-        JOptionPane.showMessageDialog(this, "⚠ Email sending failed!\n\nYour OTP is: " + otp, "Use this OTP", JOptionPane.WARNING_MESSAGE);
-    }
-    
-    // Create the page
-    OTPpage otpPage = new OTPpage(email, otp);
-    
-    // CRITICAL: Force the frame size and screen placement right here!
-    otpPage.setSize(1550, 840);
-    otpPage.setPreferredSize(new java.awt.Dimension(1550, 840));
-    otpPage.setLocationRelativeTo(null); // Centers the frame on your screen
-    
-    otpPage.setVisible(true);
-    this.dispose(); // Securely close the forgot password frame
-});
 
-    }).start();
+    boolean emailSent = emailService.sendOTPEmail(email, otp);
 
+    java.awt.EventQueue.invokeLater(() -> {
+        if (emailSent) {
+            JOptionPane.showMessageDialog(this,
+                "OTP sent successfully to " + email, "Success",
+                JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Email sending failed!\n\nYour OTP is: " + otp,
+                "Use this OTP", JOptionPane.WARNING_MESSAGE);
+        }
+
+        OTPpage otpPage = new OTPpage(email, otp);
+        otpPage.setSize(1550, 840);
+        otpPage.setPreferredSize(new java.awt.Dimension(1550, 840));
+        otpPage.setLocationRelativeTo(null);
+        otpPage.setVisible(true);
+        this.dispose();
+    });
+
+}).start();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

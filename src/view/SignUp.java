@@ -4,13 +4,11 @@
  */
 package view;
 
-import controller.userController;
 import java.awt.HeadlessException;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.ButtonGroup;
-import model.logindata;
-import dao.UserDAO;  
+import model.logindata; 
 
 /**
  *
@@ -19,7 +17,7 @@ import dao.UserDAO;
 public class SignUp extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SignUp.class.getName());
-
+    private final controller.SignupController signupController = new controller.SignupController();
     /**
      * Creates new form Login
      */
@@ -287,24 +285,15 @@ if (jRadioButton1.isSelected()) {
 
 
 try {
-    // Create object with user type included
-    logindata user = new logindata(username, email, password, userType);
-
-    // Controller object
-    userController controller = new userController();
-
-    // Call register method
-    boolean success = controller.registerUser(user);
+boolean success = signupController.registerUser(username, email, password, userType);
 
     if (success) {
-    // Get user ID
-    int userId = controller.getUserIdByEmail(email);
+    int userId = signupController.getUserIdByEmail(email);
     
-    // Add role-specific details
     if (userType.equals("buyer")) {
-        controller.addBuyerDetails(userId);
+        signupController.addBuyerDetails(userId);
     } else {
-        controller.addSellerDetails(userId);
+        signupController.addSellerDetails(userId);
     }
     
     JOptionPane.showMessageDialog(this, "Registered Successfully as " + userType.toUpperCase() + "!\nPlease login.", "Success", JOptionPane.INFORMATION_MESSAGE);

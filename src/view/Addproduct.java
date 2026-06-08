@@ -4,6 +4,8 @@ public class Addproduct extends javax.swing.JPanel {
 
     private String adminUsername;
     private String selectedImagePath = "";
+    private controller.AddProductController addProductController 
+    = new controller.AddProductController();
 
     public Addproduct() {
         this("Admin");
@@ -34,121 +36,23 @@ public void showInFrame() {
 }
    
 private void saveProduct() {
-    // Get values from fields
-    String name = jTextField1.getText().trim();
-    String priceText = jTextField3.getText().trim();
-    String category = jTextField5.getText().trim();
-    String description = jTextField2.getText().trim();
-    String stockText = jTextField6.getText().trim();
+    String result = addProductController.addProduct(
+        jTextField1.getText().trim(),
+        jTextField5.getText().trim(),
+        jTextField3.getText().trim(),
+        jTextField2.getText().trim(),
+        jTextField6.getText().trim(),
+        selectedImagePath
+    );
 
-    // Validate
-    if (name.isEmpty()) {
+    if (result == null) {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Product name is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    if (priceText.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Price is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    if (category.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Category is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // ✅ ADDED: Description validation
-    if (description.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Description is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // ✅ ADDED: Stock validation
-    if (stockText.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Stock quantity is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    if (selectedImagePath.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Please add a product image!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    double price;
-    int stock;
-    try {
-        price = Double.parseDouble(priceText);
-        if (price <= 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Price must be greater than 0!", "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Price must be a valid number!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    // ✅ IMPROVED: Stock validation - must be valid number and not negative
-    try {
-        stock = Integer.parseInt(stockText);
-        if (stock < 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Stock cannot be negative!", "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Stock must be a valid whole number!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Copy image to project images folder
-    String imageName = new java.io.File(selectedImagePath).getName();
-    String destPath = "src/images/" + imageName;
-    try {
-        java.io.File dir = new java.io.File("src/images");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        java.nio.file.Files.copy(
-            java.nio.file.Paths.get(selectedImagePath),
-            java.nio.file.Paths.get(destPath),
-            java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-    } catch (java.io.IOException ex) {
-        System.out.println("Image copy error: " + ex.getMessage());
-    }
-
-    // Save to database
-    dao.ProductcatalogDAO productcatalogDAO = new dao.ProductcatalogDAO();
-    
-    boolean success = productcatalogDAO.addProduct(name, category, price,
-        "images/" + imageName, description, stock, 1);
-
-    if (success) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product added successfully!",
-            "Success",
+            "Product added successfully!", "Success",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
         clearFields();
     } else {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Failed to add product. Try again.",
-            "Error",
+            result, "Error",
             javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
@@ -294,7 +198,7 @@ private void saveProduct() {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
+                .addGap(32, 32, 32)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,7 +210,7 @@ private void saveProduct() {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(515, Short.MAX_VALUE))
+                .addContainerGap(528, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
@@ -323,6 +227,7 @@ private void saveProduct() {
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
         jButton6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(0, 0, 102));
         jButton6.setText("Add Image ");
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
@@ -418,8 +323,9 @@ private void saveProduct() {
         jPanel5.setBackground(new java.awt.Color(232, 255, 233));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
-        jButton8.setBackground(new java.awt.Color(58, 125, 68));
+        jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(0, 0, 102));
         jButton8.setText("Add Product");
         jButton8.addActionListener(this::jButton8ActionPerformed);
 

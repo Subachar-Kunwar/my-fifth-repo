@@ -3,10 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package view;
-import controller.LoginController;
 import javax.swing.JOptionPane;
 import view.Forgotpassword;
-import dao.UserDAO; 
+
 /**
  *
  * @author nikes
@@ -15,6 +14,7 @@ public class Login extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = 
         java.util.logging.Logger.getLogger(Login.class.getName());
+    private final controller.LoginController loginController = new controller.LoginController();
 
     private boolean isPasswordVisible = false;
     private char defaultEchoChar;
@@ -227,110 +227,75 @@ this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_forgetpassword_btnActionPerformed
 
     private void Login_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Login_btnActionPerformed
-                                      
-    String username = Username_textfield.getText().trim();
-    String email = Email_textfield.getText().trim();
-    String password = new String(password_textfield.getPassword());
+   String username = Username_textfield.getText().trim();
+String email = Email_textfield.getText().trim();
+String password = new String(password_textfield.getPassword());
 
-    // 1. Remove placeholder text check
-    if (password.equals("********")) {
-        password = "";
-    }
+if (password.equals("********")) password = "";
 
-    // 2. Step-by-Step UI Input Validations
-    if (username.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Username is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        Username_textfield.requestFocus();
-        return;
-    }
-
-    if (email.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Email is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        Email_textfield.requestFocus();
-        return;
-    }
-
-    // Explicit format verification step
-    if (!email.contains("@") || !email.contains(".")) {
-        JOptionPane.showMessageDialog(this, "Please enter a valid email address (e.g., user@gmail.com).", "Validation Error", JOptionPane.ERROR_MESSAGE);
-        Email_textfield.requestFocus();
-        return;
-    }
-
-    if (password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Password is required!", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        password_textfield.requestFocus();
-        return;
-    }
-
-    // Explicit character threshold verification step
-    if (password.length() < 8) {
-        JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-        password_textfield.requestFocus();
-        return;
-    }
-
-    // 3. Database Authentication Step (Runs only if inputs pass validation rules)
-    Database.MySqlConnector conn = new Database.MySqlConnector();
-    java.sql.Connection c = null;
-    
-    try {
-        c = conn.openConnection();
-        
-        String sql = "SELECT * FROM users WHERE username = ? AND email = ? AND password = ?";
-        java.sql.PreparedStatement ps = c.prepareStatement(sql);
-        ps.setString(1, username);
-        ps.setString(2, email);
-        ps.setString(3, password);
-        
-        java.sql.ResultSet rs = ps.executeQuery();
-        
-if (rs.next()) {
-            String role = rs.getString("role");
-            String loggedUsername = rs.getString("username");
-            int userId = rs.getInt("id");
-
-            
-if ("seller".equalsIgnoreCase(role)) {
-    JOptionPane.showMessageDialog(this,
-        "Login Successful!\n\nWelcome back, " + loggedUsername + 
-        "\nRole: Seller\n\nRedirecting to Admin Dashboard...",
-        "Welcome",
-        JOptionPane.INFORMATION_MESSAGE);
-    new AdminDashboard(loggedUsername).setVisible(true);
-    this.dispose();
-
-} else if ("buyer".equalsIgnoreCase(role)) {
-    JOptionPane.showMessageDialog(this,
-        "Login Successful!\n\nWelcome back, " + loggedUsername + 
-        "\nRole: Buyer\n\n🛍️ Happy thrifting!",
-        "Welcome",
-        JOptionPane.INFORMATION_MESSAGE);
-    new Product_catalog(loggedUsername, userId).setVisible(true);
-    this.dispose();
+// UI Validations
+if (username.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Username is required!", 
+        "Validation Error", JOptionPane.WARNING_MESSAGE);
+    Username_textfield.requestFocus();
+    return;
 }
-            
-        } else {
-            // Explicit error feedback for wrong credentials
-            JOptionPane.showMessageDialog(this,
-                "Authentication Failed!\nWrong Username, Email, or Password.\n\nPlease double check your credentials.",
-                "Login Failed",
-                JOptionPane.ERROR_MESSAGE);
-        }
+if (email.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Email is required!", 
+        "Validation Error", JOptionPane.WARNING_MESSAGE);
+    Email_textfield.requestFocus();
+    return;
+}
+if (!email.contains("@") || !email.contains(".")) {
+    JOptionPane.showMessageDialog(this, 
+        "Please enter a valid email address (e.g., user@gmail.com).", 
+        "Validation Error", JOptionPane.ERROR_MESSAGE);
+    Email_textfield.requestFocus();
+    return;
+}
+if (password.isEmpty()) {
+    JOptionPane.showMessageDialog(this, "Password is required!", 
+        "Validation Error", JOptionPane.WARNING_MESSAGE);
+    password_textfield.requestFocus();
+    return;
+}
+if (password.length() < 8) {
+    JOptionPane.showMessageDialog(this, 
+        "Password must be at least 8 characters long!", 
+        "Validation Error", JOptionPane.ERROR_MESSAGE);
+    password_textfield.requestFocus();
+    return;
+}
 
-        rs.close();
-        ps.close();
-        
-    } catch (Exception e) {
-        System.out.println("Login database error: " + e.getMessage());
-        JOptionPane.showMessageDialog(this, 
-            "Database Connection Error:\n" + e.getMessage(), 
-            "System Error", 
-            JOptionPane.ERROR_MESSAGE);
-    } finally {
-        try { if (c != null) conn.closeConnection(c); } catch (Exception e) {}
+// Controller handles authentication
+String[] result = loginController.login(username, email, password);
+
+if (result != null) {
+    String loggedUsername = result[0];
+    String role = result[1];
+    int userId = Integer.parseInt(result[2]);
+
+    if ("seller".equalsIgnoreCase(role)) {
+        JOptionPane.showMessageDialog(this,
+            "Login Successful!\n\nWelcome back, " + loggedUsername +
+            "\nRole: Seller\n\nRedirecting to Admin Dashboard...",
+            "Welcome", JOptionPane.INFORMATION_MESSAGE);
+        new AdminDashboard(loggedUsername).setVisible(true);
+        this.dispose();
+
+    } else if ("buyer".equalsIgnoreCase(role)) {
+        JOptionPane.showMessageDialog(this,
+            "Login Successful!\n\nWelcome back, " + loggedUsername +
+            "\nRole: Buyer\n\n🛍️Happy thrifting!",
+            "Welcome", JOptionPane.INFORMATION_MESSAGE);
+        new UserDashboard(loggedUsername, userId).setVisible(true);
+        this.dispose();
     }
-
+} else {
+    JOptionPane.showMessageDialog(this,
+        "Authentication Failed!\nWrong Username, Email, or Password.\n\nPlease double check your credentials.",
+        "Login Failed", JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_Login_btnActionPerformed
 
     private void Email_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Email_textfieldActionPerformed

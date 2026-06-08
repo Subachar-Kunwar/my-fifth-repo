@@ -204,10 +204,12 @@ private void loadProducts() {
             .getFilteredProducts(category, range[0], range[1], search);
 
         if (products == null) {
-            products = new java.util.ArrayList<>();
-        }
+    products = new java.util.ArrayList<>();
+}
 
-        products = sortProducts(products);
+
+        products = productController.sortProducts(
+        products, (String) sortComboBox.getSelectedItem());
 
         if (search != null && !search.isEmpty()) {
             searchResultLabel.setText("Search results for: \"" + search + "\"");
@@ -225,19 +227,6 @@ private void loadProducts() {
     }
 }
 
-    private java.util.List<model.Product> sortProducts(
-            java.util.List<model.Product> products) {
-        String selected = (String) sortComboBox.getSelectedItem();
-        if (selected == null) return products;
-        if (selected.equals("Price: Low to High")) {
-            products.sort((a, b) ->
-                Double.compare(a.getPrice(), b.getPrice()));
-        } else if (selected.equals("Price: High to Low")) {
-            products.sort((a, b) ->
-                Double.compare(b.getPrice(), a.getPrice()));
-        }
-        return products;
-    }
 
     private String getSelectedCategory() {
         if (women_RadioButton_productcatalog.isSelected()) return "Women";
@@ -389,10 +378,26 @@ topRow.add(priceLabel, java.awt.BorderLayout.EAST);
 infoPanel.add(topRow, java.awt.BorderLayout.NORTH);
 infoPanel.add(stockLabel, java.awt.BorderLayout.SOUTH);
 
+// Buy button
+javax.swing.JButton buyBtn = new javax.swing.JButton("Buy Now");
+buyBtn.setBackground(new java.awt.Color(58, 125, 68));
+buyBtn.setForeground(java.awt.Color.WHITE);
+buyBtn.setFont(new java.awt.Font("Segoe UI", 1, 12));
+buyBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+buyBtn.addActionListener(e -> {
+    // Simply show the "Coming Soon" message
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Product detail page coming soon!",
+        "Feature Unavailable",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+});
+
+infoPanel.add(buyBtn, java.awt.BorderLayout.CENTER);
 card.add(imgLabel, java.awt.BorderLayout.CENTER);
 card.add(infoPanel, java.awt.BorderLayout.SOUTH);
 
-        return card;
+return card;
     }
 
     /**
@@ -445,6 +450,7 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
         Main_panal_productcatalog.setLayout(null);
 
         navbar_product_catalog.setBackground(new java.awt.Color(58, 125, 68));
+        navbar_product_catalog.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(58, 125, 68), 1, true));
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
         navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
@@ -464,14 +470,19 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
         cartBtn.setBackground(new java.awt.Color(58, 125, 68));
         cartBtn.setForeground(new java.awt.Color(58, 125, 68));
         cartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        cartBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
+        cartBtn.setPreferredSize(new java.awt.Dimension(44, 45));
         cartBtn.addActionListener(this::cartBtnActionPerformed);
 
         bellBtn.setBackground(new java.awt.Color(58, 125, 68));
         bellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        bellBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
+        bellBtn.setPreferredSize(new java.awt.Dimension(44, 45));
         bellBtn.addActionListener(this::bellBtnActionPerformed);
 
         profileBtn.setBackground(new java.awt.Color(58, 125, 68));
         profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        profileBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         profileBtn.addActionListener(this::profileBtnActionPerformed);
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
@@ -487,11 +498,11 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
                     .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(profileBtn1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 500, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
                 .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -539,9 +550,10 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
         Filtertext_productcatalog.setBounds(10, 10, 150, 40);
 
         catagotytext_productcatalog.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        catagotytext_productcatalog.setForeground(new java.awt.Color(0, 51, 153));
         catagotytext_productcatalog.setText("Category :");
         sidepanal_productcatalog.add(catagotytext_productcatalog);
-        catagotytext_productcatalog.setBounds(40, 60, 100, 30);
+        catagotytext_productcatalog.setBounds(20, 60, 100, 30);
 
         categoryGroup.add(women_RadioButton_productcatalog);
         women_RadioButton_productcatalog.setText("Women");
@@ -564,6 +576,7 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
         unisex_RadioButton_productcatalog.setBounds(20, 190, 100, 21);
 
         Price_range_text_productcatalog.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Price_range_text_productcatalog.setForeground(new java.awt.Color(0, 51, 153));
         Price_range_text_productcatalog.setText("Price Range :");
         sidepanal_productcatalog.add(Price_range_text_productcatalog);
         Price_range_text_productcatalog.setBounds(10, 220, 140, 40);
@@ -648,7 +661,7 @@ card.add(infoPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void Home_btn_productcatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Home_btn_productcatalogActionPerformed
-        new Login().setVisible(true);
+     new UserDashboard(loggedInUsername, loggedInUserId).setVisible(true);
     this.dispose();
     }//GEN-LAST:event_Home_btn_productcatalogActionPerformed
 

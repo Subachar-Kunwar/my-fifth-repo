@@ -98,27 +98,42 @@ public class ProductcatalogDAO {
         return 1;
     }
 
-    public boolean updateProduct(int id, String name, String category,
-            double price, String imagePath, String description, int stock) {
-        Connection conn = mysql.openConnection();
-        String sql = "UPDATE products SET name=?, category=?, price=?, " +
-                     "image_path=?, description=?, stock=? WHERE id=?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, name);
-            ps.setString(2, category);
-            ps.setDouble(3, price);
-            ps.setString(4, imagePath.isEmpty() ? null : imagePath);
-            ps.setString(5, description);
-            ps.setInt(6, stock);
-            ps.setInt(7, id);
-            return ps.executeUpdate() > 0;
+public boolean updateProduct(int id, String name, String category,
+        double price, String imagePath, String description, int stock) {
+    Connection conn = mysql.openConnection();
+    
+    // If no new image selected, keep the existing image from database
+    if (imagePath == null || imagePath.isEmpty()) {
+        String selectSql = "SELECT image_path FROM products WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(selectSql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                imagePath = rs.getString("image_path");
+            }
         } catch (SQLException e) {
-            System.out.println("Update error: " + e.getMessage());
-            return false;
-        } finally {
-            mysql.closeConnection(conn);
+            System.out.println("Error fetching existing image: " + e.getMessage());
         }
     }
+    
+    String sql = "UPDATE products SET name=?, category=?, price=?, " +
+                 "image_path=?, description=?, stock=? WHERE id=?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, name);
+        ps.setString(2, category);
+        ps.setDouble(3, price);
+        ps.setString(4, imagePath);
+        ps.setString(5, description);
+        ps.setInt(6, stock);
+        ps.setInt(7, id);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("Update error: " + e.getMessage());
+        return false;
+    } finally {
+        mysql.closeConnection(conn);
+    }
+}
 
     // ✅ UPDATED: Resets AUTO_INCREMENT after delete
     public boolean deleteProduct(int id) {

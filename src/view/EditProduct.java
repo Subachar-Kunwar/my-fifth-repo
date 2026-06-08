@@ -8,12 +8,16 @@ package view;
  *
  * @author Lenovo
  */
+
+
 public class EditProduct extends javax.swing.JPanel {
 
 
     private String adminUsername;
     private int currentProductId = -1;
     private String selectedImagePath = "";
+    private controller.EditProductController editController 
+    = new controller.EditProductController();
 
     public EditProduct() {
         this("Admin");
@@ -43,8 +47,7 @@ public class EditProduct extends javax.swing.JPanel {
 
     // ✅ NEW METHOD: Show all products with their IDs
     private void showAllProducts() {
-        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
-        java.util.List<model.Product> products = productDAO.getAllProducts();
+        java.util.List<model.Product> products = editController.getAllProducts();
         
         if (products.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -107,8 +110,7 @@ public class EditProduct extends javax.swing.JPanel {
 
     // ✅ Helper: Load product data into fields
     private boolean loadProductIntoFields(int productId) {
-        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
-        model.Product product = productDAO.getProductById(productId);
+        model.Product product = editController.getProductById(productId);
         
         if (product == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -148,8 +150,7 @@ public class EditProduct extends javax.swing.JPanel {
         selectedImagePath = "";
     }
 
-   private void updateProduct() {
-    // If no product loaded, prompt for ID first
+private void updateProduct() {
     if (currentProductId == -1) {
         if (!askForProductId()) return;
         if (loadProductIntoFields(currentProductId)) {
@@ -167,137 +168,46 @@ public class EditProduct extends javax.swing.JPanel {
     String description = jTextField2.getText().trim();
     String stockText = jTextField6.getText().trim();
 
-    // ✅ Separate validation for each field
-    if (name.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product name is required!",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    if (priceText.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Price is required!",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    if (category.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Category is required!",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    if (description.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Description is required!",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+    String result = editController.updateProduct(
+        currentProductId,
+        name,
+        category,
+        priceText,
+        description,
+        stockText,
+        selectedImagePath
+    );
 
-    double price;
-    int stock;
-    try {
-        price = Double.parseDouble(priceText);
-    } catch (NumberFormatException ex) {
+    if (result == null) {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Price must be a valid number!",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-        // ✅ ADDED: Stock validation
-    if (stockText.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Stock quantity is required!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    
-       // ✅ IMPROVED: Stock validation - must be valid number and not negative
-    try {
-        stock = Integer.parseInt(stockText);
-        if (stock < 0) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Stock cannot be negative!", "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Stock must be a valid whole number!", "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    String imagePath = "";
-    if (!selectedImagePath.isEmpty()) {
-        String imageName = new java.io.File(selectedImagePath).getName();
-        String destPath = "src/images/" + imageName;
-        try {
-            java.io.File dir = new java.io.File("src/images");
-            if (!dir.exists()) dir.mkdirs();
-            java.nio.file.Files.copy(
-                java.nio.file.Paths.get(selectedImagePath),
-                java.nio.file.Paths.get(destPath),
-                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-            imagePath = "images/" + imageName;
-        } catch (java.io.IOException ex) {
-            System.out.println("Image copy error: " + ex.getMessage());
-        }
-    }
-
-    dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
-    boolean success = productDAO.updateProduct(
-        currentProductId, name, category, price,
-        imagePath, description, stock);
-
-    if (success) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product updated successfully!",
-            "Success",
+            "Product updated successfully!", "Success",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
         clearFields();
         currentProductId = -1;
     } else {
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Failed to update product.",
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
+            result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 }
 
-    private void deleteProduct() {
-        // If no product loaded, prompt for ID
-        if (currentProductId == -1) {
-            if (!askForProductId()) return;
-        }
-
-        dao.ProductcatalogDAO productDAO = new dao.ProductcatalogDAO();
-        boolean success = productDAO.deleteProduct(currentProductId);
-
-        if (success) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Product deleted successfully!",
-                "Success",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            clearFields();
-            currentProductId = -1;
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Failed to delete product. Product ID may not exist.",
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
+private void deleteProduct() {
+    if (currentProductId == -1) {
+        if (!askForProductId()) return;
     }
 
+    String result = editController.deleteProduct(currentProductId);
+
+    if (result == null) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product deleted successfully!", "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        clearFields();
+        currentProductId = -1;
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -347,7 +257,7 @@ public class EditProduct extends javax.swing.JPanel {
 
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
         jPanel2.add(Logo_productcatalog);
-        Logo_productcatalog.setBounds(0, 0, 216, 40);
+        Logo_productcatalog.setBounds(10, 10, 216, 30);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel2.setText("Admin");
@@ -362,49 +272,55 @@ public class EditProduct extends javax.swing.JPanel {
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton1.setText("Add Product");
+        jButton1.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton2.setText("Orders ");
+        jButton2.setPreferredSize(new java.awt.Dimension(146, 36));
 
         jButton3.setBackground(new java.awt.Color(170, 218, 172));
         jButton3.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton3.setText("Dashboard");
+        jButton3.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton3.addActionListener(this::jButton3ActionPerformed);
 
         jButton4.setBackground(new java.awt.Color(170, 218, 172));
         jButton4.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton4.setText("Edit Product");
+        jButton4.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setBackground(new java.awt.Color(170, 218, 172));
         jButton5.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton5.setText("Inventory");
+        jButton5.setPreferredSize(new java.awt.Dimension(146, 36));
 
         jButton7.setBackground(new java.awt.Color(170, 218, 172));
         jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton7.setText("Reports");
+        jButton7.setPreferredSize(new java.awt.Dimension(146, 36));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(32, 32, 32)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,11 +332,11 @@ public class EditProduct extends javax.swing.JPanel {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(517, Short.MAX_VALUE))
+                .addContainerGap(518, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(0, 52, 200, 940);
+        jPanel3.setBounds(0, 50, 200, 940);
 
         jPanel6.setBackground(new java.awt.Color(232, 255, 233));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
@@ -433,6 +349,7 @@ public class EditProduct extends javax.swing.JPanel {
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
 
         jButton6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(0, 0, 102));
         jButton6.setText("Add Image ");
         jButton6.addActionListener(this::jButton6ActionPerformed);
 
@@ -533,6 +450,7 @@ public class EditProduct extends javax.swing.JPanel {
 
         jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jButton8.setForeground(new java.awt.Color(0, 0, 102));
         jButton8.setText("Update Product");
         jButton8.addActionListener(this::jButton8ActionPerformed);
 

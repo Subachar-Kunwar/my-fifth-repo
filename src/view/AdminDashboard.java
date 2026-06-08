@@ -3,84 +3,92 @@ package view;
 public class AdminDashboard extends javax.swing.JFrame {
 
     private String adminUsername;
-    private dao.AdminDAO adminDAO = new dao.AdminDAO();
+    private controller.AdminController adminController = new controller.AdminController();
+    private javax.swing.JScrollPane ordersScroll;
 
     public AdminDashboard() {
         this("Admin");
     }
 
-    public AdminDashboard(String username) {
-        initComponents();
-        this.adminUsername = username;
+public AdminDashboard(String username) {
+    initComponents();
+    this.adminUsername = username;
 
-        // Smart sizing
-        java.awt.Dimension screen =
-            java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        if (screen.width < 1600 || screen.height < 900) {
-            this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-        } else {
-            this.setSize(1550, 840);
-            this.setLocationRelativeTo(null);
-        }
-
-        
-        
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("ReWear - Admin Dashboard");
-        updateStats();
-        // Sales overview text
-    jLabel10.setText("Sales Overview — " + 
-    java.time.LocalDate.now().getMonth() + " " + 
-    java.time.LocalDate.now().getYear());
-
-    
-    
-        // Resize panels with window
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                int w = getContentPane().getWidth();
-                int h = getContentPane().getHeight();
-
-                // Navbar
-                jPanel2.setBounds(0, 0, w, 48);
-
-                // Sidebar height
-                jPanel3.setBounds(0, 52, 200, h - 52);
-
-                // Stat panels
-                int statWidth = (w - 260) / 4 - 10;
-                jPanel1.setBounds(240, 170, statWidth, 130);
-                jPanel4.setBounds(240 + statWidth + 13, 170, statWidth, 130);
-                jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
-                jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
-
-                // Recent orders panel
-                jPanel7.setBounds(w - 540, 410, 500, h - 460);
-
-                revalidate();
-                repaint();
-            }
-        });
+    // Smart sizing
+    java.awt.Dimension screen =
+        java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+    if (screen.width < 1600 || screen.height < 900) {
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    } else {
+        this.setSize(1550, 840);
+        this.setLocationRelativeTo(null);
     }
 
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    setTitle("ReWear - Admin Dashboard");
+    updateStats();
+    
+    // Sales overview text
+    jLabel10.setText("Sales Overview — " + 
+        java.time.LocalDate.now().getMonth() + " " + 
+        java.time.LocalDate.now().getYear());
+
+    // ✅ ADD THIS - Make Recent Orders panel scrollable
+    ordersScroll = new javax.swing.JScrollPane(jPanel7);
+    ordersScroll.setBorder(null);
+    ordersScroll.setVerticalScrollBarPolicy(
+        javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+    ordersScroll.setHorizontalScrollBarPolicy(
+        javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    getContentPane().remove(jPanel7);
+    getContentPane().add(ordersScroll);
+    ordersScroll.setBounds(780, 410, 620, 350);
+
+    // Resize panels with window
+    this.addComponentListener(new java.awt.event.ComponentAdapter() {
+        @Override
+        public void componentResized(java.awt.event.ComponentEvent e) {
+            int w = getContentPane().getWidth();
+            int h = getContentPane().getHeight();
+
+            // Navbar
+            jPanel2.setBounds(0, 0, w, 48);
+
+            // Sidebar height
+            jPanel3.setBounds(0, 52, 200, h - 52);
+
+            // Stat panels
+            int statWidth = (w - 260) / 4 - 10;
+            jPanel1.setBounds(240, 170, statWidth, 130);
+            jPanel4.setBounds(240 + statWidth + 13, 170, statWidth, 130);
+            jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
+            jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
+
+            // ✅ Resize the scroll pane instead of jPanel7
+            ordersScroll.setBounds(w - 650, 410, 620, h - 460);
+
+            revalidate();
+            repaint();
+        }
+    });
+}
    
 
     private void updateStats() {
         try {
-            double totalSales = adminDAO.getTotalSales();
-            jLabel3.setText("Rs " + String.format("%,.0f", totalSales));
+           double totalSales = adminController.getTotalSales();
+           jLabel3.setText("Rs " + String.format("%,.0f", totalSales));
 
-            int totalOrders = adminDAO.getTotalOrders();
-            jLabel5.setText(String.valueOf(totalOrders));
+           int totalOrders = adminController.getTotalOrders(); 
+           jLabel5.setText(String.valueOf(totalOrders));
 
-            int totalUsers = adminDAO.getTotalUsers();
-            jLabel7.setText(String.valueOf(totalUsers));
+           int totalUsers = adminController.getTotalUsers();
+           jLabel7.setText(String.valueOf(totalUsers));
 
-            int totalProducts = adminDAO.getTotalProducts();
-            jLabel9.setText(String.valueOf(totalProducts));
+int totalProducts = adminController.getTotalProducts();
+jLabel9.setText(String.valueOf(totalProducts));
 
-            java.util.List<String[]> recentOrders = adminDAO.getRecentOrders();
+java.util.List<String[]> recentOrders = adminController.getRecentOrders();
             if (recentOrders.size() >= 1) {
                 jLabel12.setText(recentOrders.get(0)[0]);
                 jLabel15.setText(recentOrders.get(0)[1]);
@@ -140,7 +148,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -163,11 +170,13 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton1.setText("Add Product");
+        jButton1.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton2.setText("Orders ");
+        jButton2.setPreferredSize(new java.awt.Dimension(146, 36));
 
         jButton3.setBackground(new java.awt.Color(170, 218, 172));
         jButton3.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
@@ -177,21 +186,25 @@ public class AdminDashboard extends javax.swing.JFrame {
         jButton4.setBackground(new java.awt.Color(170, 218, 172));
         jButton4.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton4.setText("Edit Product");
+        jButton4.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
         jButton5.setBackground(new java.awt.Color(170, 218, 172));
         jButton5.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton5.setText("Inventory");
+        jButton5.setPreferredSize(new java.awt.Dimension(146, 36));
 
         jButton7.setBackground(new java.awt.Color(170, 218, 172));
         jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton7.setText("Reports");
+        jButton7.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton7.addActionListener(this::jButton7ActionPerformed);
 
         jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton8.setForeground(new java.awt.Color(0, 0, 204));
         jButton8.setText("Log out");
+        jButton8.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton8.addActionListener(this::jButton8ActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -199,19 +212,17 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton4)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(16, Short.MAX_VALUE))
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,55 +239,40 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 298, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(162, 162, 162))
+                .addGap(174, 174, 174))
         );
 
         getContentPane().add(jPanel3);
-        jPanel3.setBounds(0, 52, 200, 940);
+        jPanel3.setBounds(0, 50, 200, 940);
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
+        jPanel2.setLayout(null);
 
         Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        jPanel2.add(Logo_productcatalog);
+        Logo_productcatalog.setBounds(10, 10, 216, 31);
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel24.setText("Admin");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1252, Short.MAX_VALUE)
-                .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Logo_productcatalog))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
+        jPanel2.add(jLabel24);
+        jLabel24.setBounds(1474, 7, 70, 30);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(0, 0, 1550, 50);
 
+        jLabel1.setBackground(new java.awt.Color(58, 125, 68));
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(58, 125, 68));
         jLabel1.setText("Dashboard Overview");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().add(jLabel1);
         jLabel1.setBounds(240, 100, 250, 40);
 
         jPanel1.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(58, 125, 68));
+        jLabel2.setForeground(new java.awt.Color(0, 51, 153));
         jLabel2.setText("Total Sales");
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -310,7 +306,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(58, 125, 68));
+        jLabel4.setForeground(new java.awt.Color(0, 51, 153));
         jLabel4.setText("Total Orders");
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -346,8 +342,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(58, 125, 68));
-        jLabel6.setText("Total User");
+        jLabel6.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel6.setText("Total Users");
 
         jLabel7.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(58, 125, 68));
@@ -365,7 +361,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,7 +379,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel8.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(58, 125, 68));
+        jLabel8.setForeground(new java.awt.Color(0, 51, 153));
         jLabel8.setText("Products");
 
         jLabel9.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -418,7 +414,6 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel6.setBounds(1160, 170, 240, 130);
 
         jLabel10.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(58, 125, 68));
         jLabel10.setText("Sales Overview");
         getContentPane().add(jLabel10);
         jLabel10.setBounds(240, 350, 190, 50);
@@ -426,14 +421,8 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel11.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(58, 125, 68));
+        jLabel11.setForeground(new java.awt.Color(0, 51, 153));
         jLabel11.setText("Recent Order");
-
-        jButton6.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jButton6.setForeground(new java.awt.Color(58, 125, 68));
-        jButton6.setText("View All");
-        jButton6.setBorderPainted(false);
-        jButton6.setContentAreaFilled(false);
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(58, 125, 68));
@@ -495,8 +484,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton6))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -524,9 +512,7 @@ public class AdminDashboard extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -545,7 +531,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel20)
                     .addComponent(jLabel23))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel7);
@@ -606,7 +592,6 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;

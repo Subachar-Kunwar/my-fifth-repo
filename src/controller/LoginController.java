@@ -1,38 +1,47 @@
 package controller;
 
 import dao.UserDAO;
-import view.Login;
+import java.sql.*;
+import Database.MySqlConnector;
 
-/**
- * LoginController - handles login view logic
- */
 public class LoginController {
 
-    private final UserDAO dao = new UserDAO();
-    private final Login loginView;
+    private final UserDAO userDAO = new UserDAO();
 
     /**
-     * ✅ Primary constructor - properly initializes
+     * Attempts login. Returns null on failure, or String[3] on success:
+     * [0] = username, [1] = role, [2] = userId
      */
-    public LoginController(Login loginView) {
-        this.loginView = loginView;
-    }
+    public String[] login(String username, String email, String password) {
+        if (username == null || username.isEmpty()) return null;
+        if (email == null || !email.contains("@")) return null;
+        if (password == null || password.length() < 8) return null;
 
-    public void open() {
-        this.loginView.setVisible(true);
-    }
+        MySqlConnector conn = new MySqlConnector();
+        java.sql.Connection c = null;
 
-    public void close() {
-        this.loginView.dispose();
-    }
+        try {
+            c = conn.openConnection();
+            String sql = "SELECT id, username, role FROM users " +
+                         "WHERE username = ? AND email = ? AND password = ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setString(1, username);
+            ps.setString(2, email);
+            ps.setString(3, password);
 
-    /**
-     * Optional: validate login credentials
-     */
-    public boolean loginUser(String username, String email, String password) {
-        if (username == null || username.isEmpty()) return false;
-        if (email == null || !email.contains("@")) return false;
-        if (password == null || password.length() < 8) return false;
-        return dao.checkUser(new model.logindata(username, email, password));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new String[]{
+                    rs.getString("username"),
+                    rs.getString("role"),
+                    String.valueOf(rs.getInt("id"))
+                };
+            }
+        } catch (SQLException e) {
+            System.out.println("Login error: " + e.getMessage());
+        } finally {
+            if (c != null) conn.closeConnection(c);
+        }
+        return null;
     }
 }

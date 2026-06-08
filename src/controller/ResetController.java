@@ -1,16 +1,19 @@
 package controller;
-
 import dao.UserDAO;
 
 public class ResetController {
 
-    public boolean resetPassword(String email, String newPassword) {
+    private final UserDAO userDAO = new UserDAO();
 
-        UserDAO dao = new UserDAO();
-        return dao.updatePassword(email, newPassword);
+    public boolean resetPassword(String email, String newPassword) {
+        return userDAO.updatePassword(email, newPassword);
+    }
+
+    public boolean emailExists(String email) {
+        return userDAO.getUserIdByEmail(email) != -1;
     }
 
     public boolean resendOTP(String userEmail) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

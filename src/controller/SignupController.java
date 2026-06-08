@@ -1,69 +1,31 @@
 package controller;
 
 import dao.UserDAO;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
 import model.logindata;
-import view.Login;
-import view.SignUp;
 
 public class SignupController {
 
     private final UserDAO userDao = new UserDAO();
-    private final SignUp userView;
 
-    public SignupController(SignUp userView) {
-        this.userView = userView;
-        userView.AddUserListener(new AddUserListener());
-        userView.LoginListener(new LoginListener());
+    public boolean registerUser(String username, String email,
+                                String password, String userType) {
+        // Check if user already exists
+       logindata user = new logindata(username, email, password, userType);
+    if (userDao.checkUser(user)) {
+    return false;
+}
+return userDao.createUser(user);
     }
 
-    public void open() {
-        this.userView.setVisible(true);
+    public int getUserIdByEmail(String email) {
+        return userDao.getUserIdByEmail(email);
     }
 
-    public void close() {
-        this.userView.dispose();
+    public boolean addBuyerDetails(int userId) {
+        return userDao.addBuyerDetails(userId);
     }
 
-    class AddUserListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                String name = userView.getUsernameField().getText().trim();
-                String email = userView.getEmailField().getText().trim();
-                
-                // ✅ Correct way to get password from JPasswordField
-                String password = new String(userView.getPasswordField().getPassword()).trim();
-
-                logindata user = new logindata(name, email, password);
-                boolean check = userDao.checkUser(user);
-
-                if (check) {
-                    JOptionPane.showMessageDialog(userView, "Duplicate user");
-                } else {
-                    userDao.createUser(user);
-                    JOptionPane.showMessageDialog(userView, "Successful");
-                }
-            } catch (Exception ex) {
-                System.out.println("Error adding user: " + ex.getMessage());
-                JOptionPane.showMessageDialog(userView, 
-                    "Error: " + ex.getMessage(), 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    class LoginListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // ✅ Navigate to Login page
-            Login loginView = new Login();
-            LoginController loginController = new LoginController(loginView);
-            close();
-            loginController.open();
-        }
+    public boolean addSellerDetails(int userId) {
+        return userDao.addSellerDetails(userId);
     }
 }
