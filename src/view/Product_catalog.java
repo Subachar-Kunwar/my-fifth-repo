@@ -386,11 +386,9 @@ buyBtn.setFont(new java.awt.Font("Segoe UI", 1, 12));
 buyBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
 buyBtn.addActionListener(e -> {
-    // Simply show the "Coming Soon" message
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Product detail page coming soon!",
-        "Feature Unavailable",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    
+    new product_details(p.getId(), loggedInUserId).setVisible(true);
+    this.dispose();
 });
 
 infoPanel.add(buyBtn, java.awt.BorderLayout.CENTER);
@@ -417,9 +415,9 @@ return card;
         Searchbar = new javax.swing.JTextField();
         searchBtn = new javax.swing.JButton();
         profileBtn1 = new javax.swing.JButton();
-        cartBtn = new javax.swing.JButton();
-        bellBtn = new javax.swing.JButton();
-        profileBtn = new javax.swing.JButton();
+        ProfileBtn = new javax.swing.JButton();
+        CartBtn = new javax.swing.JButton();
+        BellBtn = new javax.swing.JButton();
         Home_btn_productcatalog = new javax.swing.JButton();
         shop_btn_productcatalog = new javax.swing.JButton();
         sidepanal_productcatalog = new javax.swing.JPanel();
@@ -467,23 +465,23 @@ return card;
         profileBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
         profileBtn1.addActionListener(this::profileBtn1ActionPerformed);
 
-        cartBtn.setBackground(new java.awt.Color(58, 125, 68));
-        cartBtn.setForeground(new java.awt.Color(58, 125, 68));
-        cartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
-        cartBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
-        cartBtn.setPreferredSize(new java.awt.Dimension(44, 45));
-        cartBtn.addActionListener(this::cartBtnActionPerformed);
+        ProfileBtn.setBackground(new java.awt.Color(58, 125, 68));
+        ProfileBtn.setForeground(new java.awt.Color(58, 125, 68));
+        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        ProfileBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
+        ProfileBtn.setPreferredSize(new java.awt.Dimension(44, 45));
+        ProfileBtn.addActionListener(this::ProfileBtnActionPerformed);
 
-        bellBtn.setBackground(new java.awt.Color(58, 125, 68));
-        bellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
-        bellBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
-        bellBtn.setPreferredSize(new java.awt.Dimension(44, 45));
-        bellBtn.addActionListener(this::bellBtnActionPerformed);
+        CartBtn.setBackground(new java.awt.Color(58, 125, 68));
+        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        CartBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
+        CartBtn.setPreferredSize(new java.awt.Dimension(44, 45));
+        CartBtn.addActionListener(this::CartBtnActionPerformed);
 
-        profileBtn.setBackground(new java.awt.Color(58, 125, 68));
-        profileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
-        profileBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
-        profileBtn.addActionListener(this::profileBtnActionPerformed);
+        BellBtn.setBackground(new java.awt.Color(58, 125, 68));
+        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        BellBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
+        BellBtn.addActionListener(this::BellBtnActionPerformed);
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
         navbar_product_catalog.setLayout(navbar_product_catalogLayout);
@@ -499,11 +497,11 @@ return card;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(profileBtn1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
-                .addComponent(cartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(profileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         navbar_product_catalogLayout.setVerticalGroup(
@@ -511,7 +509,7 @@ return card;
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(navbar_product_catalogLayout.createSequentialGroup()
                         .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -520,8 +518,8 @@ return card;
                         .addGap(184, 184, 184)
                         .addComponent(searchBtn))
                     .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(cartBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(profileBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(ProfileBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(BellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -649,7 +647,7 @@ return card;
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(Main_panal_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 1560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Main_panal_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 1550, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -688,13 +686,13 @@ return card;
 
     }//GEN-LAST:event_searchBtnActionPerformed
 
-    private void profileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBtnActionPerformed
+    private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
         javax.swing.JOptionPane.showMessageDialog(
         this,
         "Notification page coming soon!",
         "Info",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_profileBtnActionPerformed
+    }//GEN-LAST:event_BellBtnActionPerformed
 
     private void SearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchbarActionPerformed
        loadProducts();
@@ -714,7 +712,7 @@ return card;
 
     }//GEN-LAST:event_sortComboBoxActionPerformed
 
-    private void cartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartBtnActionPerformed
+    private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
     
     javax.swing.JOptionPane.showMessageDialog(
         this,
@@ -722,7 +720,7 @@ return card;
         "User Profile",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-    }//GEN-LAST:event_cartBtnActionPerformed
+    }//GEN-LAST:event_ProfileBtnActionPerformed
 
     private void shop_btn_productcatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_btn_productcatalogActionPerformed
 
@@ -734,7 +732,7 @@ return card;
 
     }//GEN-LAST:event_shop_btn_productcatalogActionPerformed
 
-    private void bellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bellBtnActionPerformed
+    private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
     
     javax.swing.JOptionPane.showMessageDialog(
         this,
@@ -742,7 +740,7 @@ return card;
         "My Cart",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-    }//GEN-LAST:event_bellBtnActionPerformed
+    }//GEN-LAST:event_CartBtnActionPerformed
 
     private void profileBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileBtn1ActionPerformed
     
@@ -792,14 +790,15 @@ return card;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BellBtn;
+    private javax.swing.JButton CartBtn;
     private javax.swing.JLabel Filtertext_productcatalog;
     private javax.swing.JButton Home_btn_productcatalog;
     private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JPanel Main_panal_productcatalog;
     private javax.swing.JLabel Price_range_text_productcatalog;
+    private javax.swing.JButton ProfileBtn;
     private javax.swing.JTextField Searchbar;
-    private javax.swing.JButton bellBtn;
-    private javax.swing.JButton cartBtn;
     private javax.swing.JLabel catagotytext_productcatalog;
     private javax.swing.ButtonGroup categoryGroup;
     private javax.swing.JRadioButton children_RadioButton_productcatalog;
@@ -817,7 +816,6 @@ return card;
     private javax.swing.JPanel navbar_product_catalog;
     private javax.swing.ButtonGroup priceGroup;
     private javax.swing.JLabel productCountLabel;
-    private javax.swing.JButton profileBtn;
     private javax.swing.JButton profileBtn1;
     private javax.swing.JButton searchBtn;
     private javax.swing.JLabel searchResultLabel;
