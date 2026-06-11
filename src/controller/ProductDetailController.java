@@ -101,30 +101,38 @@ public class ProductDetailController {
     // ✅ NAVIGATION
     private void setupNavigation() {
 
-        view.getProfileBtn().addActionListener(e ->
-                JOptionPane.showMessageDialog(view, "Home page open")
-        );
+    view.getProfileBtn().addActionListener(e ->
+            JOptionPane.showMessageDialog(view, "Home page open")
+    );
 
-        view.getHomeBtn().addActionListener(e ->
-                JOptionPane.showMessageDialog(view, "Home page open")
-        );
+    view.getHomeBtn().addActionListener(e ->
+            JOptionPane.showMessageDialog(view, "Home page open")
+    );
 
-        view.getCartBtn().addActionListener(e ->
-                JOptionPane.showMessageDialog(view, "View Cart")
-        );
-        view.getBellBtn().addActionListener(e -> {
-    new view.Notification_page(userId).setVisible(true);
-    view.dispose();
-});
+    view.getCartBtn().addActionListener(e ->
+            JOptionPane.showMessageDialog(view, "View Cart")
+    );
 
-        view.getShopBtn().addActionListener(e -> {
-            new view.Product_catalog("User", userId).setVisible(true);
-            view.dispose();
-        });
-        view.getAddToCartBtn().addActionListener(e ->
+    view.getBellBtn().addActionListener(e -> {
+        new view.Notification_page(userId).setVisible(true);
+        view.dispose();
+    });
+
+    view.getShopBtn().addActionListener(e -> {
+        new view.Product_catalog("User", userId).setVisible(true);
+        view.dispose();
+    });
+
+    view.getAddToCartBtn().addActionListener(e ->
         JOptionPane.showMessageDialog(view, "Adding to cart...")
-);
-    }
+    );
+
+    // ✅ NEW REVIEW BUTTON
+    view.getReviewBtn().addActionListener(e -> {
+        new view.Review_page(userId).setVisible(true);
+        view.dispose();
+    });
+}
 private void loadProductDetails() {
 
     try {

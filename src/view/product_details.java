@@ -407,4 +407,7 @@ public JLabel getPhotoLabel() {
     public JButton getAddToCartBtn() {
     return Add_to_cart;
 }
+    public JButton getReviewBtn() {
+    return review;
+}
 }

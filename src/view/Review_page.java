@@ -4,6 +4,9 @@
  */
 package view;
 
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
 /**
  *
  * @author LENOVO
@@ -15,10 +18,16 @@ public class Review_page extends javax.swing.JFrame {
     /**
      * Creates new form Review_page
      */
-    public Review_page() {
-        initComponents();
-    }
+    
+  
+public Review_page(int userId) {
+    initComponents();
+    new controller.ReviewController(this, userId);
+}
 
+public Review_page() {
+    this(4); // test
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -45,16 +54,16 @@ public class Review_page extends javax.swing.JFrame {
         Main_panal_productcatalog.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setText("Reviews ");
+        jLabel1.setText("My Reviews ");
         Main_panal_productcatalog.add(jLabel1);
-        jLabel1.setBounds(100, 140, 240, 40);
+        jLabel1.setBounds(60, 140, 240, 40);
 
         jPanel11.setBackground(new java.awt.Color(170, 218, 172));
         jPanel11.setLayout(new java.awt.GridLayout(0, 1, 0, 15));
         jScrollPane1.setViewportView(jPanel11);
 
         Main_panal_productcatalog.add(jScrollPane1);
-        jScrollPane1.setBounds(100, 200, 1030, 410);
+        jScrollPane1.setBounds(120, 200, 1060, 390);
 
         navbar_product_catalog.setBackground(new java.awt.Color(58, 125, 68));
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
@@ -181,4 +190,11 @@ public class Review_page extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel navbar_product_catalog;
     // End of variables declaration//GEN-END:variables
+public JPanel getReviewContainer() {
+    return jPanel11;
+}
+
+public JButton getBackButton() {
+    return Back;
+}
 }
