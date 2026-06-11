@@ -24,6 +24,7 @@ public class ReviewController {
         setupNavigation();
     }
 
+    // ✅ LOAD REVIEWS
     private void loadReviews() {
 
         JPanel container = view.getReviewContainer();
@@ -35,7 +36,8 @@ public class ReviewController {
 
         if (reviews.isEmpty()) {
             JLabel empty = new JLabel("No reviews yet", SwingConstants.CENTER);
-            empty.setFont(new Font("Segoe UI", Font.BOLD, 18));
+            empty.setFont(new Font("Segoe UI", Font.BOLD, 20));
+            empty.setForeground(Color.BLACK);
             container.add(empty);
         } else {
 
@@ -44,36 +46,54 @@ public class ReviewController {
             for (Review r : reviews) {
 
                 JPanel panel = new JPanel(null);
-                panel.setPreferredSize(new Dimension(1000, 100));
+                panel.setPreferredSize(new Dimension(1000, 120));
                 panel.setBackground(new Color(170, 218, 172));
 
+                // ✅ Product Image
                 JLabel img = new JLabel();
-                img.setBounds(20, 20, 80, 60);
+                img.setBounds(20, 25, 90, 70);
 
                 try {
                     java.net.URL url = view.getClass().getResource("/" + r.getImagePath());
                     if (url != null) {
                         ImageIcon icon = new ImageIcon(url);
-                        Image scaled = icon.getImage().getScaledInstance(80, 60, Image.SCALE_SMOOTH);
+                        Image scaled = icon.getImage().getScaledInstance(90, 70, Image.SCALE_SMOOTH);
                         img.setIcon(new ImageIcon(scaled));
                     }
                 } catch (Exception ignored) {}
 
+                // ✅ Product Name (Bold + Bigger)
                 JLabel name = new JLabel(r.getProductName());
-                name.setBounds(120, 10, 200, 20);
+                name.setBounds(130, 15, 300, 25);
+                name.setFont(new Font("Segoe UI", Font.BOLD, 18));
+                name.setForeground(Color.BLACK);
 
-                JLabel stars = new JLabel("★".repeat(r.getRating()));
-                stars.setBounds(120, 35, 150, 20);
-                stars.setForeground(new Color(255, 180, 0));
+                // ✅ Star Rating (Bigger + Yellow)
+               String filled = "★".repeat(r.getRating());
+String empty = "☆".repeat(5 - r.getRating());
 
-                JLabel text = new JLabel(r.getReviewText());
-                text.setBounds(300, 35, 300, 20);
+JLabel stars = new JLabel(filled + empty);
+stars.setBounds(130, 45, 200, 25);
+stars.setFont(new Font("Dialog", Font.PLAIN, 24)); // ✅ FIXED FONT
+stars.setForeground(new Color(255, 180, 0));
 
+                // ✅ Review Text (Bigger)
+                JLabel reviewText = new JLabel("<html>" + r.getReviewText() + "</html>");
+                reviewText.setBounds(450, 40, 350, 40);
+                reviewText.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+                reviewText.setForeground(Color.BLACK);
+
+                // ✅ Date (Smaller + Soft Color)
                 JLabel date = new JLabel(sdf.format(r.getCreatedAt()));
-                date.setBounds(120, 60, 150, 20);
+                date.setBounds(130, 75, 150, 20);
+                date.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+                date.setForeground(new Color(90, 90, 90));
 
+                // ✅ Delete Button (Text only)
                 JButton delete = new JButton("Delete");
-                delete.setBounds(850, 35, 80, 25);
+                delete.setBounds(850, 45, 90, 30);
+                delete.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                delete.setBackground(Color.WHITE);
 
                 delete.addActionListener(e -> {
                     dao.deleteReview(r.getId());
@@ -83,7 +103,7 @@ public class ReviewController {
                 panel.add(img);
                 panel.add(name);
                 panel.add(stars);
-                panel.add(text);
+                panel.add(reviewText);
                 panel.add(date);
                 panel.add(delete);
 
@@ -95,6 +115,7 @@ public class ReviewController {
         container.repaint();
     }
 
+    // ✅ Navigation
     private void setupNavigation() {
         view.getBackButton().addActionListener(e -> view.dispose());
     }
