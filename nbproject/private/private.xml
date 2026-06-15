@@ -3,26 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/AdminDashboard.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/dao/OrderDAO.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/dao/UserDAO.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/controller/AdminController.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/dao/AdminDAO.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/UserDashboard.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Login.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/controller/LoginController.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Forgotpassword.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/controller/ResetController.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Product_catalog.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/controller/ProductController.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/OTPpage.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Resetpassword.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/model/EmailService.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/model/logindata.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/SignUp.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/OrderConformation.java</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/bellicon.png</file>
-            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/bellbtn.png</file>
+            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/OrderConformation.java</file>
+            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Product_catalog.java</file>
+            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/SignUp.java</file>
+            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Addproduct.java</file>
+            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Forgotpassword.java</file>
         </group>
     </open-files>
 </project-private>
