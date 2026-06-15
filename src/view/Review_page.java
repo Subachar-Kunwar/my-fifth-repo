@@ -4,6 +4,7 @@
  */
 package view;
 
+import controller.ReviewController;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -20,14 +21,12 @@ public class Review_page extends javax.swing.JFrame {
      */
     
   
-public Review_page(int userId) {
+public Review_page(int productId, int userId) {
     initComponents();
-    new controller.ReviewController(this, userId);
+    new ReviewController(this, productId, userId);
 }
 
-public Review_page() {
-    this(4); // test
-}
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,7 +53,7 @@ public Review_page() {
         Main_panal_productcatalog.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
-        jLabel1.setText("My Reviews ");
+        jLabel1.setText("Reviews ");
         Main_panal_productcatalog.add(jLabel1);
         jLabel1.setBounds(60, 140, 240, 40);
 

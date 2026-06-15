@@ -129,8 +129,9 @@ public class ProductDetailController {
 
     // ✅ NEW REVIEW BUTTON
     view.getReviewBtn().addActionListener(e -> {
-        new view.Review_page(userId).setVisible(true);
-        view.dispose();
+    new view.Review_page(productId, userId).setVisible(true);
+    view.dispose();
+
     });
 }
 private void loadProductDetails() {
