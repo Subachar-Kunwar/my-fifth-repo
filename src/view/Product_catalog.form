@@ -30,7 +30,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="Main_panal_productcatalog" min="-2" pref="1560" max="-2" attributes="0"/>
+              <Component id="Main_panal_productcatalog" min="-2" pref="1550" max="-2" attributes="0"/>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -92,11 +92,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="profileBtn1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="516" max="32767" attributes="0"/>
-                      <Component id="cartBtn" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="ProfileBtn" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="profileBtn" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="BellBtn" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="bellBtn" min="-2" pref="51" max="-2" attributes="0"/>
+                      <Component id="CartBtn" min="-2" pref="51" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -106,7 +106,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="bellBtn" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="CartBtn" min="-2" pref="40" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="Logo_productcatalog" alignment="1" max="32767" attributes="0"/>
@@ -117,8 +117,8 @@
                               <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="cartBtn" alignment="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="profileBtn" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
+                              <Component id="ProfileBtn" alignment="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="BellBtn" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -167,7 +167,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="profileBtn1ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="cartBtn">
+            <Component class="javax.swing.JButton" name="ProfileBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
@@ -190,10 +190,10 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cartBtnActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ProfileBtnActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="bellBtn">
+            <Component class="javax.swing.JButton" name="CartBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
@@ -213,10 +213,10 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bellBtnActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CartBtnActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="profileBtn">
+            <Component class="javax.swing.JButton" name="BellBtn">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
@@ -233,7 +233,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="profileBtnActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BellBtnActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
