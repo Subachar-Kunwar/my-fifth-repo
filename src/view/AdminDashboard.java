@@ -202,7 +202,7 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
 
         jButton8.setBackground(new java.awt.Color(170, 218, 172));
         jButton8.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jButton8.setForeground(new java.awt.Color(0, 0, 204));
+        jButton8.setForeground(new java.awt.Color(153, 0, 0));
         jButton8.setText("Log out");
         jButton8.setPreferredSize(new java.awt.Dimension(146, 36));
         jButton8.addActionListener(this::jButton8ActionPerformed);
@@ -250,7 +250,7 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
         jPanel2.setLayout(null);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
         jPanel2.add(Logo_productcatalog);
         Logo_productcatalog.setBounds(10, 10, 216, 31);
 

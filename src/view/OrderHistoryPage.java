@@ -27,10 +27,10 @@ public class OrderHistoryPage extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        Logo_productcatalog1 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        Logo_productcatalog1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(232, 255, 233));
@@ -41,19 +41,15 @@ public class OrderHistoryPage extends javax.swing.JPanel {
         jPanel3.setMinimumSize(new java.awt.Dimension(1550, 48));
         jPanel3.setLayout(null);
 
-        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
-        jPanel3.add(Logo_productcatalog1);
-        Logo_productcatalog1.setBounds(10, 10, 216, 31);
-
         jButton9.setBackground(new java.awt.Color(58, 125, 68));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
         jButton9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 38)));
         jButton9.addActionListener(this::jButton9ActionPerformed);
         jPanel3.add(jButton9);
         jButton9.setBounds(1421, 6, 50, 40);
 
         jButton10.setBackground(new java.awt.Color(58, 125, 68));
-        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
         jButton10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton10.setMinimumSize(new java.awt.Dimension(44, 45));
         jButton10.setPreferredSize(new java.awt.Dimension(44, 45));
@@ -62,12 +58,16 @@ public class OrderHistoryPage extends javax.swing.JPanel {
         jButton10.setBounds(1365, 6, 44, 40);
 
         jButton11.setBackground(new java.awt.Color(58, 125, 68));
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
         jButton11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton11.setPreferredSize(new java.awt.Dimension(44, 45));
         jButton11.addActionListener(this::jButton11ActionPerformed);
         jPanel3.add(jButton11);
         jButton11.setBounds(1477, 6, 50, 40);
+
+        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
+        jPanel3.add(Logo_productcatalog1);
+        Logo_productcatalog1.setBounds(10, 10, 220, 31);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -2,54 +2,9 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/OrderConformation.java</file>
-            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Product_catalog.java</file>
-            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/SignUp.java</file>
-            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Addproduct.java</file>
-            <file>file:/C:/Users/Lenovo/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Forgotpassword.java</file>
-=======
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/SignUp.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Login.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Forgotpassword.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/SignupController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Untitled%20design.png</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/group7/rewear/Group7Rewear.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/LoginController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Resetpassword.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/database/MySqlConnector.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/OTPpage.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Product_catalog.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/AdminDashboard.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Addproduct.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/OrderConformation.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/GhostInventroy.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/EmailService.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/DatabaseConnection.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/ProductcatalogDAO.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/product_details.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Notification_page.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/NotificationController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/NotificationDAO.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/Notification.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/ProductReview.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/ProductDetailDAO.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/ProductDetailController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/ResetController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/ProductController.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Cart.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/EditProduct.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/userrIcon.png</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Review_page.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/ReviewDAO.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/Review.java</file>
-            <file>file:/C:/Users/LENOVO/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/ReviewController.java</file>
->>>>>>> origin/Samir_reviewpage
+            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/view/Addproduct.java</file>
+            <file>file:/C:/Users/siblings/Desktop/Group-7-39B-Thrift-Managment-System/src/controller/AddProductController.java</file>
         </group>
-=======
-        <group/>
->>>>>>> 76a083ef00177e3f5025672ed96eaaaca72cfd29
     </open-files>
 </project-private>

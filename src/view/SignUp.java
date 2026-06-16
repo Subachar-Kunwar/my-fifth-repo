@@ -123,7 +123,7 @@ public SignUp() {
 
         txtEmail.addActionListener(this::txtEmailActionPerformed);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -134,34 +134,30 @@ public SignUp() {
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Logo_productcatalog)))
-                .addGap(183, 183, 183)
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(144, 144, 144)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Text2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Text6, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Text2, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Text4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Text5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(Text8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Button2))
-                            .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(609, Short.MAX_VALUE))
+                    .addComponent(Text3, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Text4, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Text5, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Text6, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(signup, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jRadioButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(Text8)
+                            .addGap(31, 31, 31)
+                            .addComponent(Button2))))
+                .addContainerGap(648, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -172,17 +168,17 @@ public SignUp() {
                         .addComponent(txt1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(15, 15, 15)
+                        .addGap(16, 16, 16)
                         .addComponent(Logo_productcatalog)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Text2, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Text3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Text4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Text5)
@@ -192,7 +188,7 @@ public SignUp() {
                 .addComponent(Text6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jRadioButton1)
                     .addComponent(jRadioButton2))
@@ -234,90 +230,53 @@ public SignUp() {
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void signupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupActionPerformed
-                                     
-String username = txtUsername.getText().trim();
-String email = txtEmail.getText().trim();
-String password = new String(txtPassword.getPassword()).trim();
-String confirmPassword = new String(txtConfirmPassword.getPassword()).trim();
-
-// Check if password fields have placeholder
-if (password.equals("********") || password.equals("**********")) {
-    password = "";
-}
-if (confirmPassword.equals("********") || confirmPassword.equals("**********")) {
-    confirmPassword = "";
-}
-
-// 1. CHECK IF ANY FIELD IS EMPTY
-if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please fill all fields!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
-
-// 2. CHECK EMAIL VALIDATION (must contain @gmail.com)
-if (!email.contains("@gmail.com")) {
-    JOptionPane.showMessageDialog(this,  "Please enter a valid email address!\nExample: user@gmail.com", "Invalid Email", JOptionPane.ERROR_MESSAGE);
-    return;
-}
-
-// 3. CHECK PASSWORD LENGTH (must be at least 8 characters)
-if (password.length() < 8) {
-    JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Weak Password", JOptionPane.ERROR_MESSAGE);
-    return;
-}
-
-// 4. CHECK PASSWORD MATCH
-if (!password.equals(confirmPassword)) {
-    JOptionPane.showMessageDialog(this, "Passwords do not match!", "Password Mismatch", JOptionPane.ERROR_MESSAGE);
-    return;
-}
-
-// 5. CHECK USER TYPE SELECTED
-String userType = null;
-if (jRadioButton1.isSelected()) {
-    userType = "buyer";
-} else if (jRadioButton2.isSelected()) {
-    userType = "seller";
-} else {
-    JOptionPane.showMessageDialog(this, "Please select user type!\nChoose either Buyer or Seller.", "Selection Required", JOptionPane.ERROR_MESSAGE);
-    return;
-}
 
 
-try {
-boolean success = signupController.registerUser(username, email, password, userType);
+    // ✅ View only collects raw data
+    String username       = txtUsername.getText().trim();
+    String email          = txtEmail.getText().trim();
+    String password       = new String(txtPassword.getPassword()).trim();
+    String confirmPassword = 
+        new String(txtConfirmPassword.getPassword()).trim();
 
-    if (success) {
-    int userId = signupController.getUserIdByEmail(email);
-    
-    if (userType.equals("buyer")) {
-        signupController.addBuyerDetails(userId);
-    } else {
-        signupController.addSellerDetails(userId);
-    }
-    
-    JOptionPane.showMessageDialog(this, "Registered Successfully as " + userType.toUpperCase() + "!\nPlease login.", "Success", JOptionPane.INFORMATION_MESSAGE);
-    
-    // Clear fields
-    txtUsername.setText("");
-    txtEmail.setText("");
-    txtPassword.setText("********");
-    txtConfirmPassword.setText("********");
-    jRadioButton1.setSelected(true);
-    
-    // Open login page
-    new Login().setVisible(true);
-    this.dispose();
+    // Handle placeholders
+    if (password.equals("********"))        password = "";
+    if (confirmPassword.equals("********")) confirmPassword = "";
 
+    // Get user type
+    String userType = null;
+    if (jRadioButton1.isSelected())      userType = "buyer";
+    else if (jRadioButton2.isSelected()) userType = "seller";
 
+    // ✅ Controller handles ALL validation and registration
+    String result = signupController.registerUser(
+        username, email, password, confirmPassword, userType);
+
+    if (result == null) {
+        // ✅ Success
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Registered Successfully!\nPlease login.",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        txtUsername.setText("");
+        txtEmail.setText("");
+        txtPassword.setText("********");
+        txtConfirmPassword.setText("********");
+        jRadioButton1.setSelected(true);
+
+        new Login().setVisible(true);
+        this.dispose();
 
     } else {
-        JOptionPane.showMessageDialog(this, "Registration Failed!\nUsername or Email may already exist.", "Error", JOptionPane.ERROR_MESSAGE);
+        // ✅ Show error from Controller
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
-} catch (Exception e) {
-    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-}
+
     }//GEN-LAST:event_signupActionPerformed
 
     private void txtUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsernameActionPerformed

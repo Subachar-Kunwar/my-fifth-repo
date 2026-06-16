@@ -413,7 +413,6 @@ return card;
         navbar_product_catalog = new javax.swing.JPanel();
         Logo_productcatalog = new javax.swing.JLabel();
         Searchbar = new javax.swing.JTextField();
-        searchBtn = new javax.swing.JButton();
         profileBtn1 = new javax.swing.JButton();
         ProfileBtn = new javax.swing.JButton();
         CartBtn = new javax.swing.JButton();
@@ -452,34 +451,30 @@ return card;
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
         navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         Searchbar.setText("Search Products.....");
         Searchbar.addActionListener(this::SearchbarActionPerformed);
 
-        searchBtn.setBackground(new java.awt.Color(58, 125, 68));
-        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
-        searchBtn.addActionListener(this::searchBtnActionPerformed);
-
         profileBtn1.setBackground(new java.awt.Color(58, 125, 68));
-        profileBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
+        profileBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/search_icon.png"))); // NOI18N
         profileBtn1.addActionListener(this::profileBtn1ActionPerformed);
 
         ProfileBtn.setBackground(new java.awt.Color(58, 125, 68));
         ProfileBtn.setForeground(new java.awt.Color(58, 125, 68));
-        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
         ProfileBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         ProfileBtn.setPreferredSize(new java.awt.Dimension(44, 45));
         ProfileBtn.addActionListener(this::ProfileBtnActionPerformed);
 
         CartBtn.setBackground(new java.awt.Color(58, 125, 68));
-        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
         CartBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         CartBtn.setPreferredSize(new java.awt.Dimension(44, 45));
         CartBtn.addActionListener(this::CartBtnActionPerformed);
 
         BellBtn.setBackground(new java.awt.Color(58, 125, 68));
-        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
         BellBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         BellBtn.addActionListener(this::BellBtnActionPerformed);
 
@@ -488,15 +483,13 @@ return card;
         navbar_product_catalogLayout.setHorizontalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbar_product_catalogLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addGap(38, 38, 38)
-                .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(searchBtn)
-                    .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Searchbar, javax.swing.GroupLayout.PREFERRED_SIZE, 565, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(profileBtn1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
+                .addGap(525, 525, 525)
                 .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -510,16 +503,15 @@ return card;
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(navbar_product_catalogLayout.createSequentialGroup()
-                        .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(profileBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(Searchbar))
-                        .addGap(184, 184, 184)
-                        .addComponent(searchBtn))
                     .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(ProfileBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(BellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(BellBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(profileBtn1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(Searchbar, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(222, 222, 222))
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -556,22 +548,22 @@ return card;
         categoryGroup.add(women_RadioButton_productcatalog);
         women_RadioButton_productcatalog.setText("Women");
         sidepanal_productcatalog.add(women_RadioButton_productcatalog);
-        women_RadioButton_productcatalog.setBounds(20, 100, 65, 21);
+        women_RadioButton_productcatalog.setBounds(20, 100, 160, 21);
 
         categoryGroup.add(men_RadioButton_productcatalog);
         men_RadioButton_productcatalog.setText("Men");
         sidepanal_productcatalog.add(men_RadioButton_productcatalog);
-        men_RadioButton_productcatalog.setBounds(20, 130, 47, 21);
+        men_RadioButton_productcatalog.setBounds(20, 130, 170, 21);
 
         categoryGroup.add(children_RadioButton_productcatalog);
         children_RadioButton_productcatalog.setText("Children");
         sidepanal_productcatalog.add(children_RadioButton_productcatalog);
-        children_RadioButton_productcatalog.setBounds(20, 160, 68, 21);
+        children_RadioButton_productcatalog.setBounds(20, 160, 180, 21);
 
         categoryGroup.add(unisex_RadioButton_productcatalog);
         unisex_RadioButton_productcatalog.setText("Unisex");
         sidepanal_productcatalog.add(unisex_RadioButton_productcatalog);
-        unisex_RadioButton_productcatalog.setBounds(20, 190, 100, 21);
+        unisex_RadioButton_productcatalog.setBounds(20, 190, 190, 21);
 
         Price_range_text_productcatalog.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         Price_range_text_productcatalog.setForeground(new java.awt.Color(0, 51, 153));
@@ -582,7 +574,7 @@ return card;
         priceGroup.add(g100to500g_price_RadioButton_productcatalog);
         g100to500g_price_RadioButton_productcatalog.setText("100 - 500");
         sidepanal_productcatalog.add(g100to500g_price_RadioButton_productcatalog);
-        g100to500g_price_RadioButton_productcatalog.setBounds(20, 270, 98, 21);
+        g100to500g_price_RadioButton_productcatalog.setBounds(20, 270, 180, 21);
 
         priceGroup.add(g500to1000g_price_RadioButton_productcatalog);
         g500to1000g_price_RadioButton_productcatalog.setText("500 - 1000");
@@ -592,17 +584,17 @@ return card;
         priceGroup.add(g1000to2000g_price_RadioButton_productcatalog);
         g1000to2000g_price_RadioButton_productcatalog.setText("1000 - 2000");
         sidepanal_productcatalog.add(g1000to2000g_price_RadioButton_productcatalog);
-        g1000to2000g_price_RadioButton_productcatalog.setBounds(20, 330, 98, 21);
+        g1000to2000g_price_RadioButton_productcatalog.setBounds(20, 330, 160, 21);
 
         priceGroup.add(g2000to5000g_price_RadioButton_productcatalog);
         g2000to5000g_price_RadioButton_productcatalog.setText("2000 - 5000");
         sidepanal_productcatalog.add(g2000to5000g_price_RadioButton_productcatalog);
-        g2000to5000g_price_RadioButton_productcatalog.setBounds(20, 360, 98, 21);
+        g2000to5000g_price_RadioButton_productcatalog.setBounds(20, 360, 180, 21);
 
         priceGroup.add(g5000to10000g_price_RadioButton_productcatalog);
         g5000to10000g_price_RadioButton_productcatalog.setText("5000 - 10000");
         sidepanal_productcatalog.add(g5000to10000g_price_RadioButton_productcatalog);
-        g5000to10000g_price_RadioButton_productcatalog.setBounds(20, 390, 98, 21);
+        g5000to10000g_price_RadioButton_productcatalog.setBounds(20, 390, 190, 21);
 
         jSeparator1.setFont(new java.awt.Font("Segoe UI Black", 1, 12)); // NOI18N
         sidepanal_productcatalog.add(jSeparator1);
@@ -638,7 +630,7 @@ return card;
 
         jLabel1.setBackground(new java.awt.Color(58, 125, 68));
         jLabel1.setForeground(new java.awt.Color(58, 125, 68));
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/arrow.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/arrow.png"))); // NOI18N
         Main_panal_productcatalog.add(jLabel1);
         jLabel1.setBounds(80, 60, 24, 30);
 
@@ -663,35 +655,15 @@ return card;
     this.dispose();
     }//GEN-LAST:event_Home_btn_productcatalogActionPerformed
 
-    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-    
-    System.out.println("🔍 Search button clicked!");
-    
-    // Get text from search bar
-    String search = Searchbar.getText().trim();
-    
-    // Check if empty or still showing placeholder
-    if (search.isEmpty() || search.equals("Search Products.....")) {
-        javax.swing.JOptionPane.showMessageDialog(
-            this,
-            "Please enter a product name to search!",
-            "Search",
-            javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    // Load products with search filter
-    loadProducts();
-
-
-    }//GEN-LAST:event_searchBtnActionPerformed
-
     private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Notification page coming soon!",
-        "Info",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+         Notification_page notifPage = new Notification_page(
+        loggedInUsername,
+        loggedInUserId
+    );
+    notifPage.setSize(1550, 840);
+    notifPage.setLocationRelativeTo(null);
+    notifPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void SearchbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchbarActionPerformed
@@ -713,13 +685,11 @@ return card;
     }//GEN-LAST:event_sortComboBoxActionPerformed
 
     private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
-    
-    javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Redirecting to User Profile!",
-        "User Profile",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
+    UserDashboard userDash = new UserDashboard(loggedInUsername, loggedInUserId);
+    userDash.setSize(1550, 840);
+    userDash.setLocationRelativeTo(null);
+    userDash.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_ProfileBtnActionPerformed
 
     private void shop_btn_productcatalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_shop_btn_productcatalogActionPerformed
@@ -817,7 +787,6 @@ return card;
     private javax.swing.ButtonGroup priceGroup;
     private javax.swing.JLabel productCountLabel;
     private javax.swing.JButton profileBtn1;
-    private javax.swing.JButton searchBtn;
     private javax.swing.JLabel searchResultLabel;
     private javax.swing.JButton shop_btn_productcatalog;
     private javax.swing.JPanel sidepanal_productcatalog;

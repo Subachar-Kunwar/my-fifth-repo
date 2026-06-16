@@ -81,17 +81,14 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="Logo_productcatalog" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
-                          <Component id="Searchbar" min="-2" pref="565" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace pref="11" max="32767" attributes="0"/>
+                      <Component id="Logo_productcatalog" min="-2" pref="216" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="Searchbar" min="-2" pref="565" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="profileBtn1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="516" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="525" max="-2" attributes="0"/>
                       <Component id="ProfileBtn" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="BellBtn" min="-2" pref="50" max="-2" attributes="0"/>
@@ -107,20 +104,19 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="CartBtn" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="Logo_productcatalog" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="profileBtn1" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="Searchbar" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
-                              <Component id="searchBtn" min="-2" max="-2" attributes="0"/>
-                          </Group>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Component id="ProfileBtn" alignment="0" pref="0" max="32767" attributes="0"/>
                               <Component id="BellBtn" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                           </Group>
+                          <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                              <Component id="Logo_productcatalog" alignment="1" min="-2" pref="31" max="-2" attributes="0"/>
+                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="profileBtn1" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="Searchbar" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -129,7 +125,7 @@
             <Component class="javax.swing.JLabel" name="Logo_productcatalog">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/rewearLogo.jpeg"/>
+                  <Image iconType="3" name="/group7/rewear/rewearLogo.jpeg"/>
                 </Property>
               </Properties>
             </Component>
@@ -141,26 +137,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SearchbarActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="searchBtn">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="44" green="7d" red="3a" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images/search_icon.png"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchBtnActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JButton" name="profileBtn1">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/images/search_icon.png"/>
+                  <Image iconType="3" name="/group7/rewear/search_icon.png"/>
                 </Property>
               </Properties>
               <Events>
@@ -176,7 +159,7 @@
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/userrIcon.png"/>
+                  <Image iconType="3" name="/group7/rewear/userrIcon.png"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -199,7 +182,7 @@
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/cartticon.png"/>
+                  <Image iconType="3" name="/group7/rewear/cartticon.png"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -222,7 +205,7 @@
                   <Color blue="44" green="7d" red="3a" type="rgb"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/bellbtn.png"/>
+                  <Image iconType="3" name="/group7/rewear/bellbtn.png"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -332,7 +315,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="100" width="-1" height="-1"/>
+                  <AbsoluteConstraints x="20" y="100" width="160" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -345,7 +328,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="130" width="47" height="-1"/>
+                  <AbsoluteConstraints x="20" y="130" width="170" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -358,7 +341,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="160" width="68" height="-1"/>
+                  <AbsoluteConstraints x="20" y="160" width="180" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -371,7 +354,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="190" width="100" height="-1"/>
+                  <AbsoluteConstraints x="20" y="190" width="190" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -400,7 +383,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="270" width="98" height="-1"/>
+                  <AbsoluteConstraints x="20" y="270" width="180" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -426,7 +409,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="330" width="98" height="-1"/>
+                  <AbsoluteConstraints x="20" y="330" width="160" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -439,7 +422,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="360" width="98" height="-1"/>
+                  <AbsoluteConstraints x="20" y="360" width="180" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -452,7 +435,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="390" width="98" height="-1"/>
+                  <AbsoluteConstraints x="20" y="390" width="190" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -558,7 +541,7 @@
               <Color blue="44" green="7d" red="3a" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/view/arrow.png"/>
+              <Image iconType="3" name="/group7/rewear/arrow.png"/>
             </Property>
           </Properties>
           <Constraints>

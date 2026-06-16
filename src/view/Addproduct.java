@@ -16,6 +16,9 @@ public class Addproduct extends javax.swing.JPanel {
         this.adminUsername = username;
         
     }
+    
+    
+  
 
 public void showInFrame() {
     javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - Add Product");
@@ -35,39 +38,52 @@ public void showInFrame() {
     frame.setVisible(true);
 }
    
+// GOOD - View only collects and sends raw strings to Controller
 private void saveProduct() {
+    String name        = jTextField1.getText().trim();
+    String category    = jTextField5.getText().trim();
+    String priceText   = jTextField3.getText().trim();
+    String description = jTextField2.getText().trim();
+    String stockText   = jTextField6.getText().trim();
+    String imagePath   = selectedImagePath;
+
+    // View only handles display feedback
     String result = addProductController.addProduct(
-        jTextField1.getText().trim(),
-        jTextField5.getText().trim(),
-        jTextField3.getText().trim(),
-        jTextField2.getText().trim(),
-        jTextField6.getText().trim(),
-        selectedImagePath
+            name, category, priceText,
+            imagePath, description, stockText
     );
 
     if (result == null) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product added successfully!", "Success",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Product added successfully!",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE
+        );
         clearFields();
     } else {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            result, "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                result,
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE
+        );
     }
 }
-    
-    private void clearFields() {
-        jTextField1.setText("");
-        jTextField3.setText("");
-        jTextField5.setText("");
-        jTextField2.setText("");
-        jTextField6.setText("");
-        jLabel1.setIcon(null);
-        jLabel1.setText("");
-        selectedImagePath = "";
-    }
 
+private void clearFields() {
+
+    jTextField1.setText("");
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField5.setText("");
+    jTextField6.setText("");
+
+    jLabel1.setIcon(null);
+    jLabel1.setText("");
+
+    selectedImagePath = "";
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -119,7 +135,7 @@ private void saveProduct() {
 
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel2.setText("Admin");
@@ -137,14 +153,15 @@ private void saveProduct() {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(11, 11, 11))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(7, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(Logo_productcatalog)
+                        .addContainerGap())))
         );
 
         jPanel1.add(jPanel2);
@@ -383,12 +400,15 @@ private void saveProduct() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+   AdminDashboard dashboard = new AdminDashboard(adminUsername);
+    dashboard.setVisible(true);
     
-    // Dashboard button - acts as back button to Admin Dashboard
-    new AdminDashboard(adminUsername).setVisible(true);
-    
-    // Close current Add Product window
-    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+    // Close current window
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -401,8 +421,14 @@ private void saveProduct() {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    new EditProduct(adminUsername).showInFrame();
-    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+        new EditProduct(adminUsername).showInFrame();
+    
+    // Close current window
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

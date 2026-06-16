@@ -1,86 +1,74 @@
 package dao;
 
 import Database.MySqlConnector;
-
-
+import model.Notification;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Notification;
 
 public class NotificationDAO {
 
+    private final MySqlConnector mysql = new MySqlConnector();
+
+    // ─── Get Notifications By User ────────────────────────────
     public List<Notification> getByUser(int userId) {
-
+        Connection conn = mysql.openConnection();
         List<Notification> list = new ArrayList<>();
-
-        try {
-            MySqlConnector connector = new MySqlConnector();
-            Connection conn = connector.openConnection();
-
-            String sql = "SELECT * FROM notifications WHERE user_id=? ORDER BY created_at DESC";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM notifications " +
+                     "WHERE user_id = ? " +
+                     "ORDER BY created_at DESC";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(new Notification(
+            try (ResultSet rs = ps.executeQuery()) {       // ✅ rs closed
+                while (rs.next()) {
+                    list.add(new Notification(
                         rs.getInt("id"),
                         rs.getInt("user_id"),
                         rs.getString("message"),
                         rs.getTimestamp("created_at"),
                         rs.getBoolean("is_read")
-                ));
+                    ));
+                }
             }
-
-            rs.close();
-            connector.closeConnection(conn);
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Notification fetch error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);                   // ✅ conn closed
         }
-
         return list;
     }
 
+    // ─── Mark All As Read ─────────────────────────────────────
     public void markAllAsRead(int userId) {
-        try {
-            MySqlConnector connector = new MySqlConnector();
-            Connection conn = connector.openConnection();
-
-            String sql = "UPDATE notifications SET is_read = TRUE WHERE user_id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        Connection conn = mysql.openConnection();
+        String sql = "UPDATE notifications SET is_read = TRUE " +
+                     "WHERE user_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) { // ✅ ps closed
             ps.setInt(1, userId);
             ps.executeUpdate();
-
-            connector.closeConnection(conn);
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Mark read error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);                   // ✅ conn closed
         }
     }
+
+    // ─── Delete By IDs ────────────────────────────────────────
     public void deleteByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) return;
 
-    if (ids.isEmpty()) return;
-
-    try {
-        MySqlConnector connector = new MySqlConnector();
-        Connection conn = connector.openConnection();
-
-        String sql = "DELETE FROM notifications WHERE id=?";
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        for (Integer id : ids) {
-            ps.setInt(1, id);
-            ps.addBatch();
+        Connection conn = mysql.openConnection();
+        String sql = "DELETE FROM notifications WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) { // ✅ ps closed
+            for (Integer id : ids) {
+                ps.setInt(1, id);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            System.out.println("Delete error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);                   // ✅ conn closed
         }
-
-        ps.executeBatch();
-        connector.closeConnection(conn);
-
-    } catch (Exception e) {
-        System.out.println("Delete error: " + e.getMessage());
     }
-}
 }

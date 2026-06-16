@@ -1,33 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
 import javax.swing.JOptionPane;
-import model.EmailService;
 
-/**
- *
- * @author nikes
- */
 public class Forgotpassword extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Forgotpassword.class.getName());
-    private EmailService emailService;
 
-    /**
-     * Creates new form Forgotpassword
-     */
-public Forgotpassword() {
-    initComponents();
-    emailService = new EmailService();
-    jLabel1.setVisible(false);   // Hide logo completely
-}
+    private static final java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(
+            Forgotpassword.class.getName());
+
+    // ✅ Controller declared INSIDE class
+    private final controller.ForgotPasswordController forgotController
+        = new controller.ForgotPasswordController();
+
+    // ─── Constructor ──────────────────────────────────────────
+    public Forgotpassword() {
+        initComponents();
+        jLabel1.setVisible(false);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -73,7 +62,7 @@ public Forgotpassword() {
         jButton2.setText("Back To Login");
         jButton2.addActionListener(this::jButton2ActionPerformed);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -103,9 +92,9 @@ public Forgotpassword() {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(36, 36, 36)
                 .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
                 .addComponent(Text3)
@@ -142,64 +131,54 @@ public Forgotpassword() {
     }//GEN-LAST:event_Fill1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-String email = Fill1.getText().trim();
 
-if (email.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Please enter email", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
 
-if (!email.contains("@")) {
-    JOptionPane.showMessageDialog(this, "Invalid email", "Error", JOptionPane.ERROR_MESSAGE);
-    return;
-}
+    // ✅ View collects email only
+    String email = Fill1.getText().trim();
 
-jButton1.setEnabled(false);
-
-new Thread(() -> {
-    controller.ResetController resetController = new controller.ResetController();
-    if (!resetController.emailExists(email)) {
-        java.awt.EventQueue.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, "Email not found!",
-                "Error", JOptionPane.ERROR_MESSAGE);
-            jButton1.setEnabled(true);
-        });
+    // ✅ View checks empty only
+    if (email.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Please enter your email!",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
         return;
     }
 
-    // Generate and Save OTP
-    String otp = emailService.generateOTP();
-    if (!emailService.saveOTP(email, otp)) {
+    // ✅ Disable button while processing
+    jButton1.setEnabled(false);
+
+    // ✅ Controller handles all logic in background thread
+    new Thread(() -> {
+        String result = forgotController.sendOTP(email);
+
         java.awt.EventQueue.invokeLater(() -> {
-            JOptionPane.showMessageDialog(this, "Failed to generate OTP",
-                "Error", JOptionPane.ERROR_MESSAGE);
-            jButton1.setEnabled(true);
+            if (result == null) {
+                // ✅ Success - navigate to OTP page
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "OTP sent to " + email,
+                    "Success",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+                String otp = forgotController.getLastOTP();
+                OTPpage otpPage = new OTPpage(email, otp);
+                otpPage.setSize(1550, 840);
+                otpPage.setLocationRelativeTo(null);
+                otpPage.setVisible(true);
+                this.dispose();
+
+            } else {
+                // ✅ Show error from Controller
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    result,
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                jButton1.setEnabled(true);
+            }
         });
-        return;
-    }
+    }).start();
 
-    boolean emailSent = emailService.sendOTPEmail(email, otp);
 
-    java.awt.EventQueue.invokeLater(() -> {
-        if (emailSent) {
-            JOptionPane.showMessageDialog(this,
-                "OTP sent successfully to " + email, "Success",
-                JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this,
-                "Email sending failed!\n\nYour OTP is: " + otp,
-                "Use this OTP", JOptionPane.WARNING_MESSAGE);
-        }
-
-        OTPpage otpPage = new OTPpage(email, otp);
-        otpPage.setSize(1550, 840);
-        otpPage.setPreferredSize(new java.awt.Dimension(1550, 840));
-        otpPage.setLocationRelativeTo(null);
-        otpPage.setVisible(true);
-        this.dispose();
-    });
-
-}).start();
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

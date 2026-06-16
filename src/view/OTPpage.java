@@ -1,57 +1,47 @@
 package view;
 
-import controller.ResetController;
 import javax.swing.JOptionPane;
-import view.Resetpassword;
-import model.EmailService;
-import java.util.Random;
-import javax.swing.Timer;  
 
-
-/**
- *
- * @author nikes
- */
 public class OTPpage extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = 
+
+    private static final java.util.logging.Logger logger =
         java.util.logging.Logger.getLogger(OTPpage.class.getName());
-    
+
+    // ✅ Controller declared INSIDE class
+    private final controller.ForgotPasswordController forgotController
+        = new controller.ForgotPasswordController();
+
     private String userEmail;
     private String expectedOTP;
-    private model.EmailService emailService;
+    // ✅ EmailService removed - no longer needed in View
 
-public OTPpage() {
-    initComponents();
-    emailService = new model.EmailService();
-    setupOTPFields();
-    
-    // Force dimensions
-    this.setSize(1550, 840);
-    this.setLocationRelativeTo(null);
-}
+    // ─── Constructor 1 ────────────────────────────────────────
+    public OTPpage() {
+        initComponents();
+        setupOTPFields();
+        this.setSize(1550, 840);
+        this.setLocationRelativeTo(null);
+    }
 
-public OTPpage(String email, String otp) {
-    initComponents();
-    this.userEmail = email;
-    this.expectedOTP = otp;
-    emailService = new model.EmailService();
-    setupOTPFields();
-    
-    // Force dimensions
-    this.setSize(1550, 840);
-    this.setLocationRelativeTo(null);
-}
-    
+    // ─── Constructor 2 ────────────────────────────────────────
+    public OTPpage(String email, String otp) {
+        initComponents();
+        this.userEmail   = email;
+        this.expectedOTP = otp;
+        setupOTPFields();
+        this.setSize(1550, 840);
+        this.setLocationRelativeTo(null);
+    }
+
     private void setupOTPFields() {
         // Set maximum size to 1 character for all fields
         jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 if (jTextField2.getText().length() >= 1) {
                     if (jTextField2.getText().length() > 1) {
-                        jTextField2.setText(jTextField2.getText().substring(0, 1));
+                        jTextField2.setText(
+                            jTextField2.getText().substring(0, 1));
                     }
-                    // Auto move to next box AFTER typing
                     java.awt.EventQueue.invokeLater(() -> {
                         if (jTextField2.getText().length() == 1) {
                             jTextField3.requestFocus();
@@ -61,12 +51,13 @@ public OTPpage(String email, String otp) {
                 }
             }
         });
-        
+
         jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 if (jTextField3.getText().length() >= 1) {
                     if (jTextField3.getText().length() > 1) {
-                        jTextField3.setText(jTextField3.getText().substring(0, 1));
+                        jTextField3.setText(
+                            jTextField3.getText().substring(0, 1));
                     }
                     java.awt.EventQueue.invokeLater(() -> {
                         if (jTextField3.getText().length() == 1) {
@@ -77,12 +68,13 @@ public OTPpage(String email, String otp) {
                 }
             }
         });
-        
+
         jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 if (jTextField4.getText().length() >= 1) {
                     if (jTextField4.getText().length() > 1) {
-                        jTextField4.setText(jTextField4.getText().substring(0, 1));
+                        jTextField4.setText(
+                            jTextField4.getText().substring(0, 1));
                     }
                     java.awt.EventQueue.invokeLater(() -> {
                         if (jTextField4.getText().length() == 1) {
@@ -93,21 +85,25 @@ public OTPpage(String email, String otp) {
                 }
             }
         });
-        
+
         // Last box - just limit to 1 character
         jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 if (jTextField5.getText().length() > 1) {
-                    jTextField5.setText(jTextField5.getText().substring(0, 1));
+                    jTextField5.setText(
+                        jTextField5.getText().substring(0, 1));
                 }
             }
         });
-        
+
         // LEFT ARROW - move to previous box
-        java.awt.event.KeyAdapter leftArrowAdapter = new java.awt.event.KeyAdapter() {
+        java.awt.event.KeyAdapter leftArrowAdapter =
+            new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_LEFT) {
-                    javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_LEFT) {
+                    javax.swing.JTextField source =
+                        (javax.swing.JTextField) evt.getSource();
                     if (source == jTextField2) {
                         jTextField2.selectAll();
                     } else if (source == jTextField3) {
@@ -123,12 +119,15 @@ public OTPpage(String email, String otp) {
                 }
             }
         };
-        
+
         // RIGHT ARROW - move to next box
-        java.awt.event.KeyAdapter rightArrowAdapter = new java.awt.event.KeyAdapter() {
+        java.awt.event.KeyAdapter rightArrowAdapter =
+            new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_RIGHT) {
-                    javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_RIGHT) {
+                    javax.swing.JTextField source =
+                        (javax.swing.JTextField) evt.getSource();
                     if (source == jTextField2) {
                         jTextField3.requestFocus();
                         jTextField3.selectAll();
@@ -144,13 +143,15 @@ public OTPpage(String email, String otp) {
                 }
             }
         };
-        
+
         // BACKSPACE - delete current or move to previous
-        java.awt.event.KeyAdapter backspaceAdapter = new java.awt.event.KeyAdapter() {
+        java.awt.event.KeyAdapter backspaceAdapter =
+            new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE) {
-                    javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
-                    
+                if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_BACK_SPACE) {
+                    javax.swing.JTextField source =
+                        (javax.swing.JTextField) evt.getSource();
                     if (!source.getText().isEmpty()) {
                         source.setText("");
                     } else {
@@ -170,76 +171,84 @@ public OTPpage(String email, String otp) {
                 }
             }
         };
-        
+
         // DELETE key - clear current box
-        java.awt.event.KeyAdapter deleteAdapter = new java.awt.event.KeyAdapter() {
+        java.awt.event.KeyAdapter deleteAdapter =
+            new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_DELETE) {
-                    javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_DELETE) {
+                    javax.swing.JTextField source =
+                        (javax.swing.JTextField) evt.getSource();
                     source.setText("");
                 }
             }
         };
-        
+
         // HOME / END keys
-        java.awt.event.KeyAdapter homeEndAdapter = new java.awt.event.KeyAdapter() {
+        java.awt.event.KeyAdapter homeEndAdapter =
+            new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_HOME) {
+                if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_HOME) {
                     jTextField2.requestFocus();
                     jTextField2.selectAll();
-                } else if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_END) {
+                } else if (evt.getKeyCode() ==
+                        java.awt.event.KeyEvent.VK_END) {
                     jTextField5.requestFocus();
                     jTextField5.selectAll();
                 }
             }
         };
-        
+
         // Add all adapters to all fields
         jTextField2.addKeyListener(leftArrowAdapter);
         jTextField2.addKeyListener(rightArrowAdapter);
         jTextField2.addKeyListener(backspaceAdapter);
         jTextField2.addKeyListener(deleteAdapter);
         jTextField2.addKeyListener(homeEndAdapter);
-        
+
         jTextField3.addKeyListener(leftArrowAdapter);
         jTextField3.addKeyListener(rightArrowAdapter);
         jTextField3.addKeyListener(backspaceAdapter);
         jTextField3.addKeyListener(deleteAdapter);
         jTextField3.addKeyListener(homeEndAdapter);
-        
+
         jTextField4.addKeyListener(leftArrowAdapter);
         jTextField4.addKeyListener(rightArrowAdapter);
         jTextField4.addKeyListener(backspaceAdapter);
         jTextField4.addKeyListener(deleteAdapter);
         jTextField4.addKeyListener(homeEndAdapter);
-        
+
         jTextField5.addKeyListener(leftArrowAdapter);
         jTextField5.addKeyListener(rightArrowAdapter);
         jTextField5.addKeyListener(backspaceAdapter);
         jTextField5.addKeyListener(deleteAdapter);
         jTextField5.addKeyListener(homeEndAdapter);
-        
+
         // Select all text when focused
-        java.awt.event.FocusAdapter selectAllOnFocus = new java.awt.event.FocusAdapter() {
+        java.awt.event.FocusAdapter selectAllOnFocus =
+            new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                javax.swing.JTextField source = (javax.swing.JTextField) evt.getSource();
+                javax.swing.JTextField source =
+                    (javax.swing.JTextField) evt.getSource();
                 source.selectAll();
             }
         };
-        
+
         jTextField2.addFocusListener(selectAllOnFocus);
         jTextField3.addFocusListener(selectAllOnFocus);
         jTextField4.addFocusListener(selectAllOnFocus);
         jTextField5.addFocusListener(selectAllOnFocus);
     }
-    
+
+    // ─── Get Full OTP ─────────────────────────────────────────
     private String getFullOTP() {
-        return jTextField2.getText().trim() + 
-               jTextField3.getText().trim() + 
-               jTextField4.getText().trim() + 
+        return jTextField2.getText().trim() +
+               jTextField3.getText().trim() +
+               jTextField4.getText().trim() +
                jTextField5.getText().trim();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -309,7 +318,7 @@ public OTPpage(String email, String otp) {
         Button3.setText("Resend");
         Button3.addActionListener(this::Button3ActionPerformed);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -338,7 +347,7 @@ public OTPpage(String email, String otp) {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(496, 496, 496)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -350,7 +359,7 @@ public OTPpage(String email, String otp) {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(69, 69, 69)
+                .addGap(108, 108, 108)
                 .addComponent(Text1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(Text3)
@@ -366,22 +375,24 @@ public OTPpage(String email, String otp) {
                     .addComponent(Button3))
                 .addGap(33, 33, 33)
                 .addComponent(verify_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 297, Short.MAX_VALUE))
+                .addGap(0, 258, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -404,101 +415,93 @@ public OTPpage(String email, String otp) {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void verify_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verify_btnActionPerformed
-                                        
-        String enteredOTP = getFullOTP();
-        
-        if (enteredOTP.length() != 4) {
-            JOptionPane.showMessageDialog(this, "Please enter 4-digit OTP", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        // Use EmailService to verify from database (now returns int)
-        int result = emailService.verifyOTP(userEmail, enteredOTP);
-        
-if (result == 0) {
-    // ✅ SUCCESS
-    JOptionPane.showMessageDialog(this, "✓ OTP Verified Successfully!\n\nYou can now reset your password.", "Success", JOptionPane.INFORMATION_MESSAGE);
-    
-    // Pass the userEmail down so Resetpassword knows who is altering their data
-    Resetpassword resetPage = new Resetpassword(userEmail);
-    
-    // Force dimensions on the new window
-    resetPage.setSize(1550, 840);
-    resetPage.setPreferredSize(new java.awt.Dimension(1550, 840));
-    resetPage.setLocationRelativeTo(null);
-    
-    resetPage.setVisible(true);
-    this.dispose(); // Close OTP window
+       String enteredOTP = getFullOTP();
 
+    // ✅ View checks length only
+    if (enteredOTP.length() != 4) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Please enter 4-digit OTP",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-            
-        } else if (result == -1) {
-            // ❌ MAX ATTEMPTS REACHED OR EXPIRED
-            JOptionPane.showMessageDialog(this, "✗ Maximum attempts reached or OTP expired!\n\nPlease request new OTP.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Clear fields
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            jTextField2.requestFocus();
-            
-        } else if (result > 0) {
-            // ❌ WRONG OTP - Show remaining attempts
-            JOptionPane.showMessageDialog(this, "✗ Invalid OTP!\n\nYou have " + result + " attempt(s) remaining.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Clear fields
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            jTextField2.requestFocus();
-            
-        } else {
-            // Other error
-            JOptionPane.showMessageDialog(this, "✗ Invalid or expired OTP!\n\nPlease try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Clear fields
-            jTextField2.setText("");
-            jTextField3.setText("");
-            jTextField4.setText("");
-            jTextField5.setText("");
-            jTextField2.requestFocus();
-        }
-    
+    // ✅ Controller handles verification
+    int result = forgotController.verifyOTP(userEmail, enteredOTP);
+
+    if (result == 0) {
+        // ✅ Success
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "OTP Verified Successfully!\nYou can now reset your password.",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        Resetpassword resetPage = new Resetpassword(userEmail);
+        resetPage.setSize(1550, 840);
+        resetPage.setLocationRelativeTo(null);
+        resetPage.setVisible(true);
+        this.dispose();
+
+    } else if (result == -1) {
+        // ✅ Max attempts or expired
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Maximum attempts reached or OTP expired!\nPlease request a new OTP.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        clearOTPFields();
+
+    } else {
+        // ✅ Wrong OTP - show remaining attempts
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Invalid OTP!\nYou have " + result + " attempt(s) remaining.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        clearOTPFields();
+    }
     }//GEN-LAST:event_verify_btnActionPerformed
 
     private void Button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Button3ActionPerformed
-               if (userEmail == null || userEmail.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No email address found. Please go back and try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+           if (userEmail == null || userEmail.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "No email found. Please go back and try again.",
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        try {
-            String newOTP = emailService.generateOTP();
+    // ✅ Controller handles resend logic
+    String result = forgotController.sendOTP(userEmail);
 
-            if (emailService.saveOTP(userEmail, newOTP)) {
-                emailService.sendOTPEmail(userEmail, newOTP);
-                this.expectedOTP = newOTP;
+    if (result == null) {
+        // ✅ Success
+        clearOTPFields();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "New OTP sent to: " + userEmail,
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    
+    
 
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
-                jTextField2.requestFocus();
-
-                JOptionPane.showMessageDialog(this, "✓ New OTP sent successfully to: " + userEmail, "Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to generate OTP. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Failed to resend OTP. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-      
                                     
     }//GEN-LAST:event_Button3ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
+      private void clearOTPFields() {
+    jTextField2.setText("");
+    jTextField3.setText("");
+    jTextField4.setText("");
+    jTextField5.setText("");
+    jTextField2.requestFocus();
+}
     
     
     public static void main(String args[]) {

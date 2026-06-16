@@ -1,62 +1,102 @@
 package controller;
 
 import dao.ProductcatalogDAO;
+import model.Product;
 
 public class AddProductController {
 
     private final ProductcatalogDAO productDAO = new ProductcatalogDAO();
 
-    /**
-     * Validates and saves a new product.
-     * Returns null on success, or an error message string on failure.
-     */
-    public String addProduct(String name, String category, String priceText,
-                             String description, String stockText,
-                             String selectedImagePath) {
+    public String addProduct(String name, String category,
+                             String priceText, String imagePath,
+                             String description, String stockText) {
 
-        // Validation
-        if (name == null || name.isEmpty())        return "Product name is required!";
-        if (priceText == null || priceText.isEmpty()) return "Price is required!";
-        if (category == null || category.isEmpty()) return "Category is required!";
-        if (description == null || description.isEmpty()) return "Description is required!";
-        if (stockText == null || stockText.isEmpty()) return "Stock quantity is required!";
-        if (selectedImagePath == null || selectedImagePath.isEmpty())
+        // Step 1: Validate empty fields
+        if (name == null || name.trim().isEmpty()) {
+            return "Product name is required!";
+        }
+
+        if (category == null || category.trim().isEmpty()) {
+            return "Category is required!";
+        }
+
+        if (description == null || description.trim().isEmpty()) {
+            return "Description is required!";
+        }
+
+        if (imagePath == null || imagePath.trim().isEmpty()) {
             return "Please add a product image!";
+        }
 
+        if (priceText == null || priceText.trim().isEmpty()) {
+            return "Price is required!";
+        }
+
+        if (stockText == null || stockText.trim().isEmpty()) {
+            return "Stock is required!";
+        }
+
+        // Step 2: Parse numbers
         double price;
         int stock;
 
         try {
             price = Double.parseDouble(priceText);
-            if (price <= 0) return "Price must be greater than 0!";
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException e) {
             return "Price must be a valid number!";
         }
 
         try {
             stock = Integer.parseInt(stockText);
-            if (stock < 0) return "Stock cannot be negative!";
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException e) {
             return "Stock must be a valid whole number!";
         }
 
-        // Copy image
-        String imageName = new java.io.File(selectedImagePath).getName();
-        String destPath = "src/images/" + imageName;
-        try {
-            java.io.File dir = new java.io.File("src/images");
-            if (!dir.exists()) dir.mkdirs();
-            java.nio.file.Files.copy(
-                java.nio.file.Paths.get(selectedImagePath),
-                java.nio.file.Paths.get(destPath),
-                java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        } catch (java.io.IOException ex) {
-            System.out.println("Image copy error: " + ex.getMessage());
+        // Step 3: Validate number values
+        if (price <= 0) {
+            return "Price must be greater than 0!";
         }
 
+        if (stock < 0) {
+            return "Stock cannot be negative!";
+        }
+
+        // Step 4: Create Model object
+        Product product = new Product(
+                name, category, price,
+                imagePath, description, stock
+        );
+
+        // Step 5: Copy image to project folder
+        String imageName = new java.io.File(product.getImagePath()).getName();
+        String destPath  = "src/images/" + imageName;
+
+        try {
+            java.io.File dir = new java.io.File("src/images");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            java.nio.file.Files.copy(
+                    java.nio.file.Paths.get(product.getImagePath()),
+                    java.nio.file.Paths.get(destPath),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING
+            );
+
+        } catch (java.io.IOException ex) {
+            return "Failed to copy image: " + ex.getMessage();
+        }
+
+        // Step 6: Save to database via DAO
         boolean success = productDAO.addProduct(
-            name, category, price,
-            "images/" + imageName, description, stock, 1);
+                product.getName(),
+                product.getCategory(),
+                product.getPrice(),
+                "images/" + imageName,
+                product.getDescription(),
+                product.getStock(),
+                1
+        );
 
         return success ? null : "Failed to add product. Try again.";
     }

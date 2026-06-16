@@ -4,15 +4,15 @@
  */
 package view;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+public class product_details extends javax.swing.JFrame {
 
-
-
-   public class product_details extends javax.swing.JFrame {
+    private static final java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(
+            product_details.class.getName());
 
     private int productId;
     private int userId;
+    private String username; // ✅ Add this
 
     public product_details() {
         this(1, 1);
@@ -20,14 +20,82 @@ import javax.swing.JLabel;
 
     public product_details(int productId, int userId) {
         initComponents();
-
         this.productId = productId;
-        this.userId = userId;
+        this.userId    = userId;
+        
+        // ✅ Get username from DAO
+        this.username = new dao.UserDAO().getUsernameById(userId);
 
-       
+        controller.ProductDetailController detailController =
+            new controller.ProductDetailController(productId, userId);
 
-        new controller.ProductDetailController(this, productId, userId);
+        loadProductDetails(detailController);
+        setupStarRating();
     }
+
+    private void loadProductDetails(
+            controller.ProductDetailController detailController) {
+
+        model.Product product = detailController.getProduct();
+
+        if (product == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product not found!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Product_name.setText(product.getName());
+        Product_price.setText(String.valueOf(product.getPrice()));
+        Size_of_product.setText(product.getCategory());
+        Descriptionhere_of_product.setText(product.getDescription());
+
+        if (product.getImagePath() != null &&
+                !product.getImagePath().isEmpty()) {
+            try {
+                java.net.URL imgURL =
+                    getClass().getResource("/" + product.getImagePath());
+                if (imgURL != null) {
+                    javax.swing.ImageIcon icon =
+                        new javax.swing.ImageIcon(imgURL);
+                    java.awt.Image scaled = icon.getImage()
+                        .getScaledInstance(250, 220,
+                            java.awt.Image.SCALE_SMOOTH);
+                    photo.setIcon(new javax.swing.ImageIcon(scaled));
+                    photo.setText("");
+                }
+            } catch (Exception e) {
+                photo.setText("No Image");
+            }
+        }
+    }
+
+    private int selectedRating = 0;
+
+    private void setupStarRating() {
+        javax.swing.JLabel[] stars = {star1, star2, star3, star4, star5};
+
+        for (int i = 0; i < stars.length; i++) {
+            final int rating = i + 1;
+            stars[i].addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    selectedRating = rating;
+                    for (int j = 0; j < stars.length; j++) {
+                        if (j < rating) {
+                            stars[j].setText("★");
+                            stars[j].setForeground(
+                                new java.awt.Color(255, 180, 0));
+                        } else {
+                            stars[j].setText("☆");
+                            stars[j].setForeground(java.awt.Color.BLACK);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +113,7 @@ import javax.swing.JLabel;
         ProfileBtn = new javax.swing.JButton();
         BellBtn = new javax.swing.JButton();
         CartBtn = new javax.swing.JButton();
+        Logo_productcatalog1 = new javax.swing.JLabel();
         home = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         photo = new javax.swing.JLabel();
@@ -69,6 +138,7 @@ import javax.swing.JLabel;
         star3 = new javax.swing.JLabel();
         star4 = new javax.swing.JLabel();
         review = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,24 +149,29 @@ import javax.swing.JLabel;
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
         navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         searchBtn.setBackground(new java.awt.Color(58, 125, 68));
-        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/search_icon.png"))); // NOI18N
+        searchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/search_icon.png"))); // NOI18N
         searchBtn.addActionListener(this::searchBtnActionPerformed);
 
         ProfileBtn.setBackground(new java.awt.Color(58, 125, 68));
         ProfileBtn.setForeground(new java.awt.Color(58, 125, 68));
-        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
+        ProfileBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ProfileBtn.addActionListener(this::ProfileBtnActionPerformed);
 
         BellBtn.setBackground(new java.awt.Color(58, 125, 68));
-        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
+        BellBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         BellBtn.addActionListener(this::BellBtnActionPerformed);
 
         CartBtn.setBackground(new java.awt.Color(58, 125, 68));
-        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
+        CartBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         CartBtn.addActionListener(this::CartBtnActionPerformed);
+
+        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
         navbar_product_catalog.setLayout(navbar_product_catalogLayout);
@@ -104,28 +179,42 @@ import javax.swing.JLabel;
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Logo_productcatalog)
-                .addGap(573, 573, 573)
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(342, 342, 342)
                 .addComponent(searchBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 563, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 779, Short.MAX_VALUE)
                 .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30))
+            .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(Logo_productcatalog1)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         navbar_product_catalogLayout.setVerticalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(navbar_product_catalogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Logo_productcatalog))
+                    .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(170, 170, 170)
-                .addComponent(searchBtn))
+                .addComponent(searchBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(Logo_productcatalog1)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
@@ -134,14 +223,16 @@ import javax.swing.JLabel;
         home.setBackground(new java.awt.Color(170, 218, 172));
         home.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         home.setText("Home");
+        home.addActionListener(this::homeActionPerformed);
         Main_panal_productcatalog.add(home);
         home.setBounds(30, 80, 100, 32);
 
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setText("Shop");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         Main_panal_productcatalog.add(jButton1);
-        jButton1.setBounds(160, 80, 100, 32);
+        jButton1.setBounds(150, 80, 100, 32);
 
         photo.setText("product_photo");
         photo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -163,19 +254,20 @@ import javax.swing.JLabel;
         Main_panal_productcatalog.add(Product_price);
         Product_price.setBounds(600, 160, 100, 20);
 
-        Size.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        Size.setText("Size:");
+        Size.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Size.setText("Category:");
         Main_panal_productcatalog.add(Size);
-        Size.setBounds(560, 190, 30, 16);
+        Size.setBounds(560, 190, 70, 20);
 
         Size_of_product.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         Size_of_product.setText("Size");
         Main_panal_productcatalog.add(Size_of_product);
-        Size_of_product.setBounds(600, 190, 130, 16);
+        Size_of_product.setBounds(630, 190, 130, 20);
 
         Add_to_cart.setBackground(new java.awt.Color(170, 218, 172));
         Add_to_cart.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Add_to_cart.setText("ADD TO CART");
+        Add_to_cart.addActionListener(this::Add_to_cartActionPerformed);
         Main_panal_productcatalog.add(Add_to_cart);
         Add_to_cart.setBounds(550, 310, 160, 30);
 
@@ -250,8 +342,13 @@ import javax.swing.JLabel;
         review.setBackground(new java.awt.Color(170, 218, 172));
         review.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         review.setText("Reviews");
+        review.addActionListener(this::reviewActionPerformed);
         Main_panal_productcatalog.add(review);
         review.setBounds(1010, 620, 100, 30);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/arrow.png"))); // NOI18N
+        Main_panal_productcatalog.add(jLabel5);
+        jLabel5.setBounds(130, 90, 20, 16);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -274,11 +371,19 @@ import javax.swing.JLabel;
     }//GEN-LAST:event_searchBtnActionPerformed
 
     private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
-        // TODO add your handling code here:
+    UserDashboard userDash = new UserDashboard(username, userId);
+    userDash.setSize(1550, 840);
+    userDash.setLocationRelativeTo(null);
+    userDash.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_ProfileBtnActionPerformed
 
     private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
-     
+      Notification_page notifPage = new Notification_page(username, userId);
+    notifPage.setSize(1550, 840);
+    notifPage.setLocationRelativeTo(null);
+    notifPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
@@ -286,11 +391,65 @@ import javax.swing.JLabel;
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
- 
-       // TODO add your handling code here:
 
-     
+
+    // ✅ Create controller
+    controller.ProductDetailController detailController =
+        new controller.ProductDetailController(productId, userId);
+
+    // ✅ Send raw data to Controller
+    String reviewText = jTextArea1.getText().trim();
+    String result = detailController.submitReview(selectedRating, reviewText);
+
+    if (result == null) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Review submitted successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // Reset stars - pure UI
+        jTextArea1.setText("");
+        selectedRating = 0;
+        javax.swing.JLabel[] stars = {star1, star2, star3, star4, star5};
+        for (javax.swing.JLabel star : stars) {
+            star.setText("☆");
+            star.setForeground(java.awt.Color.BLACK);
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result, "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
     }//GEN-LAST:event_SubmitActionPerformed
+
+    private void homeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_homeActionPerformed
+    UserDashboard userDash = new UserDashboard(username, userId);
+        userDash.setSize(1550, 840);
+        userDash.setLocationRelativeTo(null);
+        userDash.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_homeActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    Product_catalog productCatalog = new Product_catalog(username, userId);
+        productCatalog.setSize(1550, 840);
+        productCatalog.setLocationRelativeTo(null);
+        productCatalog.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void reviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewActionPerformed
+     Review_page reviewPage = new Review_page(productId, userId, username);
+        reviewPage.setSize(1550, 840);
+        reviewPage.setLocationRelativeTo(null);
+        reviewPage.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_reviewActionPerformed
+
+    private void Add_to_cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Add_to_cartActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Add_to_cartActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,6 +482,7 @@ import javax.swing.JLabel;
     private javax.swing.JButton CartBtn;
     private javax.swing.JLabel Descriptionhere_of_product;
     private javax.swing.JLabel Logo_productcatalog;
+    private javax.swing.JLabel Logo_productcatalog1;
     private javax.swing.JPanel Main_panal_productcatalog;
     private javax.swing.JLabel Product_name;
     private javax.swing.JLabel Product_price;
@@ -336,6 +496,7 @@ import javax.swing.JLabel;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
@@ -350,64 +511,4 @@ import javax.swing.JLabel;
     private javax.swing.JLabel star4;
     private javax.swing.JLabel star5;
     // End of variables declaration//GEN-END:variables
-public JLabel[] getStars() {
-    return new JLabel[]{star1, star2, star3, star4, star5};
-}
-
-public JButton getSubmitButton() {
-    return Submit;
-}
-
-public String getReviewText() {
-    return jTextArea1.getText().trim();
-}
-
-public void clearReview() {
-    jTextArea1.setText("");
-}
-
-    public JButton getProfileBtn() {
-    return ProfileBtn;
-}
-
-public JButton getHomeBtn() {
-    return home;
-}
-
-public JButton getCartBtn() {
-        
-    return CartBtn;
-}
-
-public JButton getShopBtn() {
-    return jButton1; // your Shop button
-}
-public JLabel getProductNameLabel() {
-    return Product_name;
-}
-
-public JLabel getProductPriceLabel() {
-    return Product_price;
-}
-
-public JLabel getProductSizeLabel() {
-    return Size_of_product;
-}
-
-public JLabel getDescriptionLabel() {
-    return Descriptionhere_of_product;
-}
-
-public JLabel getPhotoLabel() {
-    return photo;
-}
-    public JButton getBellBtn() {
-    return BellBtn;
-}
-    public JButton getAddToCartBtn() {
-    return Add_to_cart;
-}
-    public JButton getReviewBtn() {
-    return review;
-}
 }

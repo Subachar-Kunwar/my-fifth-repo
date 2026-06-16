@@ -68,12 +68,12 @@
             <Component class="javax.swing.JLabel" name="Logo_productcatalog">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/view/rewearLogo.jpeg"/>
+                  <Image iconType="3" name="/group7/rewear/rewearLogo.jpeg"/>
                 </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="10" y="10" width="-1" height="30"/>
+                  <AbsoluteConstraints x="10" y="10" width="220" height="30"/>
                 </Constraint>
               </Constraints>
             </Component>
