@@ -26,108 +26,117 @@ public class OrderHistoryPage extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel3 = new javax.swing.JPanel();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        Logo_productcatalog1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel11 = new javax.swing.JPanel();
+        navbar_product_catalog = new javax.swing.JPanel();
+        Logo_productcatalog = new javax.swing.JLabel();
+        ProfileBtn = new javax.swing.JButton();
+        BellBtn = new javax.swing.JButton();
+        CartBtn = new javax.swing.JButton();
+        Back = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(232, 255, 233));
+        setMaximumSize(new java.awt.Dimension(1550, 840));
         setMinimumSize(new java.awt.Dimension(1550, 840));
         setPreferredSize(new java.awt.Dimension(1550, 840));
+        setLayout(null);
 
-        jPanel3.setBackground(new java.awt.Color(58, 125, 68));
-        jPanel3.setMinimumSize(new java.awt.Dimension(1550, 48));
-        jPanel3.setLayout(null);
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel1.setText("My Orders");
+        add(jLabel1);
+        jLabel1.setBounds(180, 130, 240, 50);
 
-        jButton9.setBackground(new java.awt.Color(58, 125, 68));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
-        jButton9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 38)));
-        jButton9.addActionListener(this::jButton9ActionPerformed);
-        jPanel3.add(jButton9);
-        jButton9.setBounds(1421, 6, 50, 40);
+        jPanel11.setBackground(new java.awt.Color(170, 218, 172));
+        jPanel11.setLayout(new java.awt.GridLayout(0, 1, 0, 15));
+        jScrollPane1.setViewportView(jPanel11);
 
-        jButton10.setBackground(new java.awt.Color(58, 125, 68));
-        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
-        jButton10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
-        jButton10.setMinimumSize(new java.awt.Dimension(44, 45));
-        jButton10.setPreferredSize(new java.awt.Dimension(44, 45));
-        jButton10.addActionListener(this::jButton10ActionPerformed);
-        jPanel3.add(jButton10);
-        jButton10.setBounds(1365, 6, 44, 40);
+        add(jScrollPane1);
+        jScrollPane1.setBounds(180, 210, 1060, 440);
 
-        jButton11.setBackground(new java.awt.Color(58, 125, 68));
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
-        jButton11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
-        jButton11.setPreferredSize(new java.awt.Dimension(44, 45));
-        jButton11.addActionListener(this::jButton11ActionPerformed);
-        jPanel3.add(jButton11);
-        jButton11.setBounds(1477, 6, 50, 40);
+        navbar_product_catalog.setBackground(new java.awt.Color(58, 125, 68));
+        navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
+        navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
-        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
-        jPanel3.add(Logo_productcatalog1);
-        Logo_productcatalog1.setBounds(10, 10, 220, 31);
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1278, Short.MAX_VALUE)
+        ProfileBtn.setBackground(new java.awt.Color(58, 125, 68));
+        ProfileBtn.setForeground(new java.awt.Color(58, 125, 68));
+        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        ProfileBtn.addActionListener(this::ProfileBtnActionPerformed);
+
+        BellBtn.setBackground(new java.awt.Color(58, 125, 68));
+        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        BellBtn.addActionListener(this::BellBtnActionPerformed);
+
+        CartBtn.setBackground(new java.awt.Color(58, 125, 68));
+        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        CartBtn.addActionListener(this::CartBtnActionPerformed);
+
+        javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
+        navbar_product_catalog.setLayout(navbar_product_catalogLayout);
+        navbar_product_catalogLayout.setHorizontalGroup(
+            navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1082, Short.MAX_VALUE)
+                .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 491, Short.MAX_VALUE)
+        navbar_product_catalogLayout.setVerticalGroup(
+            navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Logo_productcatalog))
+                .addGap(201, 201, 201))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(127, 127, 127)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(145, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(176, 176, 176)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 125, Short.MAX_VALUE))
-        );
+        add(navbar_product_catalog);
+        navbar_product_catalog.setBounds(0, 0, 1580, 48);
+
+        Back.setBackground(new java.awt.Color(170, 218, 172));
+        Back.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Back.setText("Back");
+        Back.addActionListener(this::BackActionPerformed);
+        add(Back);
+        Back.setBounds(670, 740, 72, 27);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Notifications page...\nComing soon!",
-            "Notifications",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to User Profile page...\nComing soon!",
-            "User Profile",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton10ActionPerformed
+    }//GEN-LAST:event_ProfileBtnActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Cart page...\nComing soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton11ActionPerformed
+    private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
+
+    }//GEN-LAST:event_BellBtnActionPerformed
+
+    private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
+
+    }//GEN-LAST:event_CartBtnActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Logo_productcatalog1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton Back;
+    private javax.swing.JButton BellBtn;
+    private javax.swing.JButton CartBtn;
+    private javax.swing.JLabel Logo_productcatalog;
+    private javax.swing.JButton ProfileBtn;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel navbar_product_catalog;
     // End of variables declaration//GEN-END:variables
 }
