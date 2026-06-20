@@ -1,10 +1,72 @@
 package dao;
+
 import Database.MySqlConnector;
 import java.sql.*;
+import java.util.List;
+import model.CartItem;
 
 public class OrderDAO {
     MySqlConnector mysql = new MySqlConnector();
 
+    // ==========================================
+    // NEW: Handles Checkout for Entire Cart
+    // ==========================================
+    public boolean createOrdersFromCart(int userId, List<CartItem> cartItems,
+                                        String fullName, String address, String city,
+                                        String phoneNumber, String postalCode, String paymentMethod) {
+        Connection conn = mysql.openConnection();
+        boolean success = false;
+        
+        try {
+            // Disable auto-commit to save all items as a single transaction
+            conn.setAutoCommit(false); 
+
+            String sql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
+                         "full_name, address, city, phone_number, postal_code, payment_method) " +
+                         "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?)";
+                         
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                for (CartItem item : cartItems) {
+                    ps.setInt(1, item.getProductId());
+                    ps.setInt(2, userId);
+                    ps.setDouble(3, item.getTotal()); // Assuming CartItem has getTotal()
+                    ps.setString(4, fullName);
+                    ps.setString(5, address);
+                    ps.setString(6, city);
+                    ps.setString(7, phoneNumber);
+                    ps.setString(8, postalCode);
+                    ps.setString(9, paymentMethod);
+                    
+                    ps.addBatch(); // Add to batch
+                }
+                
+                ps.executeBatch(); // Execute all inserts at once
+            }
+
+            // Log the activity
+            new ActivityDAO().logActivity(userId, "Placed an order for " + cartItems.size() + " item(s)");
+
+            // Commit the transaction
+            conn.commit(); 
+            success = true;
+
+        } catch (SQLException e) {
+            System.out.println("Cart Checkout Database Error: " + e.getMessage());
+            try {
+                if (conn != null) conn.rollback(); // Undo if something fails
+            } catch (SQLException ex) {
+                System.out.println("Rollback error: " + ex.getMessage());
+            }
+        } finally {
+            mysql.closeConnection(conn);
+        }
+        
+        return success;
+    }
+
+    // ==========================================
+    // EXISTING METHODS (Kept intact)
+    // ==========================================
     public int placeOrder(int productId, int userId, double totalAmount) {
         return placeOrder(productId, userId, totalAmount, null, null, null, null, null, null);
     }
