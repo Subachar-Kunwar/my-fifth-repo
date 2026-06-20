@@ -9,7 +9,7 @@ public class OrderDAO {
     MySqlConnector mysql = new MySqlConnector();
 
     // ==========================================
-    // NEW: Handles Checkout for Entire Cart
+    // UPDATED: Handles Checkout AND Inventory
     // ==========================================
     public boolean createOrdersFromCart(int userId, List<CartItem> cartItems,
                                         String fullName, String address, String city,
@@ -21,34 +21,55 @@ public class OrderDAO {
             // Disable auto-commit to save all items as a single transaction
             conn.setAutoCommit(false); 
 
-            String sql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
+            // Query 1: Insert into orders
+            String insertOrderSql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
                          "full_name, address, city, phone_number, postal_code, payment_method) " +
                          "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?)";
                          
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            // Query 2: Decrease product stock
+            String updateStockSql = "UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?";
+
+            try (PreparedStatement psOrder = conn.prepareStatement(insertOrderSql);
+                 PreparedStatement psStock = conn.prepareStatement(updateStockSql)) {
+                
                 for (CartItem item : cartItems) {
-                    ps.setInt(1, item.getProductId());
-                    ps.setInt(2, userId);
-                    ps.setDouble(3, item.getTotal()); // Assuming CartItem has getTotal()
-                    ps.setString(4, fullName);
-                    ps.setString(5, address);
-                    ps.setString(6, city);
-                    ps.setString(7, phoneNumber);
-                    ps.setString(8, postalCode);
-                    ps.setString(9, paymentMethod);
+                    // Prepare Order Insert
+                    psOrder.setInt(1, item.getProductId());
+                    psOrder.setInt(2, userId);
+                    psOrder.setDouble(3, item.getTotal()); 
+                    psOrder.setString(4, fullName);
+                    psOrder.setString(5, address);
+                    psOrder.setString(6, city);
+                    psOrder.setString(7, phoneNumber);
+                    psOrder.setString(8, postalCode);
+                    psOrder.setString(9, paymentMethod);
+                    psOrder.addBatch(); 
                     
-                    ps.addBatch(); // Add to batch
+                    // Prepare Stock Deduction
+                    psStock.setInt(1, item.getQuantity());
+                    psStock.setInt(2, item.getProductId());
+                    psStock.setInt(3, item.getQuantity()); // Ensure we don't go into negative stock
+                    psStock.addBatch();
                 }
                 
-                ps.executeBatch(); // Execute all inserts at once
+                // Execute both batches
+                psOrder.executeBatch(); 
+                int[] stockResults = psStock.executeBatch();
+                
+                // Verify all stock updates worked (no negative stock allowed)
+                for (int result : stockResults) {
+                    if (result == 0) {
+                        throw new SQLException("Insufficient stock for one or more items.");
+                    }
+                }
             }
 
-            // Log the activity
-            new ActivityDAO().logActivity(userId, "Placed an order for " + cartItems.size() + " item(s)");
-
-            // Commit the transaction
+            // Commit the transaction FIRST
             conn.commit(); 
             success = true;
+
+            // Log the activity ONLY AFTER commit is successful
+            new ActivityDAO().logActivity(userId, "Placed an order for " + cartItems.size() + " item(s)");
 
         } catch (SQLException e) {
             System.out.println("Cart Checkout Database Error: " + e.getMessage());
@@ -58,6 +79,9 @@ public class OrderDAO {
                 System.out.println("Rollback error: " + ex.getMessage());
             }
         } finally {
+            try {
+                if (conn != null) conn.setAutoCommit(true); // Reset connection state
+            } catch (SQLException ex) {}
             mysql.closeConnection(conn);
         }
         

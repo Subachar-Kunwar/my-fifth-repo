@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 public class ProductDetailDAO {
 
     public boolean insertReview(ProductReview review) {
-
         try {
             MySqlConnector connector = new MySqlConnector();
             Connection conn = connector.openConnection();
@@ -27,8 +26,8 @@ public class ProductDetailDAO {
             return true;
 
         } catch (Exception e) {
-    e.printStackTrace();
-    return false;
-}
+            e.printStackTrace();
+            return false;
         }
-    }
+    } // Removed the extra closing braces that were here!
+}
