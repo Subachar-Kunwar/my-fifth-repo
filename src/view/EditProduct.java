@@ -47,17 +47,7 @@ public class EditProduct extends javax.swing.JPanel {
 
   
 
-    // ✅ Helper: Clear all input fields
-    private void clearFields() {
-        jTextField1.setText("");
-        jTextField3.setText("");
-        jTextField5.setText("");
-        jTextField2.setText("");
-        jTextField6.setText("");
-        jLabel1.setIcon(null);
-        selectedImagePath = "";
-    }
-
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -442,7 +432,12 @@ public class EditProduct extends javax.swing.JPanel {
             javax.swing.JOptionPane.showMessageDialog(this,
                 "Product deleted successfully!", "Success",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            clearFields();
+            
+    editController.clearFields(
+    jTextField1, jTextField2, jTextField3,
+    jTextField5, jTextField6, jLabel1);
+    selectedImagePath = "";
+
             currentProductId = -1;
         } else {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -466,23 +461,19 @@ public class EditProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-  
+                                        
 
-    // First click - no product loaded yet
+    // First click - no product loaded → ask for ID first
     if (currentProductId == -1) {
 
-        // Step 1: Get product list text from Controller
         String productListText = editController.getProductListText();
-
         if (productListText == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "No products found!",
-                "Empty",
+                "No products found!", "Empty",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
-        // Step 2: Show product list - View builds the display
         javax.swing.JTextArea textArea = new javax.swing.JTextArea(productListText);
         textArea.setEditable(false);
         textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
@@ -492,49 +483,31 @@ public class EditProduct extends javax.swing.JPanel {
             "All Products - Note the ID",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-        // Step 3: Ask for ID
         String input = javax.swing.JOptionPane.showInputDialog(this,
             "Enter Product ID from the list:",
             "Product ID",
             javax.swing.JOptionPane.QUESTION_MESSAGE);
 
-        // Step 4: Controller validates the ID
         int id = editController.parseProductId(input);
         if (id == -1) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Invalid Product ID!",
-                "Error",
+                "Invalid Product ID!", "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Step 5: Get product from Controller
-        model.Product product = editController.getProductById(id);
+        model.Product product = editController.loadProductIntoFields(
+            id, jTextField1, jTextField3, jTextField5,
+            jTextField2, jTextField6, jLabel1);
+
         if (product == null) {
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Product not found!",
-                "Error",
+                "Product not found!", "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Step 6: View loads data into fields
         currentProductId = id;
-        jTextField1.setText(product.getName());
-        jTextField3.setText(String.valueOf(product.getPrice()));
-        jTextField5.setText(product.getCategory());
-        jTextField2.setText(product.getDescription());
-        jTextField6.setText(String.valueOf(product.getStock()));
-
-        // Step 7: Load image preview
-        if (product.getImagePath() != null && !product.getImagePath().isEmpty()) {
-            javax.swing.ImageIcon icon =
-                new javax.swing.ImageIcon("src/" + product.getImagePath());
-            java.awt.Image scaled = icon.getImage()
-                .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
-            jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
-        }
-
         javax.swing.JOptionPane.showMessageDialog(this,
             "Product loaded! Edit fields and click Update Product again.",
             "Loaded",
@@ -542,7 +515,7 @@ public class EditProduct extends javax.swing.JPanel {
         return;
     }
 
-    // Second click - product is loaded, now update
+    // Second click - product already loaded → update it
     String result = editController.updateProduct(
         currentProductId,
         jTextField1.getText().trim(),
@@ -557,7 +530,10 @@ public class EditProduct extends javax.swing.JPanel {
         javax.swing.JOptionPane.showMessageDialog(this,
             "Product updated successfully!", "Success",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        clearFields();
+        editController.clearFields(
+            jTextField1, jTextField2, jTextField3,
+            jTextField5, jTextField6, jLabel1);
+        selectedImagePath = "";
         currentProductId = -1;
     } else {
         javax.swing.JOptionPane.showMessageDialog(this,
@@ -565,18 +541,21 @@ public class EditProduct extends javax.swing.JPanel {
             javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
- 
-
+                                          
     int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
         "Clear all fields and start over?",
         "Cancel",
         javax.swing.JOptionPane.YES_NO_OPTION);
 
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        clearFields();
+        editController.clearFields(
+            jTextField1, jTextField2, jTextField3,
+            jTextField5, jTextField6, jLabel1);
+        selectedImagePath = "";
         currentProductId = -1;
     }
 

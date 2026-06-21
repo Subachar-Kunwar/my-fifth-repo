@@ -7,248 +7,33 @@ public class OTPpage extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger =
         java.util.logging.Logger.getLogger(OTPpage.class.getName());
 
-    // ✅ Controller declared INSIDE class
+ 
     private final controller.ForgotPasswordController forgotController
         = new controller.ForgotPasswordController();
 
     private String userEmail;
     private String expectedOTP;
-    // ✅ EmailService removed - no longer needed in View
+   
 
-    // ─── Constructor 1 ────────────────────────────────────────
     public OTPpage() {
-        initComponents();
-        setupOTPFields();
-        this.setSize(1550, 840);
-        this.setLocationRelativeTo(null);
-    }
+    initComponents();
+    controller.OTPFieldHelper.setupOTPFields(
+        jTextField2, jTextField3, jTextField4, jTextField5);
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
+}
 
-    // ─── Constructor 2 ────────────────────────────────────────
-    public OTPpage(String email, String otp) {
-        initComponents();
-        this.userEmail   = email;
-        this.expectedOTP = otp;
-        setupOTPFields();
-        this.setSize(1550, 840);
-        this.setLocationRelativeTo(null);
-    }
+public OTPpage(String email, String otp) {
+    initComponents();
+    this.userEmail   = email;
+    this.expectedOTP = otp;
+    controller.OTPFieldHelper.setupOTPFields(
+        jTextField2, jTextField3, jTextField4, jTextField5);
+    this.setSize(1550, 840);
+    this.setLocationRelativeTo(null);
+}
 
-    private void setupOTPFields() {
-        // Set maximum size to 1 character for all fields
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                if (jTextField2.getText().length() >= 1) {
-                    if (jTextField2.getText().length() > 1) {
-                        jTextField2.setText(
-                            jTextField2.getText().substring(0, 1));
-                    }
-                    java.awt.EventQueue.invokeLater(() -> {
-                        if (jTextField2.getText().length() == 1) {
-                            jTextField3.requestFocus();
-                            jTextField3.selectAll();
-                        }
-                    });
-                }
-            }
-        });
-
-        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                if (jTextField3.getText().length() >= 1) {
-                    if (jTextField3.getText().length() > 1) {
-                        jTextField3.setText(
-                            jTextField3.getText().substring(0, 1));
-                    }
-                    java.awt.EventQueue.invokeLater(() -> {
-                        if (jTextField3.getText().length() == 1) {
-                            jTextField4.requestFocus();
-                            jTextField4.selectAll();
-                        }
-                    });
-                }
-            }
-        });
-
-        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                if (jTextField4.getText().length() >= 1) {
-                    if (jTextField4.getText().length() > 1) {
-                        jTextField4.setText(
-                            jTextField4.getText().substring(0, 1));
-                    }
-                    java.awt.EventQueue.invokeLater(() -> {
-                        if (jTextField4.getText().length() == 1) {
-                            jTextField5.requestFocus();
-                            jTextField5.selectAll();
-                        }
-                    });
-                }
-            }
-        });
-
-        // Last box - just limit to 1 character
-        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                if (jTextField5.getText().length() > 1) {
-                    jTextField5.setText(
-                        jTextField5.getText().substring(0, 1));
-                }
-            }
-        });
-
-        // LEFT ARROW - move to previous box
-        java.awt.event.KeyAdapter leftArrowAdapter =
-            new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_LEFT) {
-                    javax.swing.JTextField source =
-                        (javax.swing.JTextField) evt.getSource();
-                    if (source == jTextField2) {
-                        jTextField2.selectAll();
-                    } else if (source == jTextField3) {
-                        jTextField2.requestFocus();
-                        jTextField2.selectAll();
-                    } else if (source == jTextField4) {
-                        jTextField3.requestFocus();
-                        jTextField3.selectAll();
-                    } else if (source == jTextField5) {
-                        jTextField4.requestFocus();
-                        jTextField4.selectAll();
-                    }
-                }
-            }
-        };
-
-        // RIGHT ARROW - move to next box
-        java.awt.event.KeyAdapter rightArrowAdapter =
-            new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_RIGHT) {
-                    javax.swing.JTextField source =
-                        (javax.swing.JTextField) evt.getSource();
-                    if (source == jTextField2) {
-                        jTextField3.requestFocus();
-                        jTextField3.selectAll();
-                    } else if (source == jTextField3) {
-                        jTextField4.requestFocus();
-                        jTextField4.selectAll();
-                    } else if (source == jTextField4) {
-                        jTextField5.requestFocus();
-                        jTextField5.selectAll();
-                    } else if (source == jTextField5) {
-                        jTextField5.selectAll();
-                    }
-                }
-            }
-        };
-
-        // BACKSPACE - delete current or move to previous
-        java.awt.event.KeyAdapter backspaceAdapter =
-            new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_BACK_SPACE) {
-                    javax.swing.JTextField source =
-                        (javax.swing.JTextField) evt.getSource();
-                    if (!source.getText().isEmpty()) {
-                        source.setText("");
-                    } else {
-                        if (source == jTextField2) {
-                            source.selectAll();
-                        } else if (source == jTextField3) {
-                            jTextField2.requestFocus();
-                            jTextField2.selectAll();
-                        } else if (source == jTextField4) {
-                            jTextField3.requestFocus();
-                            jTextField3.selectAll();
-                        } else if (source == jTextField5) {
-                            jTextField4.requestFocus();
-                            jTextField4.selectAll();
-                        }
-                    }
-                }
-            }
-        };
-
-        // DELETE key - clear current box
-        java.awt.event.KeyAdapter deleteAdapter =
-            new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_DELETE) {
-                    javax.swing.JTextField source =
-                        (javax.swing.JTextField) evt.getSource();
-                    source.setText("");
-                }
-            }
-        };
-
-        // HOME / END keys
-        java.awt.event.KeyAdapter homeEndAdapter =
-            new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_HOME) {
-                    jTextField2.requestFocus();
-                    jTextField2.selectAll();
-                } else if (evt.getKeyCode() ==
-                        java.awt.event.KeyEvent.VK_END) {
-                    jTextField5.requestFocus();
-                    jTextField5.selectAll();
-                }
-            }
-        };
-
-        // Add all adapters to all fields
-        jTextField2.addKeyListener(leftArrowAdapter);
-        jTextField2.addKeyListener(rightArrowAdapter);
-        jTextField2.addKeyListener(backspaceAdapter);
-        jTextField2.addKeyListener(deleteAdapter);
-        jTextField2.addKeyListener(homeEndAdapter);
-
-        jTextField3.addKeyListener(leftArrowAdapter);
-        jTextField3.addKeyListener(rightArrowAdapter);
-        jTextField3.addKeyListener(backspaceAdapter);
-        jTextField3.addKeyListener(deleteAdapter);
-        jTextField3.addKeyListener(homeEndAdapter);
-
-        jTextField4.addKeyListener(leftArrowAdapter);
-        jTextField4.addKeyListener(rightArrowAdapter);
-        jTextField4.addKeyListener(backspaceAdapter);
-        jTextField4.addKeyListener(deleteAdapter);
-        jTextField4.addKeyListener(homeEndAdapter);
-
-        jTextField5.addKeyListener(leftArrowAdapter);
-        jTextField5.addKeyListener(rightArrowAdapter);
-        jTextField5.addKeyListener(backspaceAdapter);
-        jTextField5.addKeyListener(deleteAdapter);
-        jTextField5.addKeyListener(homeEndAdapter);
-
-        // Select all text when focused
-        java.awt.event.FocusAdapter selectAllOnFocus =
-            new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                javax.swing.JTextField source =
-                    (javax.swing.JTextField) evt.getSource();
-                source.selectAll();
-            }
-        };
-
-        jTextField2.addFocusListener(selectAllOnFocus);
-        jTextField3.addFocusListener(selectAllOnFocus);
-        jTextField4.addFocusListener(selectAllOnFocus);
-        jTextField5.addFocusListener(selectAllOnFocus);
-    }
-
-    // ─── Get Full OTP ─────────────────────────────────────────
-    private String getFullOTP() {
-        return jTextField2.getText().trim() +
-               jTextField3.getText().trim() +
-               jTextField4.getText().trim() +
-               jTextField5.getText().trim();
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -415,7 +200,8 @@ public class OTPpage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void verify_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verify_btnActionPerformed
-       String enteredOTP = getFullOTP();
+    String enteredOTP = controller.OTPFieldHelper.getCombinedOTP(
+    jTextField2, jTextField3, jTextField4, jTextField5);
 
     // ✅ View checks length only
     if (enteredOTP.length() != 4) {
@@ -495,12 +281,9 @@ public class OTPpage extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-      private void clearOTPFields() {
-    jTextField2.setText("");
-    jTextField3.setText("");
-    jTextField4.setText("");
-    jTextField5.setText("");
-    jTextField2.requestFocus();
+private void clearOTPFields() {
+    controller.OTPFieldHelper.clearFields(
+        jTextField2, jTextField3, jTextField4, jTextField5);
 }
     
     

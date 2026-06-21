@@ -11,140 +11,21 @@ public class Review_page extends javax.swing.JFrame {
     private String username;
     private controller.ReviewController reviewController;
 
-    public Review_page(int productId, int userId, String username) {
-        initComponents();
-        this.productId  = productId;
-        this.userId     = userId;
-        this.username   = username;
-        this.reviewController =
-            new controller.ReviewController(productId, userId);
-        loadReviews();
-    }
+public Review_page(int productId, int userId, String username) {
+    initComponents();
+    this.productId  = productId;
+    this.userId     = userId;
+    this.username   = username;
+    this.reviewController =
+        new controller.ReviewController(productId, userId);
+    refreshReviews();
+}
 
-    // ─── Load Reviews - View only displays ───────────────────
-    private void loadReviews() {
-        jPanel11.removeAll();
+private void refreshReviews() {
+    reviewController.populateReviewPanel(jPanel11, this, this::refreshReviews);
+}
 
-        // ✅ Controller fetches data
-        java.util.List<model.Review> reviews =
-            reviewController.getReviews();
 
-        if (reviews == null || reviews.isEmpty()) {
-            javax.swing.JLabel none =
-                new javax.swing.JLabel("No reviews yet.");
-            none.setFont(new java.awt.Font("Segoe UI", 1, 18));
-            none.setHorizontalAlignment(
-                javax.swing.JLabel.CENTER);
-            jPanel11.add(none);
-        } else {
-            for (model.Review r : reviews) {
-                jPanel11.add(createReviewCard(r));
-            }
-        }
-
-        jPanel11.revalidate();
-        jPanel11.repaint();
-    }
-
-    // ─── Create Review Card - Pure UI ────────────────────────
-    private javax.swing.JPanel createReviewCard(model.Review r) {
-
-        javax.swing.JPanel panel = new javax.swing.JPanel(null);
-        panel.setPreferredSize(
-            new java.awt.Dimension(1000, 120));
-        panel.setBackground(
-            new java.awt.Color(170, 218, 172));
-
-        // Product image
-        javax.swing.JLabel img = new javax.swing.JLabel();
-        img.setBounds(20, 25, 90, 70);
-        try {
-            java.net.URL url =
-                getClass().getResource("/" + r.getImagePath());
-            if (url != null) {
-                javax.swing.ImageIcon icon =
-                    new javax.swing.ImageIcon(url);
-                java.awt.Image scaled = icon.getImage()
-                    .getScaledInstance(90, 70,
-                        java.awt.Image.SCALE_SMOOTH);
-                img.setIcon(new javax.swing.ImageIcon(scaled));
-            }
-        } catch (Exception ignored) {}
-
-        // Product name
-        javax.swing.JLabel name =
-            new javax.swing.JLabel(r.getProductName());
-        name.setBounds(130, 10, 300, 25);
-        name.setFont(new java.awt.Font("Segoe UI", 1, 18));
-
-        // Username
-        javax.swing.JLabel user =
-            new javax.swing.JLabel("by " + r.getUsername());
-        user.setBounds(130, 35, 200, 20);
-        user.setFont(new java.awt.Font("Segoe UI", 0, 13));
-
-        // ✅ Stars from Controller
-        javax.swing.JLabel stars =
-            new javax.swing.JLabel(
-                reviewController.getStarsText(r.getRating()));
-        stars.setBounds(130, 55, 200, 25);
-        stars.setFont(new java.awt.Font("Dialog", 0, 24));
-        stars.setForeground(new java.awt.Color(255, 180, 0));
-
-        // Review text
-        javax.swing.JLabel reviewText =
-            new javax.swing.JLabel(
-                "<html>" + r.getReviewText() + "</html>");
-        reviewText.setBounds(450, 45, 350, 40);
-        reviewText.setFont(
-            new java.awt.Font("Segoe UI", 0, 16));
-
-        // ✅ Date from Controller
-        javax.swing.JLabel date =
-            new javax.swing.JLabel(
-                reviewController.formatDate(r.getCreatedAt()));
-        date.setBounds(130, 80, 150, 20);
-        date.setFont(new java.awt.Font("Segoe UI", 0, 13));
-
-        panel.add(img);
-        panel.add(name);
-        panel.add(user);
-        panel.add(stars);
-        panel.add(reviewText);
-        panel.add(date);
-
-        // ✅ Controller decides if delete shown
-        if (reviewController.canDelete(r.getReviewUserId())) {
-            javax.swing.JButton delete =
-                new javax.swing.JButton("Delete");
-            delete.setBounds(850, 45, 90, 30);
-            delete.addActionListener(e -> {
-                int confirm = javax.swing.JOptionPane
-                    .showConfirmDialog(this,
-                        "Delete this review?",
-                        "Confirm",
-                        javax.swing.JOptionPane.YES_NO_OPTION);
-                if (confirm ==
-                        javax.swing.JOptionPane.YES_OPTION) {
-                    // ✅ Controller handles delete
-                    String result = reviewController
-                        .deleteReview(r.getId(), userId);
-                    if (result == null) {
-                        loadReviews(); // ✅ Refresh UI
-                    } else {
-                        javax.swing.JOptionPane
-                            .showMessageDialog(this,
-                                result, "Error",
-                                javax.swing.JOptionPane
-                                    .ERROR_MESSAGE);
-                    }
-                }
-            });
-            panel.add(delete);
-        }
-
-        return panel;
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

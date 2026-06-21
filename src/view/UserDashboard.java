@@ -31,52 +31,45 @@ public class UserDashboard extends javax.swing.JFrame {
     }
 
     private void loadRecentOrders() {
-        java.util.List<String[]> orders = dashController.getRecentOrders();
 
-        // Clear all order labels first
-        jLabel23.setText(""); jLabel26.setText(""); jLabel29.setText(""); jLabel32.setText("");
-        jLabel24.setText(""); jLabel27.setText(""); jLabel30.setText(""); jLabel33.setText("");
-        jLabel25.setText(""); jLabel28.setText(""); jLabel31.setText(""); jLabel34.setText("");
-        jLabel35.setText(""); jLabel36.setText(""); jLabel37.setText(""); jLabel38.setText("");
+    java.util.List<model.DashboardOrder> orders =
+            dashController.getDashboardOrders();
 
-        if (orders.size() >= 1) {
-            jLabel23.setText(orders.get(0)[0]);
-            jLabel26.setText(orders.get(0)[1]);
-            jLabel29.setText(orders.get(0)[2]);
-            jLabel32.setText(orders.get(0)[3]);
-        }
-        if (orders.size() >= 2) {
-            jLabel24.setText(orders.get(1)[0]);
-            jLabel27.setText(orders.get(1)[1]);
-            jLabel30.setText(orders.get(1)[2]);
-            jLabel33.setText(orders.get(1)[3]);
-        }
-        if (orders.size() >= 3) {
-            jLabel25.setText(orders.get(2)[0]);
-            jLabel28.setText(orders.get(2)[1]);
-            jLabel31.setText(orders.get(2)[2]);
-            jLabel34.setText(orders.get(2)[3]);
-        }
-        if (orders.size() >= 4) {
-            jLabel35.setText(orders.get(3)[0]);
-            jLabel36.setText(orders.get(3)[1]);
-            jLabel37.setText(orders.get(3)[2]);
-            jLabel38.setText(orders.get(3)[3]);
+    javax.swing.JLabel[] productLabels = {
+        jLabel23, jLabel24, jLabel25, jLabel35
+    };
+    javax.swing.JLabel[] dateLabels = {
+        jLabel26, jLabel27, jLabel28, jLabel36
+    };
+    javax.swing.JLabel[] priceLabels = {
+        jLabel29, jLabel30, jLabel31, jLabel37
+    };
+    javax.swing.JLabel[] statusLabels = {
+        jLabel32, jLabel33, jLabel34, jLabel38
+    };
+
+    for (int i = 0; i < 4; i++) {
+        productLabels[i].setText("");
+        dateLabels[i].setText("");
+        priceLabels[i].setText("");
+        statusLabels[i].setText("");
+
+        if (i < orders.size()) {
+            model.DashboardOrder order = orders.get(i);
+            productLabels[i].setText(order.getProductName());
+            dateLabels[i].setText(order.getOrderDate());
+            priceLabels[i].setText(order.getPrice());
+            statusLabels[i].setText(order.getStatus());
         }
     }
+}
 
-    private void loadRecentActivities() {
-        java.util.List<String> activities = dashController.getRecentActivities();
-
-        // Clear first
-        jLabel18.setText("");
-        jLabel20.setText("");
-        jLabel2.setText("");
-
-        if (activities.size() >= 1) jLabel18.setText(activities.get(0));
-        if (activities.size() >= 2) jLabel20.setText(activities.get(1));
-        if (activities.size() >= 3) jLabel2.setText(activities.get(2));
-    }
+private void loadRecentActivities() {
+    String[] activities = dashController.getDashboardActivities();
+    jLabel18.setText(activities[0]);
+    jLabel20.setText(activities[1]);
+    jLabel2.setText(activities[2]);
+}
 
     private void setupWindow() {
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -358,7 +351,7 @@ public class UserDashboard extends javax.swing.JFrame {
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 51, 153));
-        jLabel21.setText("Recent Order");
+        jLabel21.setText("Recent Orders");
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(58, 125, 68));
@@ -652,10 +645,19 @@ public class UserDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Redirecting to Orders page...\nComing soon!",
-        "Orders",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - Order History");
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    
+    // Change false -> passing isAdmin as false for user
+    view.OrderHistoryPage orderHistoryPage = new view.OrderHistoryPage(
+        dashController.getUsername(), dashController.getUserId(), false); // <-- add false
+    
+    frame.getContentPane().add(orderHistoryPage);
+    frame.pack();
+    frame.setSize(1550, 840);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -754,3 +756,4 @@ public class UserDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
 }
+

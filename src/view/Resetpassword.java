@@ -14,7 +14,8 @@ public class Resetpassword extends javax.swing.JFrame {
    
 public Resetpassword() {
     initComponents();
-    setupPasswordFields();
+    controller.ResetController.setupPasswordPlaceholder(Newpassword_textfield);
+    controller.ResetController.setupPasswordPlaceholder(Confirmpassword_textfield);
     
     this.setSize(1550, 840);
     this.setLocationRelativeTo(null);
@@ -23,51 +24,13 @@ public Resetpassword() {
 public Resetpassword(String email) {
     initComponents();
     this.userEmail = email;
-    setupPasswordFields();
+    controller.ResetController.setupPasswordPlaceholder(Newpassword_textfield);
+    controller.ResetController.setupPasswordPlaceholder(Confirmpassword_textfield);
     
     this.setSize(1550, 840);
     this.setLocationRelativeTo(null);
 }
 
-private void setupPasswordFields() {
-    // New Password Field
-    Newpassword_textfield.setEchoChar((char) 0);
-    Newpassword_textfield.setText("********");
-    Newpassword_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            String current = new String(Newpassword_textfield.getPassword());
-            if (current.equals("********")) {
-                Newpassword_textfield.setText("");
-                Newpassword_textfield.setEchoChar('*');
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (Newpassword_textfield.getPassword().length == 0) {
-                Newpassword_textfield.setEchoChar((char) 0);
-                Newpassword_textfield.setText("********");
-            }
-        }
-    });
-    
-    // Confirm Password Field
-    Confirmpassword_textfield.setEchoChar((char) 0);
-    Confirmpassword_textfield.setText("********");
-    Confirmpassword_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            String current = new String(Confirmpassword_textfield.getPassword());
-            if (current.equals("********")) {
-                Confirmpassword_textfield.setText("");
-                Confirmpassword_textfield.setEchoChar('*');
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (Confirmpassword_textfield.getPassword().length == 0) {
-                Confirmpassword_textfield.setEchoChar((char) 0);
-                Confirmpassword_textfield.setText("********");
-            }
-        }
-    });
-}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

@@ -7,6 +7,7 @@ public class AddProductController {
 
     private final ProductcatalogDAO productDAO = new ProductcatalogDAO();
 
+    // ─── Add Product ──────────────────────────────────────────
     public String addProduct(String name, String category,
                              String priceText, String imagePath,
                              String description, String stockText) {
@@ -15,23 +16,18 @@ public class AddProductController {
         if (name == null || name.trim().isEmpty()) {
             return "Product name is required!";
         }
-
         if (category == null || category.trim().isEmpty()) {
             return "Category is required!";
         }
-
         if (description == null || description.trim().isEmpty()) {
             return "Description is required!";
         }
-
         if (imagePath == null || imagePath.trim().isEmpty()) {
             return "Please add a product image!";
         }
-
         if (priceText == null || priceText.trim().isEmpty()) {
             return "Price is required!";
         }
-
         if (stockText == null || stockText.trim().isEmpty()) {
             return "Stock is required!";
         }
@@ -56,7 +52,6 @@ public class AddProductController {
         if (price <= 0) {
             return "Price must be greater than 0!";
         }
-
         if (stock < 0) {
             return "Stock cannot be negative!";
         }
@@ -99,5 +94,21 @@ public class AddProductController {
         );
 
         return success ? null : "Failed to add product. Try again.";
+    }
+
+    // ─── Clear Form Fields ────────────────────────────────────
+    public void clearFields(javax.swing.JTextField name,
+                            javax.swing.JTextField description,
+                            javax.swing.JTextField price,
+                            javax.swing.JTextField category,
+                            javax.swing.JTextField stock,
+                            javax.swing.JLabel imageLabel) {
+        name.setText("");
+        description.setText("");
+        price.setText("");
+        category.setText("");
+        stock.setText("");
+        imageLabel.setIcon(null);
+        imageLabel.setText("");
     }
 }

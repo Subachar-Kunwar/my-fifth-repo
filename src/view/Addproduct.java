@@ -60,7 +60,10 @@ private void saveProduct() {
                 "Success",
                 javax.swing.JOptionPane.INFORMATION_MESSAGE
         );
-        clearFields();
+    addProductController.clearFields(
+    jTextField1, jTextField2, jTextField3,
+    jTextField5, jTextField6, jLabel1);
+selectedImagePath = "";
     } else {
         javax.swing.JOptionPane.showMessageDialog(
                 this,
@@ -71,19 +74,6 @@ private void saveProduct() {
     }
 }
 
-private void clearFields() {
-
-    jTextField1.setText("");
-    jTextField2.setText("");
-    jTextField3.setText("");
-    jTextField5.setText("");
-    jTextField6.setText("");
-
-    jLabel1.setIcon(null);
-    jLabel1.setText("");
-
-    selectedImagePath = "";
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -466,14 +456,18 @@ private void clearFields() {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-                                      
+                                          
     int confirm = javax.swing.JOptionPane.showConfirmDialog(
         this,
         "Discard all entered data?",
         "Discard",
         javax.swing.JOptionPane.YES_NO_OPTION);
+    
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        clearFields();  // ✅ just clear, don't navigate
+        addProductController.clearFields(
+            jTextField1, jTextField2, jTextField3,
+            jTextField5, jTextField6, jLabel1);
+        selectedImagePath = "";
     }
 
     }//GEN-LAST:event_jButton9ActionPerformed

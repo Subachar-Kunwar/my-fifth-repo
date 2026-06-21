@@ -3,12 +3,17 @@ package controller;
 import dao.UserDAO;
 import dao.OrderDAO;
 import dao.ActivityDAO;
+import model.DashboardOrder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDashboardController {
 
-    private final UserDAO userDAO           = new UserDAO();
-    private final OrderDAO orderDAO         = new OrderDAO();
-    private final ActivityDAO activityDAO   = new ActivityDAO();
+    private final UserDAO userDAO         = new UserDAO();
+    private final OrderDAO orderDAO       = new OrderDAO();
+    private final ActivityDAO activityDAO = new ActivityDAO();
+
     private final String loggedInUsername;
     private final int loggedInUserId;
 
@@ -22,30 +27,33 @@ public class UserDashboardController {
         return "Welcome, " + loggedInUsername + "!";
     }
 
-    // ─── Username ─────────────────────────────────────────────
-    public String getUsername() {
-        return loggedInUsername;
-    }
+    public String getUsername() { return loggedInUsername; }
+    public int getUserId()      { return loggedInUserId; }
 
-    // ─── User ID ──────────────────────────────────────────────
-    public int getUserId() {
-        return loggedInUserId;
-    }
-
-    // ─── User Email ───────────────────────────────────────────
     public String getUserEmail() {
         return userDAO.getEmailById(loggedInUserId);
     }
 
-    // ─── Recent Orders ────────────────────────────────────────
-    public java.util.List<String[]> getRecentOrders() {
-        return orderDAO.getRecentOrdersByUser(loggedInUserId);
+    // ─── Dashboard Orders (max 4) ─────────────────────────────
+    public List<DashboardOrder> getDashboardOrders() {
+        List<String[]> orders = orderDAO.getRecentOrdersByUser(loggedInUserId);
+        List<DashboardOrder> dashboardOrders = new ArrayList<>();
+
+        for (String[] order : orders) {
+            dashboardOrders.add(new DashboardOrder(
+                order[0], order[1], order[2], order[3]
+            ));
+        }
+        return dashboardOrders;
     }
 
-    // ─── Recent Activities ────────────────────────────────────
-    public java.util.List<String> getRecentActivities() {
-        return activityDAO.getRecentActivitiesByUser(loggedInUserId);
+    // ─── Dashboard Activities (max 3) ─────────────────────────
+    public String[] getDashboardActivities() {
+        List<String> activities = activityDAO.getRecentActivitiesByUser(loggedInUserId);
+        String[] result = {"", "", ""};
+        for (int i = 0; i < activities.size() && i < 3; i++) {
+            result[i] = activities.get(i);
+        }
+        return result;
     }
-
-    // ❌ REMOVED confirmLogout() - UI dialogs belong in View
 }

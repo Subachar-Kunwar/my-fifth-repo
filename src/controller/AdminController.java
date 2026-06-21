@@ -1,29 +1,40 @@
 package controller;
 
 import dao.AdminDAO;
+import model.AdminRecentOrder;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminController {
 
     private final AdminDAO adminDAO = new AdminDAO();
 
-    public double getTotalSales() {
-        return adminDAO.getTotalSales();
+    // ─── Stats ────────────────────────────────────────────────
+    public String getTotalSalesText() {
+        return "Rs " + String.format("%,.0f", adminDAO.getTotalSales());
     }
 
-    public int getTotalOrders() {
-        return adminDAO.getTotalOrders();
+    public String getTotalOrdersText() {
+        return String.valueOf(adminDAO.getTotalOrders());
     }
 
-    public int getTotalUsers() {
-        return adminDAO.getTotalUsers();
+    public String getTotalUsersText() {
+        return String.valueOf(adminDAO.getTotalUsers());
     }
 
-    public int getTotalProducts() {
-        return adminDAO.getTotalProducts();
+    public String getTotalProductsText() {
+        return String.valueOf(adminDAO.getTotalProducts());
     }
 
-    public List<String[]> getRecentOrders() {
-        return adminDAO.getRecentOrders();
+    // ─── Recent Orders ────────────────────────────────────────
+    public List<AdminRecentOrder> getRecentOrders() {
+        List<String[]> raw = adminDAO.getRecentOrders();
+        List<AdminRecentOrder> orders = new ArrayList<>();
+
+        for (String[] o : raw) {
+            orders.add(new AdminRecentOrder(o[0], o[1], o[2], o[3]));
+        }
+        return orders;
     }
 }
