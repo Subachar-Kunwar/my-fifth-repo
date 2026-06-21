@@ -1,24 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-/**
- *
- * @author nikes
- */
 public class Resetpassword extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = 
-        java.util.logging.Logger.getLogger(Resetpassword.class.getName());
+
+    private static final java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(
+            Resetpassword.class.getName());
+
+    // ✅ Controller INSIDE class
+    private final controller.ResetController resetController =
+        new controller.ResetController();
 
     private String userEmail;
-
    
 public Resetpassword() {
     initComponents();
-    setupPasswordFields();
+    controller.ResetController.setupPasswordPlaceholder(Newpassword_textfield);
+    controller.ResetController.setupPasswordPlaceholder(Confirmpassword_textfield);
     
     this.setSize(1550, 840);
     this.setLocationRelativeTo(null);
@@ -27,51 +24,13 @@ public Resetpassword() {
 public Resetpassword(String email) {
     initComponents();
     this.userEmail = email;
-    setupPasswordFields();
+    controller.ResetController.setupPasswordPlaceholder(Newpassword_textfield);
+    controller.ResetController.setupPasswordPlaceholder(Confirmpassword_textfield);
     
     this.setSize(1550, 840);
     this.setLocationRelativeTo(null);
 }
 
-private void setupPasswordFields() {
-    // New Password Field
-    Newpassword_textfield.setEchoChar((char) 0);
-    Newpassword_textfield.setText("********");
-    Newpassword_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            String current = new String(Newpassword_textfield.getPassword());
-            if (current.equals("********")) {
-                Newpassword_textfield.setText("");
-                Newpassword_textfield.setEchoChar('*');
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (Newpassword_textfield.getPassword().length == 0) {
-                Newpassword_textfield.setEchoChar((char) 0);
-                Newpassword_textfield.setText("********");
-            }
-        }
-    });
-    
-    // Confirm Password Field
-    Confirmpassword_textfield.setEchoChar((char) 0);
-    Confirmpassword_textfield.setText("********");
-    Confirmpassword_textfield.addFocusListener(new java.awt.event.FocusAdapter() {
-        public void focusGained(java.awt.event.FocusEvent evt) {
-            String current = new String(Confirmpassword_textfield.getPassword());
-            if (current.equals("********")) {
-                Confirmpassword_textfield.setText("");
-                Confirmpassword_textfield.setEchoChar('*');
-            }
-        }
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (Confirmpassword_textfield.getPassword().length == 0) {
-                Confirmpassword_textfield.setEchoChar((char) 0);
-                Confirmpassword_textfield.setText("********");
-            }
-        }
-    });
-}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -117,7 +76,7 @@ private void setupPasswordFields() {
         Reset_btn.setText("Reset");
         Reset_btn.addActionListener(this::Reset_btnActionPerformed);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout MainpanalLayout = new javax.swing.GroupLayout(Mainpanal);
         Mainpanal.setLayout(MainpanalLayout);
@@ -137,9 +96,9 @@ private void setupPasswordFields() {
                             .addComponent(Reset_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(524, 524, 524))
             .addGroup(MainpanalLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(239, 239, 239)
                 .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -149,7 +108,7 @@ private void setupPasswordFields() {
                 .addGroup(MainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(MainpanalLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
+                        .addContainerGap()
                         .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(51, 51, 51)
                 .addComponent(Resetpassword_text, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -189,41 +148,39 @@ private void setupPasswordFields() {
     }//GEN-LAST:event_Confirmpassword_textfieldActionPerformed
 
     private void Reset_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Reset_btnActionPerformed
-        String newPassword = new String(Newpassword_textfield.getPassword()).trim();
-String confirmPassword = new String(Confirmpassword_textfield.getPassword()).trim();
+  
 
-// Remove placeholder text
-if (newPassword.equals("********")) newPassword = "";
-if (confirmPassword.equals("********")) confirmPassword = "";
+    // ✅ View only collects raw data
+    String newPassword = 
+        new String(Newpassword_textfield.getPassword()).trim();
+    String confirmPassword = 
+        new String(Confirmpassword_textfield.getPassword()).trim();
 
-if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Fields cannot be empty ❌");
-    return;
-}
-// Password length validation
-if (newPassword.length() < 8) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Weak Password", javax.swing.JOptionPane.ERROR_MESSAGE);
-    return;
-}
+    // Handle placeholders
+    if (newPassword.equals("********"))     newPassword = "";
+    if (confirmPassword.equals("********")) confirmPassword = "";
 
-if (!newPassword.equals(confirmPassword)) {
-    javax.swing.JOptionPane.showMessageDialog(this, "Passwords do not match ❌");
-    return;
-}
-System.out.println("Email used: " + userEmail);
-controller.ResetController controller = new controller.ResetController();
+    // ✅ Controller handles ALL validation and reset
+    String result = resetController.resetPassword(
+        userEmail, newPassword, confirmPassword);
 
-if (controller.resetPassword(userEmail, newPassword)) {
+    if (result == null) {
+        // ✅ Success
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Password Updated Successfully!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        new Login().setVisible(true);
+        this.dispose();
 
-    javax.swing.JOptionPane.showMessageDialog(this, "Password Updated Successfully ✅");
+    } else {
+        // ✅ Show error from Controller
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
 
-    new Login().setVisible(true);
-    this.dispose();
-
-} else {
-
-    javax.swing.JOptionPane.showMessageDialog(this, "Failed to update password ❌");
-}// TODO add your handling code here:
     }//GEN-LAST:event_Reset_btnActionPerformed
 
     private void Newpassword_textfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Newpassword_textfieldActionPerformed

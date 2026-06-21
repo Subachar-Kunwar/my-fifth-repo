@@ -1,131 +1,134 @@
-
-   package controller;
+package controller;
 
 import dao.NotificationDAO;
 import model.Notification;
-import view.Notification_page;
-
-import javax.swing.*;
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.ArrayList;
 
 public class NotificationController {
 
-    private Notification_page view;
-    private NotificationDAO dao;
-    private int userId;
+    private final NotificationDAO notificationDAO = new NotificationDAO();
+    private final int userId;
 
-    // Store checkbox & id mapping
-    private List<JCheckBox> checkBoxes = new ArrayList<>();
-    private List<Integer> notificationIds = new ArrayList<>();
-
-    public NotificationController(Notification_page view, int userId) {
-        this.view = view;
+    public NotificationController(int userId) {
         this.userId = userId;
-        this.dao = new NotificationDAO();
-
-        init();
     }
 
-    private void init() {
+    // ─── Get Notifications as formatted data ──────────────────
+    public List<String[]> getNotificationData() {
+        List<Notification> notifications = notificationDAO.getByUser(userId);
+        List<String[]> data = new ArrayList<>();
 
-        loadNotifications();
+        java.text.SimpleDateFormat sdf =
+            new java.text.SimpleDateFormat("dd MMM yyyy");
 
-        view.getProfileBtn().addActionListener(e ->
-                JOptionPane.showMessageDialog(view, "Dashboard open")
-        );
-
-        view.getCartBtn().addActionListener(e ->
-                JOptionPane.showMessageDialog(view, "Cart view")
-        );
-
-        view.getMarkAllBtn().addActionListener(e -> {
-            dao.markAllAsRead(userId);
-            loadNotifications();
-        });
-
-        view.getDeleteBtn().addActionListener(e -> deleteSelected());
-    }
-
-    private void loadNotifications() {
-
-        JPanel container = view.getNotificationContainer();
-        container.removeAll();
-
-        container.setLayout(new GridLayout(0, 1, 0, 15));
-        container.setBackground(new Color(232, 255, 233));
-
-        checkBoxes.clear();
-        notificationIds.clear();
-
-        List<Notification> list = dao.getByUser(userId);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
-
-        for (Notification n : list) {
-
-            JPanel panel = new JPanel();
-            panel.setLayout(null);
-            panel.setPreferredSize(new Dimension(900, 60));
-            panel.setBackground(n.isRead()
-                    ? new Color(200, 230, 200)
-                    : new Color(170, 218, 172));
-
-            JCheckBox check = new JCheckBox();
-            check.setBounds(20, 15, 30, 30);
-            check.setBackground(panel.getBackground());
-
-            JLabel msg = new JLabel(n.getMessage());
-            msg.setBounds(70, 20, 600, 20);
-
-            JLabel date = new JLabel(sdf.format(n.getCreatedAt()));
-            date.setBounds(720, 20, 150, 20);
-
-            panel.add(check);
-            panel.add(msg);
-            panel.add(date);
-
-            container.add(panel);
-
-            // Store mapping
-            checkBoxes.add(check);
-            notificationIds.add(n.getId());
+        for (Notification n : notifications) {
+            data.add(new String[]{
+                String.valueOf(n.getId()),
+                n.getMessage(),
+                sdf.format(n.getCreatedAt()),
+                String.valueOf(n.isRead())
+            });
         }
-
-        container.revalidate();
-        container.repaint();
+        return data;
     }
 
-    private void deleteSelected() {
+    // ─── Populate Panel ───────────────────────────────────────
+    public void populateNotificationPanel(javax.swing.JPanel panel) {
+        panel.removeAll();
 
-        List<Integer> idsToDelete = new ArrayList<>();
+        List<String[]> data = getNotificationData();
 
-        for (int i = 0; i < checkBoxes.size(); i++) {
-            if (checkBoxes.get(i).isSelected()) {
-                idsToDelete.add(notificationIds.get(i));
+        if (data.isEmpty()) {
+            javax.swing.JLabel none =
+                new javax.swing.JLabel("No notifications.");
+            none.setFont(new java.awt.Font("Segoe UI", 1, 16));
+            none.setHorizontalAlignment(javax.swing.JLabel.CENTER);
+            panel.add(none);
+        } else {
+            for (String[] item : data) {
+                panel.add(buildCard(
+                    Integer.parseInt(item[0]),
+                    item[1], item[2],
+                    Boolean.parseBoolean(item[3])
+                ));
             }
         }
 
-        if (idsToDelete.isEmpty()) {
-            JOptionPane.showMessageDialog(view,
-                    "No notification selected",
-                    "Info",
-                    JOptionPane.INFORMATION_MESSAGE);
-            return;
+        panel.revalidate();
+        panel.repaint();
+    }
+
+    // ─── Build a single card ──────────────────────────────────
+    private javax.swing.JPanel buildCard(
+            int id, String message, String date, boolean isRead) {
+
+        javax.swing.JPanel panel = new javax.swing.JPanel(null);
+        panel.setPreferredSize(new java.awt.Dimension(900, 60));
+        panel.setBackground(isRead
+            ? new java.awt.Color(200, 230, 200)
+            : new java.awt.Color(170, 218, 172));
+
+        javax.swing.JCheckBox check = new javax.swing.JCheckBox();
+        check.setBounds(20, 15, 30, 30);
+        check.setBackground(panel.getBackground());
+        check.putClientProperty("notifId", id);
+
+        javax.swing.JLabel msg = new javax.swing.JLabel(message);
+        msg.setBounds(70, 20, 600, 20);
+
+        javax.swing.JLabel dateLabel = new javax.swing.JLabel(date);
+        dateLabel.setBounds(720, 20, 150, 20);
+
+        panel.add(check);
+        panel.add(msg);
+        panel.add(dateLabel);
+
+        return panel;
+    }
+
+    // ─── Collect selected IDs ─────────────────────────────────
+    public List<Integer> getSelectedIds(javax.swing.JPanel panel) {
+        List<Integer> ids = new ArrayList<>();
+
+        for (java.awt.Component comp : panel.getComponents()) {
+            if (comp instanceof javax.swing.JPanel) {
+                for (java.awt.Component inner :
+                        ((javax.swing.JPanel) comp).getComponents()) {
+                    if (inner instanceof javax.swing.JCheckBox) {
+                        javax.swing.JCheckBox cb = (javax.swing.JCheckBox) inner;
+                        if (cb.isSelected()) {
+                            ids.add((Integer) cb.getClientProperty("notifId"));
+                        }
+                    }
+                }
+            }
         }
+        return ids;
+    }
 
-        int confirm = JOptionPane.showConfirmDialog(
-                view,
-                "Delete selected notifications?",
-                "Confirm Delete",
-                JOptionPane.YES_NO_OPTION
-        );
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            dao.deleteByIds(idsToDelete);
-            loadNotifications();
+    // ─── Mark All As Read ─────────────────────────────────────
+    public String markAllAsRead() {
+        try {
+            notificationDAO.markAllAsRead(userId);
+            return null;
+        } catch (Exception e) {
+            return "Failed to mark notifications as read.";
         }
     }
+
+    // ─── Delete Selected ──────────────────────────────────────
+    public String deleteNotifications(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return "No notifications selected!";
+        }
+        try {
+            notificationDAO.deleteByIds(ids);
+            return null;
+        } catch (Exception e) {
+            return "Failed to delete notifications.";
+        }
+    }
+
+    public int getUserId() { return userId; }
 }

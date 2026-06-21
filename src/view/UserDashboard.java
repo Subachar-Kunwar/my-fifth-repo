@@ -1,5 +1,10 @@
 package view;
 
+
+import view.Product_catalog;
+import view.Review_page;
+import view.Notification_page;
+
 public class UserDashboard extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = 
         java.util.logging.Logger.getLogger(UserDashboard.class.getName());
@@ -26,52 +31,45 @@ public class UserDashboard extends javax.swing.JFrame {
     }
 
     private void loadRecentOrders() {
-        java.util.List<String[]> orders = dashController.getRecentOrders();
 
-        // Clear all order labels first
-        jLabel23.setText(""); jLabel26.setText(""); jLabel29.setText(""); jLabel32.setText("");
-        jLabel24.setText(""); jLabel27.setText(""); jLabel30.setText(""); jLabel33.setText("");
-        jLabel25.setText(""); jLabel28.setText(""); jLabel31.setText(""); jLabel34.setText("");
-        jLabel35.setText(""); jLabel36.setText(""); jLabel37.setText(""); jLabel38.setText("");
+    java.util.List<model.DashboardOrder> orders =
+            dashController.getDashboardOrders();
 
-        if (orders.size() >= 1) {
-            jLabel23.setText(orders.get(0)[0]);
-            jLabel26.setText(orders.get(0)[1]);
-            jLabel29.setText(orders.get(0)[2]);
-            jLabel32.setText(orders.get(0)[3]);
-        }
-        if (orders.size() >= 2) {
-            jLabel24.setText(orders.get(1)[0]);
-            jLabel27.setText(orders.get(1)[1]);
-            jLabel30.setText(orders.get(1)[2]);
-            jLabel33.setText(orders.get(1)[3]);
-        }
-        if (orders.size() >= 3) {
-            jLabel25.setText(orders.get(2)[0]);
-            jLabel28.setText(orders.get(2)[1]);
-            jLabel31.setText(orders.get(2)[2]);
-            jLabel34.setText(orders.get(2)[3]);
-        }
-        if (orders.size() >= 4) {
-            jLabel35.setText(orders.get(3)[0]);
-            jLabel36.setText(orders.get(3)[1]);
-            jLabel37.setText(orders.get(3)[2]);
-            jLabel38.setText(orders.get(3)[3]);
+    javax.swing.JLabel[] productLabels = {
+        jLabel23, jLabel24, jLabel25, jLabel35
+    };
+    javax.swing.JLabel[] dateLabels = {
+        jLabel26, jLabel27, jLabel28, jLabel36
+    };
+    javax.swing.JLabel[] priceLabels = {
+        jLabel29, jLabel30, jLabel31, jLabel37
+    };
+    javax.swing.JLabel[] statusLabels = {
+        jLabel32, jLabel33, jLabel34, jLabel38
+    };
+
+    for (int i = 0; i < 4; i++) {
+        productLabels[i].setText("");
+        dateLabels[i].setText("");
+        priceLabels[i].setText("");
+        statusLabels[i].setText("");
+
+        if (i < orders.size()) {
+            model.DashboardOrder order = orders.get(i);
+            productLabels[i].setText(order.getProductName());
+            dateLabels[i].setText(order.getOrderDate());
+            priceLabels[i].setText(order.getPrice());
+            statusLabels[i].setText(order.getStatus());
         }
     }
+}
 
-    private void loadRecentActivities() {
-        java.util.List<String> activities = dashController.getRecentActivities();
-
-        // Clear first
-        jLabel18.setText("");
-        jLabel20.setText("");
-        jLabel2.setText("");
-
-        if (activities.size() >= 1) jLabel18.setText(activities.get(0));
-        if (activities.size() >= 2) jLabel20.setText(activities.get(1));
-        if (activities.size() >= 3) jLabel2.setText(activities.get(2));
-    }
+private void loadRecentActivities() {
+    String[] activities = dashController.getDashboardActivities();
+    jLabel18.setText(activities[0]);
+    jLabel20.setText(activities[1]);
+    jLabel2.setText(activities[2]);
+}
 
     private void setupWindow() {
         java.awt.Dimension screen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -108,9 +106,9 @@ public class UserDashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         Logo_productcatalog = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -164,19 +162,12 @@ public class UserDashboard extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(1550, 48));
         jPanel2.setLayout(null);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
         jPanel2.add(Logo_productcatalog);
-        Logo_productcatalog.setBounds(6, 6, 216, 31);
-
-        jButton8.setBackground(new java.awt.Color(58, 125, 68));
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
-        jButton8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 38)));
-        jButton8.addActionListener(this::jButton8ActionPerformed);
-        jPanel2.add(jButton8);
-        jButton8.setBounds(1421, 6, 50, 40);
+        Logo_productcatalog.setBounds(6, 6, 220, 40);
 
         jButton7.setBackground(new java.awt.Color(58, 125, 68));
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
         jButton7.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton7.setMinimumSize(new java.awt.Dimension(44, 45));
         jButton7.setPreferredSize(new java.awt.Dimension(44, 45));
@@ -185,12 +176,19 @@ public class UserDashboard extends javax.swing.JFrame {
         jButton7.setBounds(1365, 6, 44, 40);
 
         jButton6.setBackground(new java.awt.Color(58, 125, 68));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
         jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton6.setPreferredSize(new java.awt.Dimension(44, 45));
         jButton6.addActionListener(this::jButton6ActionPerformed);
         jPanel2.add(jButton6);
         jButton6.setBounds(1477, 6, 50, 40);
+
+        jButton8.setBackground(new java.awt.Color(58, 125, 68));
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
+        jButton8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 38)));
+        jButton8.addActionListener(this::jButton8ActionPerformed);
+        jPanel2.add(jButton8);
+        jButton8.setBounds(1420, 0, 50, 50);
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 1550, 48);
@@ -222,7 +220,7 @@ public class UserDashboard extends javax.swing.JFrame {
 
         jButton4.setBackground(new java.awt.Color(170, 218, 172));
         jButton4.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
-        jButton4.setText("Notification");
+        jButton4.setText("Notifications");
         jButton4.setOpaque(true);
         jButton4.setPreferredSize(new java.awt.Dimension(166, 50));
         jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -234,7 +232,7 @@ public class UserDashboard extends javax.swing.JFrame {
 
         jButton5.setBackground(new java.awt.Color(170, 218, 172));
         jButton5.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
-        jButton5.setForeground(new java.awt.Color(0, 0, 204));
+        jButton5.setForeground(new java.awt.Color(153, 0, 0));
         jButton5.setText("Log Out");
         jButton5.setPreferredSize(new java.awt.Dimension(166, 50));
         jButton5.addActionListener(this::jButton5ActionPerformed);
@@ -257,13 +255,13 @@ public class UserDashboard extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(5, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,7 +305,7 @@ public class UserDashboard extends javax.swing.JFrame {
         jLabel14.setText("User@gmail.com");
 
         jLabel40.setBackground(new java.awt.Color(0, 102, 51));
-        jLabel40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cattpic.png"))); // NOI18N
+        jLabel40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cattpic.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -320,13 +318,13 @@ public class UserDashboard extends javax.swing.JFrame {
                         .addComponent(jLabel12)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(0, 10, Short.MAX_VALUE)
-                        .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(0, 24, Short.MAX_VALUE)
+                        .addComponent(jLabel40)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(230, 230, 230))))
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67))))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,9 +338,9 @@ public class UserDashboard extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel14))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel40)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel7);
@@ -353,7 +351,7 @@ public class UserDashboard extends javax.swing.JFrame {
 
         jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 51, 153));
-        jLabel21.setText("Recent Order");
+        jLabel21.setText("Recent Orders");
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(58, 125, 68));
@@ -574,15 +572,22 @@ public class UserDashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-    if (dashController.confirmLogout(this)) {
+    
+    // ✅ View handles the confirm dialog
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to logout?",
+        "Confirm Logout",
+        javax.swing.JOptionPane.YES_NO_OPTION);
+
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
         javax.swing.JOptionPane.showMessageDialog(this,
             "Logging out... See you soon!",
             "Goodbye",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
         new Login().setVisible(true);
         this.dispose();
-    
-        }
+    }
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
@@ -593,8 +598,7 @@ public class UserDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
-     new Product_catalog(dashController.getUsername(), dashController.getUserId()).setVisible(true);
-    this.dispose();
+    
     }//GEN-LAST:event_jButton9MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -605,7 +609,14 @@ public class UserDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+      Product_catalog productCatalog = new Product_catalog(
+        dashController.getUsername(),
+        dashController.getUserId()
+    );
+    productCatalog.setSize(1550, 840);
+    productCatalog.setLocationRelativeTo(null);
+    productCatalog.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -617,34 +628,59 @@ public class UserDashboard extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to User Profile page...\nComing soon!",
+            "You are currently on User Profile !",
             "User Profile",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Notifications page...\nComing soon!",
-            "Notifications",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            Notification_page notifPage = new Notification_page(
+        dashController.getUsername(),
+        dashController.getUserId()
+    );
+    notifPage.setSize(1550, 840);
+    notifPage.setLocationRelativeTo(null);
+    notifPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Redirecting to Orders page...\nComing soon!",
-        "Orders",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - Order History");
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    
+    // Change false -> passing isAdmin as false for user
+    view.OrderHistoryPage orderHistoryPage = new view.OrderHistoryPage(
+        dashController.getUsername(), dashController.getUserId(), false); // <-- add false
+    
+    frame.getContentPane().add(orderHistoryPage);
+    frame.pack();
+    frame.setSize(1550, 840);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    javax.swing.JOptionPane.showMessageDialog(this,
-        "Redirecting to Reviews page...\nComing soon!",
-        "Reviews",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    Review_page reviewPage = new Review_page(
+        0,                              // productId = 0 (all reviews)
+        dashController.getUserId(),     // userId
+        dashController.getUsername()    // username
+    );
+    reviewPage.setSize(1550, 840);
+    reviewPage.setLocationRelativeTo(null);
+    reviewPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+     Notification_page notificationPage = new Notification_page(
+        dashController.getUsername(),
+        dashController.getUserId()
+    );
+    notificationPage.setSize(1550, 840);
+    notificationPage.setLocationRelativeTo(null);
+    notificationPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -720,3 +756,4 @@ public class UserDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
 }
+

@@ -65,7 +65,7 @@ public class Cart extends javax.swing.JFrame {
 
         JLabel logo = new JLabel();
         try {
-            logo.setIcon(new ImageIcon(getClass().getResource("/view/rewearLogo.jpeg")));
+            logo.setIcon(new ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg")));
         } catch (Exception e) {
             logo.setText("Re-WEAR");
             logo.setForeground(Color.WHITE);
@@ -75,7 +75,7 @@ public class Cart extends javax.swing.JFrame {
         logo.setBounds(10, 10, 216, 31);
 
         // Profile button
-        JButton profileBtn = createNavButton("/view/userrIcon.png");
+        JButton profileBtn = createNavButton("/group7/rewear/userrIcon.png");
         profileBtn.setBounds(1365, 6, 44, 40);
         profileBtn.addActionListener(e -> {
             new UserDashboard(username, userId).setVisible(true);
@@ -84,16 +84,16 @@ public class Cart extends javax.swing.JFrame {
         navbar.add(profileBtn);
 
         // Bell button
-        JButton bellBtn = createNavButton("/view/bellbtn.png");
+        JButton bellBtn = createNavButton("/group7/rewear/bellbtn.png");
         bellBtn.setBounds(1421, 6, 50, 40);
         bellBtn.addActionListener(e -> {
-            new Notification_page(userId).setVisible(true);
+            new Notification_page(username, userId).setVisible(true);
             this.dispose();
         });
         navbar.add(bellBtn);
 
         // Cart button (current page)
-        JButton cartBtn = createNavButton("/view/cartticon.png");
+        JButton cartBtn = createNavButton("/group7/rewear/cartticon.png");
         cartBtn.setBounds(1477, 6, 50, 40);
         cartBtn.addActionListener(e ->
             JOptionPane.showMessageDialog(this, "You are already on the Cart page!"));

@@ -1,29 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-import controller.ReviewController;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-/**
- *
- * @author LENOVO
- */
 public class Review_page extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Review_page.class.getName());
 
-    /**
-     * Creates new form Review_page
-     */
-    
-  
-public Review_page(int productId, int userId) {
+    private static final java.util.logging.Logger logger =
+        java.util.logging.Logger.getLogger(
+            Review_page.class.getName());
+
+    private int productId;
+    private int userId;
+    private String username;
+    private controller.ReviewController reviewController;
+
+public Review_page(int productId, int userId, String username) {
     initComponents();
-    new ReviewController(this, productId, userId);
+    this.productId  = productId;
+    this.userId     = userId;
+    this.username   = username;
+    this.reviewController =
+        new controller.ReviewController(productId, userId);
+    refreshReviews();
+}
+
+private void refreshReviews() {
+    reviewController.populateReviewPanel(jPanel11, this, this::refreshReviews);
 }
 
 
@@ -46,6 +45,9 @@ public Review_page(int productId, int userId) {
         BellBtn = new javax.swing.JButton();
         CartBtn = new javax.swing.JButton();
         Back = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -62,25 +64,28 @@ public Review_page(int productId, int userId) {
         jScrollPane1.setViewportView(jPanel11);
 
         Main_panal_productcatalog.add(jScrollPane1);
-        jScrollPane1.setBounds(120, 200, 1060, 390);
+        jScrollPane1.setBounds(120, 190, 1060, 390);
 
         navbar_product_catalog.setBackground(new java.awt.Color(58, 125, 68));
         navbar_product_catalog.setMinimumSize(new java.awt.Dimension(100, 48));
         navbar_product_catalog.setPreferredSize(new java.awt.Dimension(100, 88));
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         ProfileBtn.setBackground(new java.awt.Color(58, 125, 68));
         ProfileBtn.setForeground(new java.awt.Color(58, 125, 68));
-        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        ProfileBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
+        ProfileBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ProfileBtn.addActionListener(this::ProfileBtnActionPerformed);
 
         BellBtn.setBackground(new java.awt.Color(58, 125, 68));
-        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        BellBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
+        BellBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         BellBtn.addActionListener(this::BellBtnActionPerformed);
 
         CartBtn.setBackground(new java.awt.Color(58, 125, 68));
-        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        CartBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
+        CartBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         CartBtn.addActionListener(this::CartBtnActionPerformed);
 
         javax.swing.GroupLayout navbar_product_catalogLayout = new javax.swing.GroupLayout(navbar_product_catalog);
@@ -100,25 +105,46 @@ public Review_page(int productId, int userId) {
         );
         navbar_product_catalogLayout.setVerticalGroup(
             navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, navbar_product_catalogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(navbar_product_catalogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ProfileBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BellBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Logo_productcatalog))
-                .addGap(201, 201, 201))
+                    .addComponent(CartBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2))
+            .addGroup(navbar_product_catalogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Logo_productcatalog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         Main_panal_productcatalog.add(navbar_product_catalog);
         navbar_product_catalog.setBounds(0, 0, 1580, 48);
 
         Back.setBackground(new java.awt.Color(170, 218, 172));
-        Back.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        Back.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Back.setForeground(new java.awt.Color(0, 0, 153));
         Back.setText("Back");
         Back.addActionListener(this::BackActionPerformed);
         Main_panal_productcatalog.add(Back);
-        Back.setBounds(630, 710, 72, 27);
+        Back.setBounds(630, 710, 120, 50);
+
+        jButton1.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        jButton1.setText("Home");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+        Main_panal_productcatalog.add(jButton1);
+        jButton1.setBounds(30, 70, 72, 30);
+
+        jButton2.setBackground(new java.awt.Color(170, 218, 172));
+        jButton2.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
+        jButton2.setText("Reviews");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        Main_panal_productcatalog.add(jButton2);
+        jButton2.setBounds(120, 70, 90, 30);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/arrow.png"))); // NOI18N
+        Main_panal_productcatalog.add(jLabel2);
+        jLabel2.setBounds(100, 60, 20, 50);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,45 +163,79 @@ public Review_page(int productId, int userId) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
-
+UserDashboard userDash = new UserDashboard(username, userId);
+    userDash.setSize(1550, 840);
+    userDash.setLocationRelativeTo(null);
+    userDash.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_ProfileBtnActionPerformed
 
     private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
-
+     Notification_page notifPage = new Notification_page(
+        username,
+        userId
+    );
+    notifPage.setSize(1550, 840);
+    notifPage.setLocationRelativeTo(null);
+    notifPage.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
-
+// ✅ Coming soon
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Cart page coming soon!",
+            "Cart",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
-        // TODO add your handling code here:
+    
+    product_details productDetails = new product_details(productId, userId);
+    productDetails.setSize(1550, 840);
+    productDetails.setLocationRelativeTo(null);
+    productDetails.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_BackActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+     javax.swing.JOptionPane.showMessageDialog(this,
+        "You are currently on Reviews Page!",
+        "Reviews",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       UserDashboard userDash = new UserDashboard(username, userId);
+    userDash.setSize(1550, 840);
+    userDash.setLocationRelativeTo(null);
+    userDash.setVisible(true);
+    this.dispose();
+    
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+   public static void main(String args[]) {
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : 
+                javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Review_page().setVisible(true));
+    } catch (ReflectiveOperationException | 
+             javax.swing.UnsupportedLookAndFeelException ex) {
+        logger.log(java.util.logging.Level.SEVERE, null, ex);
     }
+
+    // ✅ Fix - pass all 3 parameters
+    java.awt.EventQueue.invokeLater(
+        () -> new Review_page(0, 1, "TestUser").setVisible(true));
+}
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Back;
@@ -184,16 +244,12 @@ public Review_page(int productId, int userId) {
     private javax.swing.JLabel Logo_productcatalog;
     private javax.swing.JPanel Main_panal_productcatalog;
     private javax.swing.JButton ProfileBtn;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel navbar_product_catalog;
     // End of variables declaration//GEN-END:variables
-public JPanel getReviewContainer() {
-    return jPanel11;
-}
-
-public JButton getBackButton() {
-    return Back;
-}
 }

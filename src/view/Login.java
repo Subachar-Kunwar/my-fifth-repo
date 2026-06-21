@@ -124,7 +124,7 @@ public Login() {
         show_hide_btn.setText("Show/Hide");
         show_hide_btn.addActionListener(this::show_hide_btnActionPerformed);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout mainpanalLayout = new javax.swing.GroupLayout(mainpanal);
         mainpanal.setLayout(mainpanalLayout);
@@ -143,37 +143,39 @@ public Login() {
                         .addGap(408, 408, 408)
                         .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(forgetpassword_btn)
-                            .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Logintocontinuetext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Username_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(Email_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(mainpanalLayout.createSequentialGroup()
-                                    .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(password_textfield)
-                                        .addComponent(passwordtext, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(show_hide_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(Login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(mainpanalLayout.createSequentialGroup()
+                                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(usernametext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Emailtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Logintocontinuetext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Username_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Email_textfield, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Login_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(7, 7, 7))
+                            .addGroup(mainpanalLayout.createSequentialGroup()
+                                .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(password_textfield))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(show_hide_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(634, 634, 634))))
             .addGroup(mainpanalLayout.createSequentialGroup()
                 .addGroup(mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainpanalLayout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainpanalLayout.createSequentialGroup()
                         .addGap(514, 514, 514)
-                        .addComponent(welcomebacktext)))
+                        .addComponent(welcomebacktext))
+                    .addGroup(mainpanalLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainpanalLayout.setVerticalGroup(
             mainpanalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainpanalLayout.createSequentialGroup()
                 .addComponent(logo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Logo_productcatalog, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
+                .addGap(11, 11, 11)
                 .addComponent(welcomebacktext, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Logintocontinuetext)
@@ -275,22 +277,26 @@ if (result != null) {
     String role = result[1];
     int userId = Integer.parseInt(result[2]);
 
-    if ("seller".equalsIgnoreCase(role)) {
-        JOptionPane.showMessageDialog(this,
-            "Login Successful!\n\nWelcome back, " + loggedUsername +
-            "\nRole: Seller\n\nRedirecting to Admin Dashboard...",
-            "Welcome", JOptionPane.INFORMATION_MESSAGE);
-        new AdminDashboard(loggedUsername).setVisible(true);
-        this.dispose();
+if ("seller".equalsIgnoreCase(role)) {
+    JOptionPane.showMessageDialog(this,
+        "Login Successful!\n\nWelcome back, " + loggedUsername +
+        "\nRole: Seller\n\n💰 Welcome back, Happy selling!",
+        "Welcome", JOptionPane.INFORMATION_MESSAGE);
 
-    } else if ("buyer".equalsIgnoreCase(role)) {
-        JOptionPane.showMessageDialog(this,
-            "Login Successful!\n\nWelcome back, " + loggedUsername +
-            "\nRole: Buyer\n\n🛍️Happy thrifting!",
-            "Welcome", JOptionPane.INFORMATION_MESSAGE);
-        new UserDashboard(loggedUsername, userId).setVisible(true);
-        this.dispose();
-    }
+    new AdminDashboard(loggedUsername).setVisible(true);
+    this.dispose();
+
+} else if ("buyer".equalsIgnoreCase(role)) {
+    JOptionPane.showMessageDialog(this,
+        "Login Successful!\n\nWelcome back, " + loggedUsername +
+        "\nRole: Buyer\n\n🛍️ Happy thrifting!",
+        "Welcome", JOptionPane.INFORMATION_MESSAGE);
+
+    new UserDashboard(loggedUsername, userId).setVisible(true);
+    this.dispose();
+}
+
+    
 } else {
     JOptionPane.showMessageDialog(this,
         "Authentication Failed!\nWrong Username, Email, or Password.\n\nPlease double check your credentials.",

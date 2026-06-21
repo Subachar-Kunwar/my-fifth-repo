@@ -45,169 +45,9 @@ public class EditProduct extends javax.swing.JPanel {
         frame.setVisible(true);
     }
 
-    // ✅ NEW METHOD: Show all products with their IDs
-    private void showAllProducts() {
-        java.util.List<model.Product> products = editController.getAllProducts();
-        
-        if (products.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No products found in database!",
-                "Empty",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-        
-        StringBuilder sb = new StringBuilder();
-        sb.append("ID  | Name                  | Category    | Price\n");
-        sb.append("─────────────────────────────────────────────\n");
-        for (model.Product p : products) {
-            sb.append(p.getId())
-              .append("   | ").append(p.getName())
-              .append(" | ").append(p.getCategory())
-              .append(" | Rs ").append(p.getPrice())
-              .append("\n");
-        }
-        
-        javax.swing.JTextArea textArea = new javax.swing.JTextArea(sb.toString());
-        textArea.setEditable(false);
-        textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
-        
-        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(textArea);
-        scrollPane.setPreferredSize(new java.awt.Dimension(600, 400));
-        
-        javax.swing.JOptionPane.showMessageDialog(this,
-            scrollPane,
-            "All Products - Note the ID",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }
+  
 
-    // ✅ UPDATED: Now shows product list before asking for ID
-    private boolean askForProductId() {
-        // Show product list first
-        showAllProducts();
-        
-        String input = javax.swing.JOptionPane.showInputDialog(
-            this,
-            "Enter Product ID from the list:",
-            "Product ID",
-            javax.swing.JOptionPane.QUESTION_MESSAGE);
-        
-        if (input == null || input.trim().isEmpty()) {
-            return false;
-        }
-        
-        try {
-            currentProductId = Integer.parseInt(input.trim());
-            return true;
-        } catch (NumberFormatException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Invalid Product ID! Must be a number.",
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-    }
-
-    // ✅ Helper: Load product data into fields
-    private boolean loadProductIntoFields(int productId) {
-        model.Product product = editController.getProductById(productId);
-        
-        if (product == null) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Product with ID " + productId + " not found!",
-                "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            currentProductId = -1;
-            return false;
-        }
-        
-        jTextField1.setText(product.getName());
-        jTextField3.setText(String.valueOf(product.getPrice()));
-        jTextField5.setText(product.getCategory());
-        
-        if (product.getImagePath() != null && !product.getImagePath().isEmpty()) {
-            try {
-                javax.swing.ImageIcon icon = new javax.swing.ImageIcon("src/" + product.getImagePath());
-                java.awt.Image scaled = icon.getImage()
-                    .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
-                jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
-            } catch (Exception ex) {
-                System.out.println("Image load error: " + ex.getMessage());
-            }
-        }
-        
-        return true;
-    }
-
-    // ✅ Helper: Clear all input fields
-    private void clearFields() {
-        jTextField1.setText("");
-        jTextField3.setText("");
-        jTextField5.setText("");
-        jTextField2.setText("");
-        jTextField6.setText("");
-        jLabel1.setIcon(null);
-        selectedImagePath = "";
-    }
-
-private void updateProduct() {
-    if (currentProductId == -1) {
-        if (!askForProductId()) return;
-        if (loadProductIntoFields(currentProductId)) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Product loaded! Edit fields and click Update Product again.",
-                "Loaded",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        }
-        return;
-    }
-
-    String name = jTextField1.getText().trim();
-    String priceText = jTextField3.getText().trim();
-    String category = jTextField5.getText().trim();
-    String description = jTextField2.getText().trim();
-    String stockText = jTextField6.getText().trim();
-
-    String result = editController.updateProduct(
-        currentProductId,
-        name,
-        category,
-        priceText,
-        description,
-        stockText,
-        selectedImagePath
-    );
-
-    if (result == null) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product updated successfully!", "Success",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        clearFields();
-        currentProductId = -1;
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-private void deleteProduct() {
-    if (currentProductId == -1) {
-        if (!askForProductId()) return;
-    }
-
-    String result = editController.deleteProduct(currentProductId);
-
-    if (result == null) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Product deleted successfully!", "Success",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        clearFields();
-        currentProductId = -1;
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-}
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -255,9 +95,9 @@ private void deleteProduct() {
         jPanel2.setBackground(new java.awt.Color(58, 125, 68));
         jPanel2.setLayout(null);
 
-        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
         jPanel2.add(Logo_productcatalog);
-        Logo_productcatalog.setBounds(10, 10, 216, 30);
+        Logo_productcatalog.setBounds(10, 10, 220, 30);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel2.setText("Admin");
@@ -507,12 +347,14 @@ private void deleteProduct() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    
-    // Dashboard button - acts as back button to Admin Dashboard
+  
+
     new AdminDashboard(adminUsername).setVisible(true);
-    
-    // Close current Add Product window
-    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+    java.awt.Window window =
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -536,44 +378,193 @@ private void deleteProduct() {
     }//GEN-LAST:event_jTextField6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-     // Delete Product
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(
-        this,
+   
+
+    // If no product loaded, ask for ID first
+    if (currentProductId == -1) {
+
+        // Show product list
+        String productListText = editController.getProductListText();
+        if (productListText == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No products found!",
+                "Empty",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        javax.swing.JTextArea textArea = new javax.swing.JTextArea(productListText);
+        textArea.setEditable(false);
+        textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
+        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(textArea);
+        scroll.setPreferredSize(new java.awt.Dimension(600, 400));
+        javax.swing.JOptionPane.showMessageDialog(this, scroll,
+            "All Products - Note the ID",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // Ask for ID
+        String input = javax.swing.JOptionPane.showInputDialog(this,
+            "Enter Product ID to delete:",
+            "Product ID",
+            javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+        int id = editController.parseProductId(input);
+        if (id == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Invalid Product ID!",
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        currentProductId = id;
+    }
+
+    // Confirm delete
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
         "Are you sure you want to delete this product?",
         "Delete Product",
         javax.swing.JOptionPane.YES_NO_OPTION,
         javax.swing.JOptionPane.WARNING_MESSAGE);
+
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        deleteProduct();
+        String result = editController.deleteProduct(currentProductId);
+        if (result == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product deleted successfully!", "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            
+    editController.clearFields(
+    jTextField1, jTextField2, jTextField3,
+    jTextField5, jTextField6, jLabel1);
+    selectedImagePath = "";
+
+            currentProductId = -1;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                result, "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
+
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    
+
     new Addproduct(adminUsername).showInFrame();
-    javax.swing.SwingUtilities.getWindowAncestor(this).dispose(); 
+    java.awt.Window window =
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-    updateProduct();
+                                        
+
+    // First click - no product loaded → ask for ID first
+    if (currentProductId == -1) {
+
+        String productListText = editController.getProductListText();
+        if (productListText == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No products found!", "Empty",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        javax.swing.JTextArea textArea = new javax.swing.JTextArea(productListText);
+        textArea.setEditable(false);
+        textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 14));
+        javax.swing.JScrollPane scroll = new javax.swing.JScrollPane(textArea);
+        scroll.setPreferredSize(new java.awt.Dimension(600, 400));
+        javax.swing.JOptionPane.showMessageDialog(this, scroll,
+            "All Products - Note the ID",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        String input = javax.swing.JOptionPane.showInputDialog(this,
+            "Enter Product ID from the list:",
+            "Product ID",
+            javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+        int id = editController.parseProductId(input);
+        if (id == -1) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Invalid Product ID!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        model.Product product = editController.loadProductIntoFields(
+            id, jTextField1, jTextField3, jTextField5,
+            jTextField2, jTextField6, jLabel1);
+
+        if (product == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Product not found!", "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        currentProductId = id;
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product loaded! Edit fields and click Update Product again.",
+            "Loaded",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        return;
+    }
+
+    // Second click - product already loaded → update it
+    String result = editController.updateProduct(
+        currentProductId,
+        jTextField1.getText().trim(),
+        jTextField5.getText().trim(),
+        jTextField3.getText().trim(),
+        jTextField2.getText().trim(),
+        jTextField6.getText().trim(),
+        selectedImagePath
+    );
+
+    if (result == null) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product updated successfully!", "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        editController.clearFields(
+            jTextField1, jTextField2, jTextField3,
+            jTextField5, jTextField6, jLabel1);
+        selectedImagePath = "";
+        currentProductId = -1;
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result, "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-                                         
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(
-        this,
+                                          
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
         "Clear all fields and start over?",
         "Cancel",
         javax.swing.JOptionPane.YES_NO_OPTION);
+
     if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-        clearFields();
-        currentProductId = -1;  // ✅ Reset product ID too
+        editController.clearFields(
+            jTextField1, jTextField2, jTextField3,
+            jTextField5, jTextField6, jLabel1);
+        selectedImagePath = "";
+        currentProductId = -1;
     }
+
 
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-    
+  
+
     javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
     chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
         "Image files", "jpg", "jpeg", "png"));
@@ -581,14 +572,13 @@ private void deleteProduct() {
     if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
         java.io.File file = chooser.getSelectedFile();
         selectedImagePath = file.getAbsolutePath();
-        javax.swing.ImageIcon icon =
-            new javax.swing.ImageIcon(selectedImagePath);
+        javax.swing.ImageIcon icon = new javax.swing.ImageIcon(selectedImagePath);
         java.awt.Image scaled = icon.getImage()
             .getScaledInstance(160, 150, java.awt.Image.SCALE_SMOOTH);
         jLabel1.setIcon(new javax.swing.ImageIcon(scaled));
         jLabel1.setText("");
-    
-}
+    }
+
     }//GEN-LAST:event_jButton6ActionPerformed
 
 

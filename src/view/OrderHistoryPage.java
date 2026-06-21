@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
 /**
@@ -10,12 +6,47 @@ package view;
  */
 public class OrderHistoryPage extends javax.swing.JPanel {
 
-    /**
-     * Creates new form OrderHistoryPage
-     */
-    public OrderHistoryPage() {
-        initComponents();
-    }
+    private String username;
+private int userId;
+private controller.OrderHistoryController orderHistoryController;
+private boolean isAdmin; 
+
+private javax.swing.JPanel ordersListPanel;
+
+public OrderHistoryPage() {
+    this("User", -1, false);
+}
+
+public OrderHistoryPage(String username, int userId) {
+    this(username, userId, false);
+}
+
+public OrderHistoryPage(String username, int userId, boolean isAdmin) {
+    initComponents();
+    this.username = username;
+    this.userId = userId;
+    this.isAdmin = isAdmin;
+    this.orderHistoryController = new controller.OrderHistoryController();
+
+    ordersListPanel = new javax.swing.JPanel();
+    ordersListPanel.setLayout(new java.awt.GridLayout(0, 1, 0, 15));
+    ordersListPanel.setBackground(new java.awt.Color(232, 255, 233));
+  
+    jScrollPane1.setViewportView(ordersListPanel);
+   
+
+    if (isAdmin) {
+    titleLabel.setText("All Orders");
+} else {
+    titleLabel.setText("My Orders");
+}
+    
+    loadOrderHistory();
+}
+
+private void loadOrderHistory() {
+    orderHistoryController.populateOrderPanel(ordersListPanel, userId, isAdmin);
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,6 +63,10 @@ public class OrderHistoryPage extends javax.swing.JPanel {
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel2 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        titleLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(232, 255, 233));
         setMinimumSize(new java.awt.Dimension(1550, 840));
@@ -41,44 +76,71 @@ public class OrderHistoryPage extends javax.swing.JPanel {
         jPanel3.setMinimumSize(new java.awt.Dimension(1550, 48));
         jPanel3.setLayout(null);
 
-        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/rewearLogo.jpeg"))); // NOI18N
+        Logo_productcatalog1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/rewearLogo.jpeg"))); // NOI18N
         jPanel3.add(Logo_productcatalog1);
-        Logo_productcatalog1.setBounds(10, 10, 216, 31);
+        Logo_productcatalog1.setBounds(10, 10, 220, 30);
 
         jButton9.setBackground(new java.awt.Color(58, 125, 68));
-        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/bellbtn.png"))); // NOI18N
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/bellbtn.png"))); // NOI18N
         jButton9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 38)));
         jButton9.addActionListener(this::jButton9ActionPerformed);
         jPanel3.add(jButton9);
-        jButton9.setBounds(1421, 6, 50, 40);
+        jButton9.setBounds(1420, 0, 50, 50);
 
         jButton10.setBackground(new java.awt.Color(58, 125, 68));
-        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/userrIcon.png"))); // NOI18N
+        jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/userrIcon.png"))); // NOI18N
         jButton10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton10.setMinimumSize(new java.awt.Dimension(44, 45));
         jButton10.setPreferredSize(new java.awt.Dimension(44, 45));
         jButton10.addActionListener(this::jButton10ActionPerformed);
         jPanel3.add(jButton10);
-        jButton10.setBounds(1365, 6, 44, 40);
+        jButton10.setBounds(1370, 0, 44, 50);
 
         jButton11.setBackground(new java.awt.Color(58, 125, 68));
-        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/cartticon.png"))); // NOI18N
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cartticon.png"))); // NOI18N
         jButton11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(58, 125, 68)));
         jButton11.setPreferredSize(new java.awt.Dimension(44, 45));
         jButton11.addActionListener(this::jButton11ActionPerformed);
         jPanel3.add(jButton11);
         jButton11.setBounds(1477, 6, 50, 40);
 
+        jScrollPane1.setBackground(new java.awt.Color(170, 218, 172));
+        jScrollPane1.setForeground(new java.awt.Color(170, 218, 172));
+
+        jPanel2.setBackground(new java.awt.Color(170, 218, 172));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1275, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 477, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(jPanel2);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1278, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1277, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 491, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
         );
+
+        jButton1.setBackground(new java.awt.Color(170, 218, 172));
+        jButton1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 204));
+        jButton1.setText("Back");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        titleLabel.setFont(new java.awt.Font("Arial Black", 1, 28)); // NOI18N
+        titleLabel.setText("My Orders");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -87,47 +149,80 @@ public class OrderHistoryPage extends javax.swing.JPanel {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(127, 127, 127)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(176, 176, 176)
+                .addGap(89, 89, 89)
+                .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 125, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 105, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Notifications page...\nComing soon!",
-            "Notifications",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
-    }//GEN-LAST:event_jButton9ActionPerformed
+    private void ProfileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProfileBtnActionPerformed
+
+    }//GEN-LAST:event_ProfileBtnActionPerformed
+
+    private void BellBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BellBtnActionPerformed
+
+    }//GEN-LAST:event_BellBtnActionPerformed
+
+    private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
+
+    }//GEN-LAST:event_CartBtnActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BackActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to User Profile page...\nComing soon!",
-            "User Profile",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    if (isAdmin) {
+        new view.AdminDashboard(username).setVisible(true);
+    } else {
+        new view.UserDashboard(username, userId).setVisible(true);
+    }
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Cart page...\nComing soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     if (isAdmin) {
+        // AdminDashboard only takes username (String)
+        new view.AdminDashboard(username).setVisible(true);
+    } else {
+        new view.UserDashboard(username, userId).setVisible(true);
+    }
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo_productcatalog1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

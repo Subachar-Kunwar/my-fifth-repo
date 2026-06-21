@@ -2,18 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/database/MySqlConnector.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/OrderDAO.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/CheckoutController.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/CartDAOTest/CartDAOTest.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Cart.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/OrderConformation.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Checkout.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/controller/CartController.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/model/CartItem.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/dao/ProductDetailDAO.java</file>
-            <file>file:/C:/Users/nikes/OneDrive/Documents/NetBeansProjects/Group-7-39B-Thrift-Managment-System/src/view/Notification_page.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
