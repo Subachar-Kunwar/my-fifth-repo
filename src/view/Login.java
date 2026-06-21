@@ -277,22 +277,26 @@ if (result != null) {
     String role = result[1];
     int userId = Integer.parseInt(result[2]);
 
-    if ("seller".equalsIgnoreCase(role)) {
-        JOptionPane.showMessageDialog(this,
-            "Login Successful!\n\nWelcome back, " + loggedUsername +
-            "\nRole: Seller\n\nRedirecting to Admin Dashboard...",
-            "Welcome", JOptionPane.INFORMATION_MESSAGE);
-        new AdminDashboard(loggedUsername).setVisible(true);
-        this.dispose();
+if ("seller".equalsIgnoreCase(role)) {
+    JOptionPane.showMessageDialog(this,
+        "Login Successful!\n\nWelcome back, " + loggedUsername +
+        "\nRole: Seller\n\n💰 Welcome back, Happy selling!",
+        "Welcome", JOptionPane.INFORMATION_MESSAGE);
 
-    } else if ("buyer".equalsIgnoreCase(role)) {
-        JOptionPane.showMessageDialog(this,
-            "Login Successful!\n\nWelcome back, " + loggedUsername +
-            "\nRole: Buyer\n\n🛍️Happy thrifting!",
-            "Welcome", JOptionPane.INFORMATION_MESSAGE);
-        new UserDashboard(loggedUsername, userId).setVisible(true);
-        this.dispose();
-    }
+    new AdminDashboard(loggedUsername).setVisible(true);
+    this.dispose();
+
+} else if ("buyer".equalsIgnoreCase(role)) {
+    JOptionPane.showMessageDialog(this,
+        "Login Successful!\n\nWelcome back, " + loggedUsername +
+        "\nRole: Buyer\n\n🛍️ Happy thrifting!",
+        "Welcome", JOptionPane.INFORMATION_MESSAGE);
+
+    new UserDashboard(loggedUsername, userId).setVisible(true);
+    this.dispose();
+}
+
+    
 } else {
     JOptionPane.showMessageDialog(this,
         "Authentication Failed!\nWrong Username, Email, or Password.\n\nPlease double check your credentials.",

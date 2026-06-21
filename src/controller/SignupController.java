@@ -46,18 +46,26 @@ public class SignupController {
         }
 
         // Step 5: Check if user already exists
-        logindata user = new logindata(username, email, password, userType);
-        if (userDao.checkUser(user)) {
+        // Use original (non-encrypted) email/username — only password gets encrypted
+        logindata checkData = new logindata(username, email, password, userType);
+        if (userDao.checkUser(checkData)) {
             return "Username or Email already exists!";
         }
 
-        // Step 6: Create user
+        // ✅ Step 6: ENCRYPT password before saving
+        String encryptedPassword = PasswordEncryptor.encrypt(password);
+        if (encryptedPassword == null) {
+            return "Encryption failed! Please try again.";
+        }
+
+        // Step 7: Create user with ENCRYPTED password
+        logindata user = new logindata(username, email, encryptedPassword, userType);
         boolean created = userDao.createUser(user);
         if (!created) {
             return "Registration failed! Please try again.";
         }
 
-        // Step 7: Add buyer/seller details
+        // Step 8: Add buyer/seller details
         int userId = userDao.getUserIdByEmail(email);
         if (userId != -1) {
             if (userType.equals("buyer")) {

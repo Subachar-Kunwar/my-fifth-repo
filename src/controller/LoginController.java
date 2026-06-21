@@ -22,7 +22,13 @@ public class LoginController {
             return null;
         }
 
-        // ✅ Delegate DB work to DAO - not Controller
-        return userDAO.login(username, email, password);
+        // ✅ Encrypt the entered password before comparing
+        String encryptedPassword = PasswordEncryptor.encrypt(password);
+        if (encryptedPassword == null) {
+            return null;
+        }
+
+        // ✅ Compare encrypted password with what's stored in DB
+        return userDAO.login(username, email, encryptedPassword);
     }
 }

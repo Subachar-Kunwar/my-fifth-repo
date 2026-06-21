@@ -1,5 +1,6 @@
 package view;
 
+
 public class AdminDashboard extends javax.swing.JFrame {
 
     private String adminUsername;
@@ -28,21 +29,17 @@ public AdminDashboard(String username) {
     setTitle("ReWear - Admin Dashboard");
     updateStats();
     
-    // Sales overview text
-    jLabel10.setText("Sales Overview — " + 
-        java.time.LocalDate.now().getMonth() + " " + 
-        java.time.LocalDate.now().getYear());
-
-    // ✅ ADD THIS - Make Recent Orders panel scrollable
-    ordersScroll = new javax.swing.JScrollPane(jPanel7);
-    ordersScroll.setBorder(null);
-    ordersScroll.setVerticalScrollBarPolicy(
-        javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    ordersScroll.setHorizontalScrollBarPolicy(
-        javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    getContentPane().remove(jPanel7);
-    getContentPane().add(ordersScroll);
-    ordersScroll.setBounds(780, 410, 620, 350);
+   
+// ✅ Make Recent Orders panel scrollable and use full bottom area
+ordersScroll = new javax.swing.JScrollPane(jPanel7);
+ordersScroll.setBorder(null);
+ordersScroll.setVerticalScrollBarPolicy(
+    javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+ordersScroll.setHorizontalScrollBarPolicy(
+    javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+getContentPane().remove(jPanel7);
+getContentPane().add(ordersScroll);
+ordersScroll.setBounds(240, 320, 1280, 470);   
 
     // Resize panels with window
     this.addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -64,8 +61,7 @@ public AdminDashboard(String username) {
             jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
             jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
 
-            // ✅ Resize the scroll pane instead of jPanel7
-            ordersScroll.setBounds(w - 650, 410, 620, h - 460);
+            ordersScroll.setBounds(240, 320, w - 260, h - 360);
 
             revalidate();
             repaint();
@@ -74,44 +70,42 @@ public AdminDashboard(String username) {
 }
    
 
-    private void updateStats() {
-        try {
-           double totalSales = adminController.getTotalSales();
-           jLabel3.setText("Rs " + String.format("%,.0f", totalSales));
+  private void updateStats() {
+    try {
+        // ─── Stats from Controller ─────────────────────────────
+        jLabel3.setText(adminController.getTotalSalesText());
+        jLabel5.setText(adminController.getTotalOrdersText());
+        jLabel7.setText(adminController.getTotalUsersText());
+        jLabel9.setText(adminController.getTotalProductsText());
 
-           int totalOrders = adminController.getTotalOrders(); 
-           jLabel5.setText(String.valueOf(totalOrders));
+        // ─── Recent Orders ─────────────────────────────────────
+        java.util.List<model.AdminRecentOrder> orders =
+                adminController.getRecentOrders();
 
-           int totalUsers = adminController.getTotalUsers();
-           jLabel7.setText(String.valueOf(totalUsers));
+        javax.swing.JLabel[] productLabels = { jLabel12, jLabel13, jLabel14 };
+        javax.swing.JLabel[] dateLabels    = { jLabel15, jLabel16, jLabel17 };
+        javax.swing.JLabel[] priceLabels   = { jLabel18, jLabel19, jLabel20 };
+        javax.swing.JLabel[] statusLabels  = { jLabel21, jLabel22, jLabel23 };
 
-int totalProducts = adminController.getTotalProducts();
-jLabel9.setText(String.valueOf(totalProducts));
+        for (int i = 0; i < 3; i++) {
+            productLabels[i].setText("");
+            dateLabels[i].setText("");
+            priceLabels[i].setText("");
+            statusLabels[i].setText("");
 
-java.util.List<String[]> recentOrders = adminController.getRecentOrders();
-            if (recentOrders.size() >= 1) {
-                jLabel12.setText(recentOrders.get(0)[0]);
-                jLabel15.setText(recentOrders.get(0)[1]);
-                jLabel18.setText(recentOrders.get(0)[2]);
-                jLabel21.setText(recentOrders.get(0)[3]);
+            if (i < orders.size()) {
+                model.AdminRecentOrder o = orders.get(i);
+                productLabels[i].setText(o.getProductName());
+                dateLabels[i].setText(o.getOrderDate());
+                priceLabels[i].setText(o.getPrice());
+                statusLabels[i].setText(o.getStatus());
             }
-            if (recentOrders.size() >= 2) {
-                jLabel13.setText(recentOrders.get(1)[0]);
-                jLabel16.setText(recentOrders.get(1)[1]);
-                jLabel19.setText(recentOrders.get(1)[2]);
-                jLabel22.setText(recentOrders.get(1)[3]);
-            }
-            if (recentOrders.size() >= 3) {
-                jLabel14.setText(recentOrders.get(2)[0]);
-                jLabel17.setText(recentOrders.get(2)[1]);
-                jLabel20.setText(recentOrders.get(2)[2]);
-                jLabel23.setText(recentOrders.get(2)[3]);
-            }
-        } catch (Exception ex) {
-            System.out.println("Error updating stats: " + ex.getMessage());
         }
+    } catch (Exception ex) {
+        System.out.println("Error updating stats: " + ex.getMessage());
     }
-
+}
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,7 +139,6 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
         jPanel6 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -177,6 +170,7 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton2.setText("Orders ");
         jButton2.setPreferredSize(new java.awt.Dimension(146, 36));
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setBackground(new java.awt.Color(170, 218, 172));
         jButton3.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
@@ -413,16 +407,11 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
         getContentPane().add(jPanel6);
         jPanel6.setBounds(1160, 170, 240, 130);
 
-        jLabel10.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jLabel10.setText("Sales Overview");
-        getContentPane().add(jLabel10);
-        jLabel10.setBounds(240, 350, 190, 50);
-
         jPanel7.setBackground(new java.awt.Color(170, 218, 172));
 
         jLabel11.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(0, 51, 153));
-        jLabel11.setText("Recent Order");
+        jLabel11.setText("Recent Orders");
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(58, 125, 68));
@@ -483,30 +472,36 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
                 .addGap(47, 47, 47)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(79, 79, 79)
+                                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(116, 116, 116))
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(100, 100, 100)))
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(28, 28, 28)
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel19)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(102, 102, 102)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(10, 10, 10)))
-                .addGap(25, 25, 25))
+                            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -520,22 +515,25 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel21))
                 .addGap(40, 40, 40)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19)
-                    .addComponent(jLabel22))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1))
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel22)))
                 .addGap(52, 52, 52)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel20)
                     .addComponent(jLabel23))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel7);
-        jPanel7.setBounds(900, 410, 500, 350);
+        jPanel7.setBounds(260, 400, 1140, 350);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -584,6 +582,26 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+                                           
+    
+    // ✅ Open OrderHistoryPage in admin mode (sees ALL orders)
+    OrderHistoryPage orderHistoryPanel = 
+        new OrderHistoryPage(adminUsername, -1, true);
+    
+    javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - All Orders");
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(orderHistoryPanel);
+    frame.pack();
+    frame.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    frame.setMinimumSize(new java.awt.Dimension(1000, 600));
+    frame.setVisible(true);
+    
+    // Close admin dashboard
+    this.dispose();
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo_productcatalog;
@@ -595,7 +613,6 @@ java.util.List<String[]> recentOrders = adminController.getRecentOrders();
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

@@ -198,19 +198,15 @@ private void loadProducts() {
         double[] range = getSelectedPriceRange();
         String search = getSearchText();
 
-        System.out.println("Searching for: " + search);
-
         java.util.List<model.Product> products = productController
             .getFilteredProducts(category, range[0], range[1], search);
 
-        if (products == null) {
-    products = new java.util.ArrayList<>();
-}
-
+        if (products == null) products = new java.util.ArrayList<>();
 
         products = productController.sortProducts(
-        products, (String) sortComboBox.getSelectedItem());
+            products, (String) sortComboBox.getSelectedItem());
 
+        // Search label
         if (search != null && !search.isEmpty()) {
             searchResultLabel.setText("Search results for: \"" + search + "\"");
             searchResultLabel.setVisible(true);
@@ -218,9 +214,16 @@ private void loadProducts() {
             searchResultLabel.setVisible(false);
         }
 
-        updateFilterLabel(category, range, search);
+        // Filter + count
+        currentFilterLabel.setText(productController.getFilterLabelText(
+            category, range[0], range[1], search));
         productCountLabel.setText(products.size() + " products found");
-        displayProducts(products);
+
+        // Controller paints the grid
+        productController.populateProductGrid(
+            panal_forscroll, products, loggedInUserId,
+            this, () -> this.dispose());
+
     } catch (Exception ex) {
         System.out.println("Error: " + ex.getMessage());
         ex.printStackTrace();
@@ -255,148 +258,6 @@ private void loadProducts() {
         return text.equals("Search Products.....") ? "" : text;
     }
 
-    private void updateFilterLabel(String category,
-                                    double[] range, String search) {
-        if (search != null && !search.isEmpty()) {
-            currentFilterLabel.setText("<html>Currently showing:<br>"
-                + "<b>Search: \"" + search + "\"</b></html>");
-            return;
-        }
-        boolean hasCategory = category != null;
-        boolean hasPrice = range[0] > 0 || range[1] < Double.MAX_VALUE;
-
-        if (hasCategory && hasPrice) {
-            currentFilterLabel.setText("<html>Currently showing:<br><b>"
-                + category + "</b><br>Rs "
-                + (int) range[0] + " - " + (int) range[1] + "</html>");
-        } else if (hasCategory) {
-            currentFilterLabel.setText("<html>Currently showing:<br><b>"
-                + category + "</b></html>");
-        } else if (hasPrice) {
-            currentFilterLabel.setText("<html>Currently showing:<br><b>Rs "
-                + (int) range[0] + " - " + (int) range[1] + "</b></html>");
-        } else {
-            currentFilterLabel.setText("<html>Currently showing:"
-                + "<br><b>All Products</b></html>");
-        }
-    }
-
-    private void displayProducts(java.util.List<model.Product> products) {
-        panal_forscroll.removeAll();
-
-        if (products == null || products.isEmpty()) {
-            panal_forscroll.setLayout(
-                new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 20));
-            javax.swing.JLabel none =
-                new javax.swing.JLabel("No products found.");
-            none.setFont(new java.awt.Font("Candara", 1, 28));
-            none.setForeground(java.awt.Color.BLACK);
-            panal_forscroll.add(none);
-        } else {
-            panal_forscroll.setLayout(
-                new java.awt.GridLayout(0, 3, 20, 20));
-            for (model.Product p : products) {
-                panal_forscroll.add(createProductCard(p));
-            }
-        }
-
-        panal_forscroll.revalidate();
-        panal_forscroll.repaint();
-    }
-
-    private javax.swing.JPanel createProductCard(model.Product p) {
-        javax.swing.JPanel card = new javax.swing.JPanel();
-        card.setLayout(new java.awt.BorderLayout());
-        card.setPreferredSize(new java.awt.Dimension(200, 275));
-        card.setBackground(java.awt.Color.WHITE);
-        card.setBorder(javax.swing.BorderFactory.createLineBorder(
-            new java.awt.Color(200, 200, 200)));
-
-        // Image
-        javax.swing.JLabel imgLabel = new javax.swing.JLabel();
-        imgLabel.setPreferredSize(new java.awt.Dimension(200, 200));
-        imgLabel.setHorizontalAlignment(javax.swing.JLabel.CENTER);
-        imgLabel.setBackground(new java.awt.Color(240, 240, 240));
-        imgLabel.setOpaque(true);
-
-        try {
-            if (p.getImagePath() != null && !p.getImagePath().isEmpty()) {
-                java.net.URL imgURL = getClass()
-                    .getResource("/" + p.getImagePath());
-                if (imgURL != null) {
-                    javax.swing.ImageIcon icon =
-                        new javax.swing.ImageIcon(imgURL);
-                    java.awt.Image scaled = icon.getImage()
-                        .getScaledInstance(200, 200,
-                            java.awt.Image.SCALE_SMOOTH);
-                    imgLabel.setIcon(new javax.swing.ImageIcon(scaled));
-                } else {
-                    imgLabel.setText("No Image");
-                }
-            } else {
-                imgLabel.setText("No Image");
-            }
-        } catch (Exception e) {
-            imgLabel.setText("No Image");
-        }
-
-// Bottom info panel
-javax.swing.JPanel infoPanel = new javax.swing.JPanel();
-infoPanel.setLayout(new java.awt.BorderLayout());
-infoPanel.setBackground(java.awt.Color.WHITE);
-infoPanel.setBorder(javax.swing.BorderFactory
-    .createEmptyBorder(5, 8, 5, 8));
-
-// Product name
-javax.swing.JLabel nameLabel = new javax.swing.JLabel(p.getName());
-nameLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-nameLabel.setForeground(java.awt.Color.BLACK);
-nameLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
-
-// Price
-javax.swing.JLabel priceLabel = new javax.swing.JLabel(
-    "Rs " + (int) p.getPrice());
-priceLabel.setFont(new java.awt.Font("Segoe UI", 1, 13));
-priceLabel.setForeground(new java.awt.Color(58, 125, 68));
-priceLabel.setHorizontalAlignment(javax.swing.JLabel.RIGHT);
-
-// Stock
-javax.swing.JLabel stockLabel = new javax.swing.JLabel(
-    "Stock: " + p.getStock());
-stockLabel.setFont(new java.awt.Font("Segoe UI", 0, 11));
-stockLabel.setForeground(p.getStock() > 0 ? 
-    new java.awt.Color(100, 100, 100) : java.awt.Color.RED);
-stockLabel.setHorizontalAlignment(javax.swing.JLabel.LEFT);
-
-// Name + price row
-javax.swing.JPanel topRow = new javax.swing.JPanel(
-    new java.awt.BorderLayout());
-topRow.setBackground(java.awt.Color.WHITE);
-topRow.add(nameLabel, java.awt.BorderLayout.WEST);
-topRow.add(priceLabel, java.awt.BorderLayout.EAST);
-
-infoPanel.add(topRow, java.awt.BorderLayout.NORTH);
-infoPanel.add(stockLabel, java.awt.BorderLayout.SOUTH);
-
-// Buy button
-javax.swing.JButton buyBtn = new javax.swing.JButton("Buy Now");
-buyBtn.setBackground(new java.awt.Color(58, 125, 68));
-buyBtn.setForeground(java.awt.Color.WHITE);
-buyBtn.setFont(new java.awt.Font("Segoe UI", 1, 12));
-buyBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-buyBtn.addActionListener(e -> {
-    
-    new product_details(p.getId(), loggedInUserId).setVisible(true);
-    this.dispose();
-});
-
-infoPanel.add(buyBtn, java.awt.BorderLayout.CENTER);
-card.add(imgLabel, java.awt.BorderLayout.CENTER);
-card.add(infoPanel, java.awt.BorderLayout.SOUTH);
-
-return card;
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.

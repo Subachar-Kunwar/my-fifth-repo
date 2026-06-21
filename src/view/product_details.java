@@ -18,57 +18,32 @@ public class product_details extends javax.swing.JFrame {
         this(1, 1);
     }
 
-    public product_details(int productId, int userId) {
-        initComponents();
-        this.productId = productId;
-        this.userId    = userId;
-        
-        // ✅ Get username from DAO
-        this.username = new dao.UserDAO().getUsernameById(userId);
+private controller.ProductDetailController detailController;
 
-        controller.ProductDetailController detailController =
-            new controller.ProductDetailController(productId, userId);
+public product_details(int productId, int userId) {
+    initComponents();
+    this.productId = productId;
+    this.userId    = userId;
+    this.username  = new dao.UserDAO().getUsernameById(userId);
 
-        loadProductDetails(detailController);
-        setupStarRating();
+    this.detailController = 
+        new controller.ProductDetailController(productId, userId);
+
+    // ✅ Controller populates the UI
+    model.Product product = detailController.populateProductFields(
+        Product_name, Product_price, Size_of_product,
+        Descriptionhere_of_product, photo);
+
+    if (product == null) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product not found!", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
-    private void loadProductDetails(
-            controller.ProductDetailController detailController) {
+    setupStarRating();
+}
 
-        model.Product product = detailController.getProduct();
 
-        if (product == null) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Product not found!", "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Product_name.setText(product.getName());
-        Product_price.setText(String.valueOf(product.getPrice()));
-        Size_of_product.setText(product.getCategory());
-        Descriptionhere_of_product.setText(product.getDescription());
-
-        if (product.getImagePath() != null &&
-                !product.getImagePath().isEmpty()) {
-            try {
-                java.net.URL imgURL =
-                    getClass().getResource("/" + product.getImagePath());
-                if (imgURL != null) {
-                    javax.swing.ImageIcon icon =
-                        new javax.swing.ImageIcon(imgURL);
-                    java.awt.Image scaled = icon.getImage()
-                        .getScaledInstance(250, 220,
-                            java.awt.Image.SCALE_SMOOTH);
-                    photo.setIcon(new javax.swing.ImageIcon(scaled));
-                    photo.setText("");
-                }
-            } catch (Exception e) {
-                photo.setText("No Image");
-            }
-        }
-    }
 
     private int selectedRating = 0;
 
@@ -391,13 +366,8 @@ public class product_details extends javax.swing.JFrame {
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
+                                     
 
-
-    // ✅ Create controller
-    controller.ProductDetailController detailController =
-        new controller.ProductDetailController(productId, userId);
-
-    // ✅ Send raw data to Controller
     String reviewText = jTextArea1.getText().trim();
     String result = detailController.submitReview(selectedRating, reviewText);
 
@@ -407,14 +377,9 @@ public class product_details extends javax.swing.JFrame {
             "Success",
             javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-        // Reset stars - pure UI
         jTextArea1.setText("");
         selectedRating = 0;
-        javax.swing.JLabel[] stars = {star1, star2, star3, star4, star5};
-        for (javax.swing.JLabel star : stars) {
-            star.setText("☆");
-            star.setForeground(java.awt.Color.BLACK);
-        }
+        detailController.resetStarRating(star1, star2, star3, star4, star5);
     } else {
         javax.swing.JOptionPane.showMessageDialog(this,
             result, "Error",

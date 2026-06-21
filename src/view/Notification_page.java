@@ -16,161 +16,20 @@ public class Notification_page extends javax.swing.JFrame {
     }
 
     // ✅ Main constructor
-    public Notification_page(String username, int userId) {
-        initComponents();
-        this.username = username;
-        this.userId   = userId;
-        this.notifController =
-            new controller.NotificationController(userId);
-        loadNotifications();
-        setupButtons();
-    }
+public Notification_page(String username, int userId) {
+    initComponents();
+    this.username = username;
+    this.userId   = userId;
+    this.notifController =
+        new controller.NotificationController(userId);
+    refreshNotifications();
+}
 
-    // ─── Load Notifications - Much Simpler Now ────────────────
-    private void loadNotifications() {
-        jPanel11.removeAll();
+private void refreshNotifications() {
+    notifController.populateNotificationPanel(jPanel11);
+}
 
-        // ✅ Controller returns simple String arrays
-        java.util.List<String[]> data =
-            notifController.getNotificationData();
 
-        if (data.isEmpty()) {
-            javax.swing.JLabel none =
-                new javax.swing.JLabel("No notifications.");
-            none.setFont(new java.awt.Font("Segoe UI", 1, 16));
-            none.setHorizontalAlignment(
-                javax.swing.JLabel.CENTER);
-            jPanel11.add(none);
-        } else {
-            for (String[] item : data) {
-                // item[0]=id, item[1]=message, 
-                // item[2]=date, item[3]=isRead
-                jPanel11.add(createCard(
-                    Integer.parseInt(item[0]),
-                    item[1], item[2],
-                    Boolean.parseBoolean(item[3])));
-            }
-        }
-
-        jPanel11.revalidate();
-        jPanel11.repaint();
-    }
-
-    // ─── Create Card - Simple ─────────────────────────────────
-    private javax.swing.JPanel createCard(
-            int id, String message,
-            String date, boolean isRead) {
-
-        javax.swing.JPanel panel =
-            new javax.swing.JPanel(null);
-        panel.setPreferredSize(
-            new java.awt.Dimension(900, 60));
-        panel.setBackground(isRead
-            ? new java.awt.Color(200, 230, 200)
-            : new java.awt.Color(170, 218, 172));
-
-        javax.swing.JCheckBox check =
-            new javax.swing.JCheckBox();
-        check.setBounds(20, 15, 30, 30);
-        check.setBackground(panel.getBackground());
-        check.putClientProperty("notifId", id);
-
-        javax.swing.JLabel msg =
-            new javax.swing.JLabel(message);
-        msg.setBounds(70, 20, 600, 20);
-
-        javax.swing.JLabel dateLabel =
-            new javax.swing.JLabel(date);
-        dateLabel.setBounds(720, 20, 150, 20);
-
-        panel.add(check);
-        panel.add(msg);
-        panel.add(dateLabel);
-
-        return panel;
-    }
-
-    // ─── Setup Buttons ────────────────────────────────────────
-    private void setupButtons() {
-
-        jButton1.addActionListener(e -> {
-            String result = notifController.markAllAsRead();
-            if (result == null) {
-                loadNotifications();
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "All marked as read!",
-                    "Success",
-                    javax.swing.JOptionPane
-                        .INFORMATION_MESSAGE);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    result, "Error",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
-            }
-        });
-
-        jButton2.addActionListener(e -> {
-            java.util.List<Integer> selectedIds =
-                getSelectedIds();
-
-            if (selectedIds.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "No notifications selected!",
-                    "Info",
-                    javax.swing.JOptionPane
-                        .INFORMATION_MESSAGE);
-                return;
-            }
-
-            int confirm = javax.swing.JOptionPane
-                .showConfirmDialog(this,
-                    "Delete selected?",
-                    "Confirm",
-                    javax.swing.JOptionPane.YES_NO_OPTION);
-
-            if (confirm ==
-                    javax.swing.JOptionPane.YES_OPTION) {
-                String result = notifController
-                    .deleteNotifications(selectedIds);
-                if (result == null) {
-                    loadNotifications();
-                } else {
-                    javax.swing.JOptionPane
-                        .showMessageDialog(this,
-                            result, "Error",
-                            javax.swing.JOptionPane
-                                .ERROR_MESSAGE);
-                }
-            }
-        });
-    }
-
-    // ─── Get Selected IDs from checkboxes ─────────────────────
-    private java.util.List<Integer> getSelectedIds() {
-        java.util.List<Integer> ids =
-            new java.util.ArrayList<>();
-
-        for (java.awt.Component comp :
-                jPanel11.getComponents()) {
-            if (comp instanceof javax.swing.JPanel) {
-                for (java.awt.Component inner :
-                        ((javax.swing.JPanel) comp)
-                            .getComponents()) {
-                    if (inner instanceof
-                            javax.swing.JCheckBox) {
-                        javax.swing.JCheckBox cb =
-                            (javax.swing.JCheckBox) inner;
-                        if (cb.isSelected()) {
-                            ids.add((Integer) cb
-                                .getClientProperty(
-                                    "notifId"));
-                        }
-                    }
-                }
-            }
-        }
-        return ids;
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -201,6 +60,7 @@ public class Notification_page extends javax.swing.JFrame {
         jButton1.setBackground(new java.awt.Color(170, 218, 172));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton1.setText("Mark all as read");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
         Main_panal_productcatalog.add(jButton1);
         jButton1.setBounds(530, 700, 170, 40);
 
@@ -328,7 +188,31 @@ public class Notification_page extends javax.swing.JFrame {
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-     // ✅ Handled in setupButtons() - nothing needed here
+        java.util.List<Integer> selectedIds =
+            notifController.getSelectedIds(jPanel11);
+
+        if (selectedIds.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No notifications selected!",
+                "Info",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+            "Delete selected?", "Confirm",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            String result = notifController.deleteNotifications(selectedIds);
+            if (result == null) {
+                refreshNotifications();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    result, "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -339,6 +223,21 @@ public class Notification_page extends javax.swing.JFrame {
     this.dispose();
 
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         String result = notifController.markAllAsRead();
+        if (result == null) {
+            refreshNotifications();
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "All marked as read!",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                result, "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
