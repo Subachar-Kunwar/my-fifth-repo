@@ -3,7 +3,7 @@ package controller;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpExchange;
-import dao.OrderDAO; // Importing your existing OrderDAO
+import dao.OrderDAO; 
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
@@ -26,10 +26,38 @@ public class PayementController {
                     String query = exchange.getRequestURI().getQuery();
                     System.out.println("Payment Success Query Data: " + query);
                     
-                    // TODO: Extract transaction_uuid from query if needed
-                    // 2. DATABASE UPDATE: Call your existing OrderDAO to update the DB status
-                    OrderDAO orderDao = new OrderDAO();
-                    // Example: orderDao.updatePaymentStatus(transactionUuid, "Paid");
+                    String transactionUuid = "";
+                    
+                    if (query != null && query.contains("data=")) {
+                        try {
+                            // 1. Extract the raw Base64 string from the "data=" URL parameter
+                            String base64Data = query.split("data=")[1].split("&")[0];
+                            
+                            // 2. Decode the Base64 string into plain text JSON
+                            byte[] decodedBytes = java.util.Base64.getDecoder().decode(base64Data);
+                            String decodedJson = new String(decodedBytes, java.nio.charset.StandardCharsets.UTF_8);
+                            System.out.println("Decoded eSewa Payload: " + decodedJson);
+                            
+                            // 3. Extract transaction_uuid from the JSON string without needing external libraries
+                            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\"transaction_uuid\"\\s*:\\s*\"([^\"]+)\"");
+                            java.util.regex.Matcher matcher = pattern.matcher(decodedJson);
+                            if (matcher.find()) {
+                                transactionUuid = matcher.group(1);
+                            }
+                        } catch (Exception ex) {
+                            System.err.println("Error decoding eSewa success data: " + ex.getMessage());
+                        }
+                    }
+                    
+                    // 4. DATABASE UPDATE: Execute the payment update if a transaction UUID was captured
+                    if (!transactionUuid.isEmpty()) {
+                        OrderDAO orderDao = new OrderDAO();
+                        // Note: Ensure your OrderDAO actually has a method with this exact name and signature!
+                        orderDao.updatePaymentStatus(transactionUuid, "Paid"); 
+                        System.out.println("Database updated successfully for Order UUID: " + transactionUuid);
+                    } else {
+                        System.err.println("Failed to update database: transaction_uuid could not be resolved.");
+                    }
                     
                     String response = "<html><body style='text-align:center;font-family:sans-serif;padding-top:50px;'>"
                             + "<h1 style='color:green;'>Payment Successful!</h1>"
