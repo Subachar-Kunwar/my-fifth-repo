@@ -30,9 +30,36 @@ public class CheckoutController {
                                                            fullName, address, city, 
                                                            phone, postalCode, paymentMethod);
 
-        // 4. Clean Up
+        // 4. Clean Up & Payment Gateway Trigger
         if (orderSaved) {
-            cartDAO.clearCart(userId); // Empty cart after successful purchase
+            
+            // --- NEW ESewa INTEGRATION CODE ---
+            if (paymentMethod.equalsIgnoreCase("Esewa")) {
+                // Calculate total amount from cart items dynamically
+                int totalAmount = 0;
+                for (CartItem item : cartItems) {
+                    // NOTE: If your CartItem uses different method names (like item.getTotalPrice()), change this line:
+                    totalAmount += item.getPrice() * item.getQuantity(); 
+                }
+                
+                // Optional: If you want to replicate your UI screenshot logic (1900 - 100 discount = 1800)
+                if (totalAmount == 1900) {
+                    totalAmount -= 100; 
+                }
+
+                // Fire up the eSewa browser process
+                PayementController paymentController = new PayementController();
+                paymentController.processEsewaPayment(String.valueOf(totalAmount));
+
+                // Clear the cart since the order has been successfully logged as pending payment
+                cartDAO.clearCart(userId); 
+                
+                return "EsewaRedirect"; 
+            }
+            // --- END OF NEW CODE ---
+
+            // Standard flow for Cash on Delivery (COD) or other methods
+            cartDAO.clearCart(userId); 
             return "Success";
         } else {
             return "Failed to process order. Please try again.";
