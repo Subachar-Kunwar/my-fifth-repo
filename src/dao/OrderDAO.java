@@ -90,17 +90,27 @@ public class OrderDAO {
         return success;
     }
 
+    // Default placeholder for backward compatibility
     public int placeOrder(int productId, int userId, double totalAmount) {
-        return placeOrder(productId, userId, totalAmount, null, null, null, null, null, null);
+        return placeOrder(productId, userId, totalAmount, null, null, null, null, null, null, null);
     }
 
+    // Older fallback method redirected to support the clean transactionUuid architecture
     public int placeOrder(int productId, int userId, double totalAmount,
                           String fullName, String address, String city,
                           String phoneNumber, String postalCode, String paymentMethod) {
+        return placeOrder(productId, userId, totalAmount, fullName, address, city, phoneNumber, postalCode, paymentMethod, null);
+    }
+
+    // UPDATED: Overloaded "Buy Now" direct-purchase method to cleanly accept and map eSewa transactions
+    public int placeOrder(int productId, int userId, double totalAmount,
+                          String fullName, String address, String city,
+                          String phoneNumber, String postalCode, String paymentMethod,
+                          String transactionUuid) {
         Connection conn = mysql.openConnection();
         String sql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
-                "full_name, address, city, phone_number, postal_code, payment_method) " +
-                "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?)";
+                "full_name, address, city, phone_number, postal_code, payment_method, transaction_uuid) " +
+                "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, productId);
@@ -112,12 +122,13 @@ public class OrderDAO {
             ps.setString(7, phoneNumber);
             ps.setString(8, postalCode);
             ps.setString(9, paymentMethod);
+            ps.setString(10, transactionUuid); // Saves the direct checkout tracking uuid
 
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {
                     int orderId = keys.getInt(1);
-                    new ActivityDAO().logActivity(userId, "Order Placed");
+                    new ActivityDAO().logActivity(userId, "Order Placed" + (transactionUuid != null ? " via eSewa" : ""));
                     return orderId;
                 }
             }

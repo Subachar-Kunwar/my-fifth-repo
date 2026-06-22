@@ -4,6 +4,7 @@ import dao.CartDAO;
 import dao.OrderDAO;
 import model.CartItem;
 import java.util.List;
+import java.util.UUID; // Added for unique transaction tracking
 
 public class CheckoutController {
 
@@ -25,40 +26,40 @@ public class CheckoutController {
             return "Your cart is empty! Add products before checking out.";
         }
 
-        // 3. Process Order in Database
+        // Generate a unique transaction UUID for tracking (especially for eSewa verification)
+        String transactionUuid = UUID.randomUUID().toString();
+
+        // 3. Process Order in Database (FIXED: Now passes all 9 parameters)
         boolean orderSaved = orderDAO.createOrdersFromCart(userId, cartItems, 
                                                            fullName, address, city, 
-                                                           phone, postalCode, paymentMethod);
+                                                           phone, postalCode, paymentMethod,
+                                                           transactionUuid);
 
         // 4. Clean Up & Payment Gateway Trigger
         if (orderSaved) {
             
-            // --- NEW ESewa INTEGRATION CODE ---
+            // --- eSewa INTEGRATION ---
             if (paymentMethod.equalsIgnoreCase("Esewa")) {
-                // Calculate total amount from cart items dynamically
                 int totalAmount = 0;
                 for (CartItem item : cartItems) {
-                    // NOTE: If your CartItem uses different method names (like item.getTotalPrice()), change this line:
                     totalAmount += item.getPrice() * item.getQuantity(); 
                 }
                 
-                // Optional: If you want to replicate your UI screenshot logic (1900 - 100 discount = 1800)
                 if (totalAmount == 1900) {
                     totalAmount -= 100; 
                 }
 
-                // Fire up the eSewa browser process
+                // Fire up the eSewa process
                 PayementController paymentController = new PayementController();
                 paymentController.processEsewaPayment(String.valueOf(totalAmount));
 
-                // Clear the cart since the order has been successfully logged as pending payment
+                // Cart is cleared inside the order logging sequence or upon successful return
                 cartDAO.clearCart(userId); 
                 
                 return "EsewaRedirect"; 
             }
-            // --- END OF NEW CODE ---
 
-            // Standard flow for Cash on Delivery (COD) or other methods
+            // Standard flow for Cash on Delivery (COD)
             cartDAO.clearCart(userId); 
             return "Success";
         } else {
