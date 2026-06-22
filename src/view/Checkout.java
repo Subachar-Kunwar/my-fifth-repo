@@ -8,13 +8,41 @@ package view;
  *
  * @author Lenovo
  */
-public class Checkout extends javax.swing.JPanel {
+import javax.swing.JFrame;
+
+public class Checkout extends javax.swing.JFrame {
+
+    private String username;
+    private int userId;
+    private controller.CartController cartController = new controller.CartController();
 
     /**
      * Creates new form Checkout
      */
     public Checkout() {
+        this("Guest", -1);
+    }
+
+    public Checkout(String username, int userId) {
+        this.username = username;
+        this.userId = userId;
         initComponents();
+        
+        // Window setup
+        setTitle("ReWear - Checkout");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        // Smart sizing
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        if (screenSize.width < 1600 || screenSize.height < 900) {
+            setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        } else {
+            setSize(1550, 840);
+            setLocationRelativeTo(null);
+        }
+
+        loadOrderSummary();
+        initBackend();
     }
 
     /**
@@ -60,7 +88,7 @@ public class Checkout extends javax.swing.JPanel {
         setBackground(new java.awt.Color(232, 255, 233));
         setMaximumSize(new java.awt.Dimension(1550, 840));
         setMinimumSize(new java.awt.Dimension(1550, 840));
-        setLayout(null);
+        getContentPane().setLayout(null);
 
         jPanel7.setBackground(new java.awt.Color(170, 218, 172));
 
@@ -126,101 +154,101 @@ public class Checkout extends javax.swing.JPanel {
                 .addGap(37, 37, 37))
         );
 
-        add(jPanel7);
+        getContentPane().add(jPanel7);
         jPanel7.setBounds(823, 442, 710, 360);
 
         jLabel14.setFont(new java.awt.Font("Arial Black", 0, 40)); // NOI18N
         jLabel14.setText("Checkout");
         jLabel14.setToolTipText("");
-        add(jLabel14);
+        getContentPane().add(jLabel14);
         jLabel14.setBounds(44, 85, 230, 50);
 
         jLabel15.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel15.setText("Payment Method");
-        add(jLabel15);
+        getContentPane().add(jLabel15);
         jLabel15.setBounds(813, 122, 230, 40);
 
         jTextField1.setBackground(new java.awt.Color(170, 218, 172));
         jTextField1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jTextField1.setText(" ");
-        add(jTextField1);
+        getContentPane().add(jTextField1);
         jTextField1.setBounds(89, 761, 500, 60);
 
         jTextField2.setBackground(new java.awt.Color(170, 218, 172));
         jTextField2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jTextField2.setText(" ");
         jTextField2.addActionListener(this::jTextField2ActionPerformed);
-        add(jTextField2);
+        getContentPane().add(jTextField2);
         jTextField2.setBounds(89, 269, 500, 60);
 
         jTextField3.setBackground(new java.awt.Color(170, 218, 172));
         jTextField3.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jTextField3.setText(" ");
         jTextField3.addActionListener(this::jTextField3ActionPerformed);
-        add(jTextField3);
+        getContentPane().add(jTextField3);
         jTextField3.setBounds(89, 389, 500, 60);
 
         jTextField4.setBackground(new java.awt.Color(170, 218, 172));
         jTextField4.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jTextField4.setText(" ");
         jTextField4.addActionListener(this::jTextField4ActionPerformed);
-        add(jTextField4);
+        getContentPane().add(jTextField4);
         jTextField4.setBounds(89, 508, 500, 60);
 
         jTextField5.setBackground(new java.awt.Color(170, 218, 172));
         jTextField5.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jTextField5.setText(" ");
-        add(jTextField5);
+        getContentPane().add(jTextField5);
         jTextField5.setBounds(89, 636, 500, 60);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setText("Full Name");
-        add(jLabel1);
+        getContentPane().add(jLabel1);
         jLabel1.setBounds(89, 228, 132, 35);
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel2.setText("Address");
-        add(jLabel2);
-        jLabel2.setBounds(89, 348, 108, 35);
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(89, 348, 106, 35);
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel4.setText("Phone Number");
-        add(jLabel4);
+        getContentPane().add(jLabel4);
         jLabel4.setBounds(89, 595, 192, 35);
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel5.setText("City");
-        add(jLabel5);
-        jLabel5.setBounds(89, 467, 53, 35);
+        getContentPane().add(jLabel5);
+        jLabel5.setBounds(89, 467, 51, 35);
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel6.setText("Postal Code");
-        add(jLabel6);
-        jLabel6.setBounds(89, 714, 158, 35);
+        getContentPane().add(jLabel6);
+        jLabel6.setBounds(89, 714, 157, 35);
 
         jCheckBox4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         jCheckBox4.setText("COD ( Cash On delivery )");
-        add(jCheckBox4);
+        getContentPane().add(jCheckBox4);
         jCheckBox4.setBounds(833, 362, 260, 35);
 
         jCheckBox5.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         jCheckBox5.setText("Esewa");
-        add(jCheckBox5);
+        getContentPane().add(jCheckBox5);
         jCheckBox5.setBounds(833, 192, 166, 35);
 
         jCheckBox6.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         jCheckBox6.setText("Khalti");
-        add(jCheckBox6);
+        getContentPane().add(jCheckBox6);
         jCheckBox6.setBounds(833, 242, 166, 35);
 
         jCheckBox7.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
         jCheckBox7.setText("Credit/Debit Card");
-        add(jCheckBox7);
+        getContentPane().add(jCheckBox7);
         jCheckBox7.setBounds(833, 302, 200, 35);
 
         jLabel16.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel16.setText("Shipping details");
-        add(jLabel16);
+        getContentPane().add(jLabel16);
         jLabel16.setBounds(64, 162, 230, 40);
 
         jPanel3.setBackground(new java.awt.Color(58, 125, 68));
@@ -255,7 +283,7 @@ public class Checkout extends javax.swing.JPanel {
         jPanel3.add(jButton11);
         jButton11.setBounds(1477, 6, 50, 40);
 
-        add(jPanel3);
+        getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 1550, 48);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -272,25 +300,122 @@ public class Checkout extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Notifications page...\nComing soon!",
-            "Notifications",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        new Notification_page(username, userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to User Profile page...\nComing soon!",
-            "User Profile",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        new UserDashboard(username, userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Cart page...\nComing soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        new Cart(username, userId).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void loadOrderSummary() {
+        java.util.List<model.CartItem> items = cartController.getCartItems(userId);
+        double subTotal = cartController.getSubTotal(items);
+        double discount = cartController.getDiscount(subTotal);
+        double total = subTotal - discount;
+
+        jLabel11.setText("Rs.  " + (int) subTotal);
+        jLabel12.setText("Rs.  " + (int) discount);
+        jLabel13.setText("Rs.  " + (int) total);
+    }
+
+    private void initBackend() {
+        // Group checkboxes so only one is selected
+        javax.swing.ButtonGroup paymentGroup = new javax.swing.ButtonGroup();
+        paymentGroup.add(jCheckBox5);
+        paymentGroup.add(jCheckBox6);
+        paymentGroup.add(jCheckBox7);
+        paymentGroup.add(jCheckBox4);
+
+        // Pre-select COD by default
+        jCheckBox4.setSelected(true);
+
+        // Checkout action
+        jButton1.addActionListener(e -> {
+            String fullName = jTextField2.getText().trim();
+            String address = jTextField3.getText().trim();
+            String city = jTextField4.getText().trim();
+            String phoneNumber = jTextField5.getText().trim();
+            String postalCode = jTextField1.getText().trim();
+
+            if (fullName.isEmpty() || address.isEmpty() || city.isEmpty() || phoneNumber.isEmpty() || postalCode.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Please fill in all shipping details!",
+                    "Validation Error", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            String paymentMethod = "";
+            if (jCheckBox5.isSelected()) paymentMethod = "Esewa";
+            else if (jCheckBox6.isSelected()) paymentMethod = "Khalti";
+            else if (jCheckBox7.isSelected()) paymentMethod = "Credit/Debit Card";
+            else if (jCheckBox4.isSelected()) paymentMethod = "COD";
+
+            if (paymentMethod.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Please select a payment method!",
+                    "Validation Error", javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            java.util.List<model.CartItem> items = cartController.getCartItems(userId);
+            if (items.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Your cart is empty!",
+                    "Checkout Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Place order for each item in the cart
+            dao.OrderDAO orderDAO = new dao.OrderDAO();
+            int orderId = -1;
+            boolean success = true;
+
+            for (model.CartItem item : items) {
+                double itemTotal = item.getPrice() * item.getQuantity();
+                double subTotal = cartController.getSubTotal(items);
+                double discountRate = subTotal > 0 ? cartController.getDiscount(subTotal) / subTotal : 0;
+                double finalItemAmount = itemTotal * (1 - discountRate);
+
+                int placedId = orderDAO.placeOrder(
+                    item.getProductId(),
+                    userId,
+                    finalItemAmount,
+                    fullName,
+                    address,
+                    city,
+                    phoneNumber,
+                    postalCode,
+                    paymentMethod
+                );
+
+                if (placedId == -1) {
+                    success = false;
+                } else {
+                    orderId = placedId;
+                }
+            }
+
+            if (success) {
+                // Clear the cart
+                cartController.clearCart(userId);
+
+                // Show confirmation screen
+                new OrderConformation(orderId, username, userId).showInFrame();
+                this.dispose();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Failed to place order. Please try again.",
+                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        });
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,22 +1,24 @@
 package dao;
 
 import Database.MySqlConnector;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import model.Product;
 import model.ProductReview;
-import java.sql.*;
 
 public class ProductDetailDAO {
 
     private final MySqlConnector mysql = new MySqlConnector();
 
-    // ─── Get Product By ID ────────────────────────────────────
-    // Added this - ProductDetailController needs it
     public Product getProductById(int productId) {
         Connection conn = mysql.openConnection();
         String sql = "SELECT * FROM products WHERE id = ?";
+
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, productId);
-            try (ResultSet rs = ps.executeQuery()) {       // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Product(
                         rs.getInt("id"),
@@ -31,20 +33,20 @@ public class ProductDetailDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error fetching product: " + e.getMessage());
         } finally {
             mysql.closeConnection(conn);
         }
         return null;
     }
 
-    // ─── Insert Review ────────────────────────────────────────
     public boolean insertReview(ProductReview review) {
         Connection conn = mysql.openConnection();
         String sql = "INSERT INTO product_reviews " +
-                     "(product_id, user_id, rating, review_text) " +
-                     "VALUES (?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) { // ✅ ps closed
+                "(product_id, user_id, rating, review_text) " +
+                "VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, review.getProductId());
             ps.setInt(2, review.getUserId());
             ps.setInt(3, review.getRating());
@@ -54,7 +56,7 @@ public class ProductDetailDAO {
             System.out.println("Review error: " + e.getMessage());
             return false;
         } finally {
-            mysql.closeConnection(conn);                   // ✅ conn closed
+            mysql.closeConnection(conn);
         }
     }
 }
