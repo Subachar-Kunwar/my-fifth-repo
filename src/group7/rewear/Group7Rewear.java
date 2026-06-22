@@ -10,9 +10,10 @@ public class Group7Rewear {
         // 1. Start the local background payment listener for eSewa callbacks
         PayementController.startPaymentServer();
 
-        // 2. Load your login screen UI (Your existing code)
-        Login login = new Login();
-        login.setVisible(true);
-
+        // 2. Load your login screen UI safely on the standard Swing Thread
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
+            login.setVisible(true);
+        });
     }
 }
