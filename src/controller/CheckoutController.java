@@ -4,6 +4,7 @@ import dao.CartDAO;
 import dao.OrderDAO;
 import model.CartItem;
 import java.util.List;
+import java.util.UUID; // Added for unique transaction tracking
 
 public class CheckoutController {
 
@@ -25,14 +26,41 @@ public class CheckoutController {
             return "Your cart is empty! Add products before checking out.";
         }
 
-        // 3. Process Order in Database
+        // Generate a unique transaction UUID for tracking (especially for eSewa verification)
+        String transactionUuid = UUID.randomUUID().toString();
+
+        // 3. Process Order in Database (FIXED: Now passes all 9 parameters)
         boolean orderSaved = orderDAO.createOrdersFromCart(userId, cartItems, 
                                                            fullName, address, city, 
-                                                           phone, postalCode, paymentMethod);
+                                                           phone, postalCode, paymentMethod,
+                                                           transactionUuid);
 
-        // 4. Clean Up
+        // 4. Clean Up & Payment Gateway Trigger
         if (orderSaved) {
-            cartDAO.clearCart(userId); // Empty cart after successful purchase
+            
+            // --- eSewa INTEGRATION ---
+            if (paymentMethod.equalsIgnoreCase("Esewa")) {
+                int totalAmount = 0;
+                for (CartItem item : cartItems) {
+                    totalAmount += item.getPrice() * item.getQuantity(); 
+                }
+                
+                if (totalAmount == 1900) {
+                    totalAmount -= 100; 
+                }
+
+                // Fire up the eSewa process
+                PayementController paymentController = new PayementController();
+                paymentController.processEsewaPayment(String.valueOf(totalAmount));
+
+                // Cart is cleared inside the order logging sequence or upon successful return
+                cartDAO.clearCart(userId); 
+                
+                return "EsewaRedirect"; 
+            }
+
+            // Standard flow for Cash on Delivery (COD)
+            cartDAO.clearCart(userId); 
             return "Success";
         } else {
             return "Failed to process order. Please try again.";

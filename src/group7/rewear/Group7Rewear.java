@@ -1,13 +1,19 @@
 package group7.rewear;
 
 import view.Login;
+import controller.PayementController; // Imported your payment controller
 
 public class Group7Rewear {
 
     public static void main(String[] args) {
+        
+        // 1. Start the local background payment listener for eSewa callbacks
+        PayementController.startPaymentServer();
 
-        Login login = new Login();
-        login.setVisible(true);
-
+        // 2. Load your login screen UI safely on the standard Swing Thread
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Login login = new Login();
+            login.setVisible(true);
+        });
     }
 }

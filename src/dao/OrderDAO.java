@@ -15,9 +15,11 @@ public class OrderDAO {
 
     private final MySqlConnector mysql = new MySqlConnector();
 
+    // UPDATED: Added transactionUuid parameter so eSewa can find this exact checkout batch later
     public boolean createOrdersFromCart(int userId, List<CartItem> cartItems,
                                         String fullName, String address, String city,
-                                        String phoneNumber, String postalCode, String paymentMethod) {
+                                        String phoneNumber, String postalCode, String paymentMethod,
+                                        String transactionUuid) {
         Connection conn = mysql.openConnection();
         if (conn == null) {
             return false;
@@ -28,9 +30,10 @@ public class OrderDAO {
         try {
             conn.setAutoCommit(false);
 
+            // UPDATED: Added transaction_uuid to the insert layout
             String insertOrderSql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
-                    "full_name, address, city, phone_number, postal_code, payment_method) " +
-                    "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?)";
+                    "full_name, address, city, phone_number, postal_code, payment_method, transaction_uuid) " +
+                    "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?, ?)";
             String updateStockSql = "UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?";
 
             try (PreparedStatement psOrder = conn.prepareStatement(insertOrderSql);
@@ -46,6 +49,7 @@ public class OrderDAO {
                     psOrder.setString(7, phoneNumber);
                     psOrder.setString(8, postalCode);
                     psOrder.setString(9, paymentMethod);
+                    psOrder.setString(10, transactionUuid); // Saves the tracking link
                     psOrder.addBatch();
 
                     psStock.setInt(1, item.getQuantity());
@@ -86,17 +90,27 @@ public class OrderDAO {
         return success;
     }
 
+    // Default placeholder for backward compatibility
     public int placeOrder(int productId, int userId, double totalAmount) {
-        return placeOrder(productId, userId, totalAmount, null, null, null, null, null, null);
+        return placeOrder(productId, userId, totalAmount, null, null, null, null, null, null, null);
     }
 
+    // Older fallback method redirected to support the clean transactionUuid architecture
     public int placeOrder(int productId, int userId, double totalAmount,
                           String fullName, String address, String city,
                           String phoneNumber, String postalCode, String paymentMethod) {
+        return placeOrder(productId, userId, totalAmount, fullName, address, city, phoneNumber, postalCode, paymentMethod, null);
+    }
+
+    // UPDATED: Overloaded "Buy Now" direct-purchase method to cleanly accept and map eSewa transactions
+    public int placeOrder(int productId, int userId, double totalAmount,
+                          String fullName, String address, String city,
+                          String phoneNumber, String postalCode, String paymentMethod,
+                          String transactionUuid) {
         Connection conn = mysql.openConnection();
         String sql = "INSERT INTO orders (product_id, user_id, order_date, total_amount, status, " +
-                "full_name, address, city, phone_number, postal_code, payment_method) " +
-                "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?)";
+                "full_name, address, city, phone_number, postal_code, payment_method, transaction_uuid) " +
+                "VALUES (?, ?, CURDATE(), ?, 'Pending', ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, productId);
@@ -108,12 +122,13 @@ public class OrderDAO {
             ps.setString(7, phoneNumber);
             ps.setString(8, postalCode);
             ps.setString(9, paymentMethod);
+            ps.setString(10, transactionUuid); // Saves the direct checkout tracking uuid
 
             ps.executeUpdate();
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) {
                     int orderId = keys.getInt(1);
-                    new ActivityDAO().logActivity(userId, "Order Placed");
+                    new ActivityDAO().logActivity(userId, "Order Placed" + (transactionUuid != null ? " via eSewa" : ""));
                     return orderId;
                 }
             }
@@ -245,5 +260,27 @@ public class OrderDAO {
             mysql.closeConnection(conn);
         }
         return orders;
+    }
+
+    // FIXED: Uses your project's custom mysql configuration and references the correct 'status' column
+    public void updatePaymentStatus(String uuid, String status) {
+        Connection conn = mysql.openConnection();
+        if (conn == null) {
+            return;
+        }
+
+        String query = "UPDATE orders SET status = ? WHERE transaction_uuid = ?"; 
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, status);
+            pstmt.setString(2, uuid);
+            pstmt.executeUpdate();
+            System.out.println("Order status successfully updated to " + status + " for UUID: " + uuid);
+        } catch (SQLException e) {
+            System.err.println("Error updating order payment status: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            mysql.closeConnection(conn);
+        }
     }
 }

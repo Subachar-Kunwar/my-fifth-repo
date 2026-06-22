@@ -325,7 +325,7 @@ public class Checkout extends javax.swing.JFrame {
         jLabel13.setText("Rs.  " + (int) total);
     }
 
-    private void initBackend() {
+private void initBackend() {
         // Group checkboxes so only one is selected
         javax.swing.ButtonGroup paymentGroup = new javax.swing.ButtonGroup();
         paymentGroup.add(jCheckBox5);
@@ -406,9 +406,29 @@ public class Checkout extends javax.swing.JFrame {
                 // Clear the cart
                 cartController.clearCart(userId);
 
-                // Show confirmation screen
-                new OrderConformation(orderId, username, userId).showInFrame();
-                this.dispose();
+                // --- NEW ESewa INTEGRATION CODE ---
+                if (paymentMethod.equals("Esewa")) {
+                    // Dynamically calculate final checkout price total
+                    double subTotal = cartController.getSubTotal(items);
+                    double discount = cartController.getDiscount(subTotal);
+                    int totalAmount = (int) (subTotal - discount);
+
+                    // Initialize payment controller and load up the browser
+                    controller.PayementController paymentEngine = new controller.PayementController();
+                    paymentEngine.processEsewaPayment(String.valueOf(totalAmount));
+
+                    // Direct feedback alert to user
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                        "Redirecting to eSewa secure payment portal. Please check your web browser!",
+                        "eSewa Payment Portal", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                    this.dispose();
+                } else {
+                    // Standard flow for Cash on Delivery (COD) or other options
+                    new OrderConformation(orderId, username, userId).showInFrame();
+                    this.dispose();
+                }
+                // --- END OF NEW CODE ---
+                
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this,
                     "Failed to place order. Please try again.",
