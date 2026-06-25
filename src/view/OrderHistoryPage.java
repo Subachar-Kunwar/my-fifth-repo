@@ -82,7 +82,8 @@ private void loadOrderHistory() {
         titleLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(232, 255, 233));
-        setMinimumSize(new java.awt.Dimension(1550, 840));
+        setMaximumSize(new java.awt.Dimension(1550, 840));
+        setMinimumSize(null);
         setPreferredSize(new java.awt.Dimension(1550, 840));
 
         jPanel3.setBackground(new java.awt.Color(58, 125, 68));
@@ -139,11 +140,11 @@ private void loadOrderHistory() {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1277, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jButton1.setBackground(new java.awt.Color(170, 218, 172));

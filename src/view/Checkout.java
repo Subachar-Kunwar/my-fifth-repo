@@ -85,7 +85,6 @@ public class Checkout extends javax.swing.JFrame {
         fonepayCheckBox = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(232, 255, 233));
-        setMaximumSize(new java.awt.Dimension(1550, 840));
         setMinimumSize(new java.awt.Dimension(1550, 840));
         getContentPane().setLayout(null);
 
@@ -93,6 +92,7 @@ public class Checkout extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         jButton1.setText("Checkout");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         jLabel8.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 24)); // NOI18N
         jLabel8.setText("Sub Total");
@@ -307,6 +307,10 @@ public class Checkout extends javax.swing.JFrame {
         new Cart(username, userId).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void loadOrderSummary() {
         java.util.List<model.CartItem> items = checkoutController.getCartItems(userId);

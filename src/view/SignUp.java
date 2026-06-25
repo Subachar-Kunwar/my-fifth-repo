@@ -67,6 +67,7 @@ public SignUp() {
         Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1550, 840));
 
         jPanel1.setBackground(new java.awt.Color(232, 255, 233));
         jPanel1.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 12)); // NOI18N

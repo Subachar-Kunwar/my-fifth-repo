@@ -58,6 +58,7 @@ public OTPpage(String email, String otp) {
         Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1550, 840));
 
         jPanel1.setBackground(new java.awt.Color(232, 255, 233));
         jPanel1.setPreferredSize(new java.awt.Dimension(1550, 840));

@@ -74,6 +74,7 @@ public Login() {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1550, 840));
 
         mainpanal.setBackground(new java.awt.Color(232, 255, 233));
         mainpanal.setPreferredSize(new java.awt.Dimension(1550, 840));

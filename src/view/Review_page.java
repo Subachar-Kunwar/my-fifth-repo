@@ -50,6 +50,7 @@ private void refreshReviews() {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1550, 840));
 
         Main_panal_productcatalog.setBackground(new java.awt.Color(232, 255, 233));
         Main_panal_productcatalog.setLayout(null);

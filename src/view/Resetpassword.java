@@ -51,6 +51,7 @@ public Resetpassword(String email) {
         Logo_productcatalog = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1550, 840));
 
         Mainpanal.setBackground(new java.awt.Color(232, 255, 233));
         Mainpanal.setPreferredSize(new java.awt.Dimension(1550, 840));

@@ -88,6 +88,8 @@ public class EditProduct extends javax.swing.JPanel {
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
 
+        setMaximumSize(new java.awt.Dimension(1550, 840));
+
         jPanel1.setBackground(new java.awt.Color(232, 255, 233));
         jPanel1.setPreferredSize(new java.awt.Dimension(1550, 840));
         jPanel1.setLayout(null);
@@ -137,11 +139,13 @@ public class EditProduct extends javax.swing.JPanel {
         jButton5.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton5.setText("Inventory");
         jButton5.setPreferredSize(new java.awt.Dimension(146, 36));
+        jButton5.addActionListener(this::jButton5ActionPerformed);
 
         jButton7.setBackground(new java.awt.Color(170, 218, 172));
         jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton7.setText("Reports");
         jButton7.setPreferredSize(new java.awt.Dimension(146, 36));
+        jButton7.addActionListener(this::jButton7ActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -364,7 +368,7 @@ public class EditProduct extends javax.swing.JPanel {
     // User is already on Add Product page
     javax.swing.JOptionPane.showMessageDialog(
         this,
-        "You are already on the Edit Product page!",
+        "You are currently on the Edit Product page!",
         "Edit Product",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
@@ -602,6 +606,20 @@ public class EditProduct extends javax.swing.JPanel {
         window.dispose();
     }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    new Sales().setVisible(true);
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) window.dispose();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    new Ghost_inventory(adminUsername).showInFrame();
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) window.dispose();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

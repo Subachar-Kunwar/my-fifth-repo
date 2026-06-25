@@ -38,8 +38,8 @@ public class ProductcatalogDAO {
         try {
             int nextId = findNextAvailableId(conn);
             String sql = "INSERT INTO products (id, name, category, price, " +
-                         "image_path, description, stock, seller_id) " +
-                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                         "image_path, description, stock, seller_id, status) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setInt(1, nextId);
                 ps.setString(2, name);
@@ -61,25 +61,18 @@ public class ProductcatalogDAO {
 
     // ─── Find Next Available ID ───────────────────────────────
     private int findNextAvailableId(Connection conn) throws SQLException {
-        // Check if table is empty
         String checkSql = "SELECT COUNT(*) AS cnt FROM products";
         try (PreparedStatement ps = conn.prepareStatement(checkSql);
              ResultSet rs = ps.executeQuery()) {
-            if (rs.next() && rs.getInt("cnt") == 0) {
-                return 1;
-            }
+            if (rs.next() && rs.getInt("cnt") == 0) return 1;
         }
 
-        // Check if ID 1 is missing
         String checkOneSql = "SELECT id FROM products WHERE id = 1";
         try (PreparedStatement ps = conn.prepareStatement(checkOneSql);
              ResultSet rs = ps.executeQuery()) {
-            if (!rs.next()) {
-                return 1;
-            }
+            if (!rs.next()) return 1;
         }
 
-        // Find smallest gap in IDs
         String sql = "SELECT MIN(t1.id + 1) AS next_id " +
                      "FROM products t1 " +
                      "LEFT JOIN products t2 ON t1.id + 1 = t2.id " +
@@ -88,9 +81,7 @@ public class ProductcatalogDAO {
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) {
                 int nextId = rs.getInt("next_id");
-                if (!rs.wasNull() && nextId > 0) {
-                    return nextId;
-                }
+                if (!rs.wasNull() && nextId > 0) return nextId;
             }
         }
         return 1;
@@ -101,15 +92,12 @@ public class ProductcatalogDAO {
             double price, String imagePath, String description, int stock) {
         Connection conn = mysql.openConnection();
 
-        // Keep existing image if none selected
         if (imagePath == null || imagePath.isEmpty()) {
             String selectSql = "SELECT image_path FROM products WHERE id = ?";
             try (PreparedStatement ps = conn.prepareStatement(selectSql)) {
                 ps.setInt(1, id);
-                try (ResultSet rs = ps.executeQuery()) {     // ✅ rs closed
-                    if (rs.next()) {
-                        imagePath = rs.getString("image_path");
-                    }
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) imagePath = rs.getString("image_path");
                 }
             } catch (SQLException e) {
                 System.out.println("Error fetching existing image: " + e.getMessage());
@@ -146,7 +134,7 @@ public class ProductcatalogDAO {
             if (deleted) {
                 try (PreparedStatement getMax = conn.prepareStatement(
                         "SELECT IFNULL(MAX(id), 0) + 1 AS next_id FROM products");
-                     ResultSet rs = getMax.executeQuery()) {        // ✅ rs closed
+                     ResultSet rs = getMax.executeQuery()) {
                     if (rs.next()) {
                         int nextId = rs.getInt("next_id");
                         try (PreparedStatement alter = conn.prepareStatement(
@@ -167,13 +155,13 @@ public class ProductcatalogDAO {
         }
     }
 
-    // ─── Get All Products ─────────────────────────────────────
+    // ─── Get All Products (visible only) ──────────────────────
     public List<Product> getAllProducts() {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM products ORDER BY id");
-             ResultSet rs = ps.executeQuery()) {                    // ✅ rs closed
+                "SELECT * FROM products WHERE status = 1 ORDER BY id");
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapProduct(rs));
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
@@ -183,14 +171,14 @@ public class ProductcatalogDAO {
         return list;
     }
 
-    // ─── Get By Category ──────────────────────────────────────
+    // ─── Get By Category (visible only) ───────────────────────
     public List<Product> getByCategory(String category) {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM products WHERE category = ?")) {
+                "SELECT * FROM products WHERE category = ? AND status = 1")) {
             ps.setString(1, category);
-            try (ResultSet rs = ps.executeQuery()) {               // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapProduct(rs));
             }
         } catch (SQLException e) {
@@ -201,15 +189,15 @@ public class ProductcatalogDAO {
         return list;
     }
 
-    // ─── Get By Price Range ───────────────────────────────────
+    // ─── Get By Price Range (visible only) ────────────────────
     public List<Product> getByPriceRange(double min, double max) {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM products WHERE price BETWEEN ? AND ?")) {
+                "SELECT * FROM products WHERE price BETWEEN ? AND ? AND status = 1")) {
             ps.setDouble(1, min);
             ps.setDouble(2, max);
-            try (ResultSet rs = ps.executeQuery()) {               // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapProduct(rs));
             }
         } catch (SQLException e) {
@@ -220,18 +208,18 @@ public class ProductcatalogDAO {
         return list;
     }
 
-    // ─── Get By Category And Price ────────────────────────────
+    // ─── Get By Category And Price (visible only) ─────────────
     public List<Product> getByCategoryAndPrice(
             String category, double min, double max) {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM products WHERE category = ? " +
-                "AND price BETWEEN ? AND ?")) {
+                "AND price BETWEEN ? AND ? AND status = 1")) {
             ps.setString(1, category);
             ps.setDouble(2, min);
             ps.setDouble(3, max);
-            try (ResultSet rs = ps.executeQuery()) {               // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapProduct(rs));
             }
         } catch (SQLException e) {
@@ -242,14 +230,14 @@ public class ProductcatalogDAO {
         return list;
     }
 
-    // ─── Search By Name ───────────────────────────────────────
+    // ─── Search By Name (visible only) ────────────────────────
     public List<Product> searchByName(String keyword) {
         Connection conn = mysql.openConnection();
         List<Product> list = new ArrayList<>();
         try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT * FROM products WHERE name LIKE ?")) {
+                "SELECT * FROM products WHERE name LIKE ? AND status = 1")) {
             ps.setString(1, "%" + keyword + "%");
-            try (ResultSet rs = ps.executeQuery()) {               // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapProduct(rs));
             }
         } catch (SQLException e) {
@@ -260,13 +248,13 @@ public class ProductcatalogDAO {
         return list;
     }
 
-    // ─── Get Product By ID ────────────────────────────────────
+    // ─── Get Product By ID (any status — for admin/edit) ──────
     public Product getProductById(int id) {
         Connection conn = mysql.openConnection();
         try (PreparedStatement ps = conn.prepareStatement(
                 "SELECT * FROM products WHERE id = ?")) {
             ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {               // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapProduct(rs);
             }
         } catch (SQLException e) {

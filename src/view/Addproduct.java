@@ -94,8 +94,8 @@ selectedImagePath = "";
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        inventory = new javax.swing.JButton();
+        salesreport = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -116,6 +116,7 @@ selectedImagePath = "";
         jButton9 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(232, 255, 233));
+        setMaximumSize(new java.awt.Dimension(1550, 840));
         setPreferredSize(new java.awt.Dimension(1550, 840));
         setLayout(null);
 
@@ -179,14 +180,15 @@ selectedImagePath = "";
         jButton4.setText("Edit Product");
         jButton4.addActionListener(this::jButton4ActionPerformed);
 
-        jButton5.setBackground(new java.awt.Color(170, 218, 172));
-        jButton5.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jButton5.setText("Inventory");
+        inventory.setBackground(new java.awt.Color(170, 218, 172));
+        inventory.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
+        inventory.setText("Inventory");
+        inventory.addActionListener(this::inventoryActionPerformed);
 
-        jButton7.setBackground(new java.awt.Color(170, 218, 172));
-        jButton7.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
-        jButton7.setText("Reports");
-        jButton7.addActionListener(this::jButton7ActionPerformed);
+        salesreport.setBackground(new java.awt.Color(170, 218, 172));
+        salesreport.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
+        salesreport.setText("Reports");
+        salesreport.addActionListener(this::salesreportActionPerformed);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -199,8 +201,8 @@ selectedImagePath = "";
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(inventory, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(salesreport, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -215,9 +217,9 @@ selectedImagePath = "";
                 .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(inventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(salesreport, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(528, Short.MAX_VALUE))
         );
 
@@ -427,7 +429,7 @@ selectedImagePath = "";
     // User is already on Add Product page
     javax.swing.JOptionPane.showMessageDialog(
         this,
-        "You are already on the Add Product page!",
+        "You are currently on the Add Product page!",
         "Add Product",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
@@ -473,9 +475,12 @@ selectedImagePath = "";
 
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    private void salesreportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesreportActionPerformed
+      new Sales().setVisible(true);
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) window.dispose();
+    }//GEN-LAST:event_salesreportActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
     // ✅ Open OrderHistoryPage in admin mode (sees ALL orders)
@@ -498,16 +503,22 @@ selectedImagePath = "";
     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void inventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryActionPerformed
+    new Ghost_inventory(adminUsername).showInFrame();
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) window.dispose();
+    }//GEN-LAST:event_inventoryActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo_productcatalog;
+    private javax.swing.JButton inventory;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
@@ -530,5 +541,6 @@ selectedImagePath = "";
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JButton salesreport;
     // End of variables declaration//GEN-END:variables
 }

@@ -259,9 +259,9 @@ public class AdminDashboard extends javax.swing.JFrame {
                 .addComponent(inventory, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 286, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 271, Short.MAX_VALUE)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(174, 174, 174))
+                .addGap(189, 189, 189))
         );
 
         getContentPane().add(jPanel3);
@@ -283,11 +283,11 @@ public class AdminDashboard extends javax.swing.JFrame {
         jPanel2.setBounds(0, 0, 1550, 50);
 
         jLabel1.setBackground(new java.awt.Color(58, 125, 68));
-        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setText("Dashboard Overview");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(240, 100, 250, 40);
+        jLabel1.setBounds(240, 100, 500, 40);
 
         jPanel1.setBackground(new java.awt.Color(170, 218, 172));
 
@@ -567,7 +567,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     // User is already on Add Product page
     javax.swing.JOptionPane.showMessageDialog(
         this,
-        "You are already on the Dashboard !",
+        "You are currently on the Dashboard !",
         "Admin Dashboard",
         javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
@@ -600,7 +600,8 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
+     new Sales().setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -629,10 +630,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void inventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inventoryActionPerformed
-      // Navigate to Ghost Inventory page
-    new Ghost_inventory(adminUsername).setVisible(true);
-    
-    // Close the current Admin Dashboard
+     new Ghost_inventory(adminUsername).showInFrame();
     this.dispose();
     }//GEN-LAST:event_inventoryActionPerformed
 

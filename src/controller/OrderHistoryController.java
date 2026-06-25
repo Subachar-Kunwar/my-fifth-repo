@@ -111,7 +111,7 @@ public class OrderHistoryController {
             userLabel.setForeground(new java.awt.Color(0, 0, 153));
             panel.add(userLabel);
 
-            // ─── Pending Verification → Approve/Reject ───────
+            // Pending Verification → Approve/Reject
             if (order.getStatus().equalsIgnoreCase("Pending Verification")) {
                 javax.swing.JButton approveBtn = new javax.swing.JButton("Approve");
                 approveBtn.setBounds(840, 25, 110, 30);
@@ -182,7 +182,7 @@ public class OrderHistoryController {
                 panel.add(rejectBtn);
             }
 
-            // ─── Paid → Ship button ──────────────────────────
+            // Paid → Ship
             if (order.getStatus().equalsIgnoreCase("Paid")) {
                 javax.swing.JButton shipBtn = new javax.swing.JButton("Ship");
                 shipBtn.setBounds(840, 25, 100, 30);
@@ -201,7 +201,7 @@ public class OrderHistoryController {
                 panel.add(shipBtn);
             }
 
-            // ─── Shipped → Deliver button ────────────────────
+            // Shipped → Deliver
             if (order.getStatus().equalsIgnoreCase("Shipped")) {
                 javax.swing.JButton deliverBtn = new javax.swing.JButton("Deliver");
                 deliverBtn.setBounds(840, 25, 100, 30);
@@ -220,7 +220,7 @@ public class OrderHistoryController {
                 panel.add(deliverBtn);
             }
 
-            // ─── Pending (COD) → Ship button ─────────────────
+            // Pending (COD) → Ship
             if (order.getStatus().equalsIgnoreCase("Pending")) {
                 javax.swing.JButton shipBtn = new javax.swing.JButton("Ship");
                 shipBtn.setBounds(840, 25, 100, 30);
@@ -240,8 +240,10 @@ public class OrderHistoryController {
             }
 
         } else {
-            // USER: Cancel button with reason
-            if (order.getStatus().equalsIgnoreCase("Pending") || order.getStatus().equalsIgnoreCase("Pending Verification")) {
+            // USER: Cancel with reason + smart refund message
+            if (order.getStatus().equalsIgnoreCase("Pending") 
+                || order.getStatus().equalsIgnoreCase("Pending Verification")) {
+                
                 javax.swing.JButton cancelBtn = new javax.swing.JButton("Cancel");
                 cancelBtn.setBounds(770, 30, 100, 30);
                 cancelBtn.setBackground(new java.awt.Color(220, 53, 69));
@@ -266,8 +268,26 @@ public class OrderHistoryController {
                     if (confirm == javax.swing.JOptionPane.OK_OPTION) {
                         String selectedReason = (String) reasonBox.getSelectedItem();
                         String result = cancelOrder(order.getId(), selectedReason);
-                        if (result == null) { javax.swing.JOptionPane.showMessageDialog(panel, "Order cancelled successfully!\nReason: " + selectedReason + "\nStock has been restored.", "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE); if (onRefresh != null) onRefresh.run(); }
-                        else { javax.swing.JOptionPane.showMessageDialog(panel, result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE); }
+                        if (result == null) {
+                            // Smart refund message based on payment type
+                            String cancelMsg = "Order cancelled successfully!\n\n"
+                                + "Reason: " + selectedReason + "\n\n"
+                                + "Stock has been restored.\n";
+                            
+                            if (order.getStatus().equalsIgnoreCase("Pending Verification")) {
+                                cancelMsg += "Note: No refunds will be issued for online payments.";
+                            } else {
+                                cancelMsg += "No payment was made. No refund needed.";
+                            }
+                            
+                            javax.swing.JOptionPane.showMessageDialog(panel,
+                                cancelMsg,
+                                "Order Cancelled",
+                                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                            if (onRefresh != null) onRefresh.run();
+                        } else {
+                            javax.swing.JOptionPane.showMessageDialog(panel, result, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 });
                 panel.add(cancelBtn);

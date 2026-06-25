@@ -193,7 +193,8 @@ private void loadRecentActivities() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(232, 255, 233));
-        setMinimumSize(new java.awt.Dimension(1550, 840));
+        setMaximumSize(new java.awt.Dimension(1550, 840));
+        setMinimumSize(null);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(232, 255, 233));
