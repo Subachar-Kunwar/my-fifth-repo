@@ -51,7 +51,7 @@
                           <Component id="jButton8" min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jButton3" min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jButton2" alignment="1" min="-2" pref="166" max="-2" attributes="0"/>
-                          <Component id="jButton5" alignment="1" min="-2" pref="166" max="-2" attributes="0"/>
+                          <Component id="inventory" alignment="1" min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jButton7" alignment="1" min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jButton4" alignment="1" max="32767" attributes="0"/>
                       </Group>
@@ -73,7 +73,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="jButton2" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButton5" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="inventory" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Component id="jButton7" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace pref="286" max="32767" attributes="0"/>
@@ -149,7 +149,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton4ActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton5">
+        <Component class="javax.swing.JButton" name="inventory">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ac" green="da" red="aa" type="rgb"/>
@@ -162,6 +162,9 @@
               <Dimension value="[146, 36]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="inventoryActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>

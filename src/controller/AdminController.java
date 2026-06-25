@@ -9,6 +9,7 @@ import java.util.List;
 public class AdminController {
 
     private final AdminDAO adminDAO = new AdminDAO();
+    
 
     // ─── Stats ────────────────────────────────────────────────
     public String getTotalSalesText() {
