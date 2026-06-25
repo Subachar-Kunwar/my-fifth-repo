@@ -362,7 +362,11 @@ public product_details(int productId, int userId) {
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
-        // TODO add your handling code here:
+      Cart cart = new Cart(username, userId);
+    cart.setSize(1550, 840);
+    cart.setLocationRelativeTo(null);
+    cart.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
@@ -413,7 +417,30 @@ public product_details(int productId, int userId) {
     }//GEN-LAST:event_reviewActionPerformed
 
     private void Add_to_cartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Add_to_cartActionPerformed
-        // TODO add your handling code here:
+      // ✅ Use stock-aware method
+    controller.CartController cartController = new controller.CartController();
+    String result = cartController.addToCartWithStock(userId, productId);
+    
+    if (result == null) {
+        // ✅ Success
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Product added to cart!",
+            "Success",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        
+        // Navigate to Cart page
+        Cart cart = new Cart(username, userId);
+        cart.setSize(1550, 840);
+        cart.setLocationRelativeTo(null);
+        cart.setVisible(true);
+        this.dispose();
+    } else {
+        // ❌ Stock issue
+        javax.swing.JOptionPane.showMessageDialog(this,
+            result,
+            "Cannot Add to Cart",
+            javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
     }//GEN-LAST:event_Add_to_cartActionPerformed
 
     /**

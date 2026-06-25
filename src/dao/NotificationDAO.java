@@ -71,4 +71,22 @@ public class NotificationDAO {
             mysql.closeConnection(conn);                   // ✅ conn closed
         }
     }
+    
+    // ─── Add Notification ─────────────────────────────────────
+public boolean addNotification(int userId, String message) {
+    Connection conn = mysql.openConnection();
+    String sql = "INSERT INTO notifications (user_id, message, is_read, created_at) " +
+                 "VALUES (?, ?, FALSE, NOW())";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, userId);
+        ps.setString(2, message);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("Add notification error: " + e.getMessage());
+        return false;
+    } finally {
+        mysql.closeConnection(conn);
+    }
+}
+    
 }

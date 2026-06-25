@@ -1,3 +1,5 @@
+package CartDAOTest;
+
 import dao.CartDAO;
 import model.CartItem;
 import java.util.List;
@@ -24,7 +26,9 @@ public class CartDAOTest {
             System.out.println("Result: Cart is empty!");
         } else {
             for (CartItem item : items) {
-                System.out.println("- Found: " + item.getName() + " | Qty: " + item.getQuantity() + " | Price: " + item.getPrice());
+                System.out.println("- Found: " + item.getProductName() + 
+                    " | Qty: " + item.getQuantity() + 
+                    " | Price: " + item.getPrice());
             }
         }
 

@@ -37,4 +37,13 @@ public class AdminController {
         }
         return orders;
     }
+
+    // ─── Get Welcome Message ──────────────────────────────────
+    public String getWelcomeMessage(String adminUsername) {
+        return " Welcome back, " + adminUsername +        "!";
+    }
+
+    public String getSubtitle() {
+    return "Here's what's going on in your store";
+}
 }

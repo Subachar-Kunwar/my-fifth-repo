@@ -13,7 +13,6 @@ public class CartDAO {
     public int getOrCreateCart(int userId) {
         Connection conn = mysql.openConnection();
         try {
-            // Check if cart exists
             String checkSql = "SELECT id FROM cart WHERE user_id = ?";
             try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
                 ps.setInt(1, userId);
@@ -22,7 +21,6 @@ public class CartDAO {
                     return rs.getInt("id");
                 }
             }
-            // Create new cart
             String insertSql = "INSERT INTO cart (user_id) VALUES (?)";
             try (PreparedStatement ps = conn.prepareStatement(insertSql,
                     Statement.RETURN_GENERATED_KEYS)) {
@@ -48,7 +46,6 @@ public class CartDAO {
             int cartId = getOrCreateCartWithConn(conn, userId);
             if (cartId == -1) return false;
 
-            // Check if product already in cart
             String checkSql = "SELECT id, quantity FROM cart_items " +
                               "WHERE cart_id = ? AND product_id = ?";
             try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
@@ -56,7 +53,6 @@ public class CartDAO {
                 ps.setInt(2, productId);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    // Increase quantity by 1
                     int newQty = rs.getInt("quantity") + 1;
                     String updateSql = "UPDATE cart_items SET quantity = ? WHERE id = ?";
                     try (PreparedStatement ups = conn.prepareStatement(updateSql)) {
@@ -67,7 +63,6 @@ public class CartDAO {
                 }
             }
 
-            // Insert new item with quantity 1
             String insertSql = "INSERT INTO cart_items (cart_id, product_id, quantity) " +
                                "VALUES (?, ?, 1)";
             try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
@@ -83,7 +78,7 @@ public class CartDAO {
         }
     }
 
-    // Helper: get or create cart using an existing connection (avoids double open)
+    // Helper: get or create cart using an existing connection
     private int getOrCreateCartWithConn(Connection conn, int userId) throws SQLException {
         String checkSql = "SELECT id FROM cart WHERE user_id = ?";
         try (PreparedStatement ps = conn.prepareStatement(checkSql)) {
@@ -106,7 +101,7 @@ public class CartDAO {
         return -1;
     }
 
-    // Get all cart items for a user (JOIN with products for name/price/image)
+    // Get all cart items for a user
     public List<CartItem> getCartItems(int userId) {
         List<CartItem> items = new ArrayList<>();
         Connection conn = mysql.openConnection();
@@ -207,4 +202,87 @@ public class CartDAO {
         }
         return 0;
     }
+
+    // ─── Get Product Stock ────────────────────────────────────
+    public int getProductStock(int productId) {
+        Connection conn = mysql.openConnection();
+        String sql = "SELECT stock FROM products WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("stock");
+            }
+        } catch (SQLException e) {
+            System.out.println("Get stock error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);
+        }
+        return 0;
+    }
+    
+    // ─── Decrease Stock (when adding to cart) ─────────────────
+public boolean decreaseStock(int productId, int amount) {
+    Connection conn = mysql.openConnection();
+    String sql = "UPDATE products SET stock = stock - ? WHERE id = ? AND stock >= ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, amount);
+        ps.setInt(2, productId);
+        ps.setInt(3, amount);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("Decrease stock error: " + e.getMessage());
+        return false;
+    } finally {
+        mysql.closeConnection(conn);
+    }
+}
+
+// ─── Increase Stock (when removing from cart) ─────────────
+public boolean increaseStock(int productId, int amount) {
+    Connection conn = mysql.openConnection();
+    String sql = "UPDATE products SET stock = stock + ? WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, amount);
+        ps.setInt(2, productId);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.out.println("Increase stock error: " + e.getMessage());
+        return false;
+    } finally {
+        mysql.closeConnection(conn);
+    }
+}
+
+// ─── Get Product ID from Cart Item ID ─────────────────────
+public int getProductIdByCartItem(int cartItemId) {
+    Connection conn = mysql.openConnection();
+    String sql = "SELECT product_id FROM cart_items WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, cartItemId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt("product_id");
+    } catch (SQLException e) {
+        System.out.println("Get productId error: " + e.getMessage());
+    } finally {
+        mysql.closeConnection(conn);
+    }
+    return -1;
+}
+
+// ─── Get Quantity in Cart for an Item ─────────────────────
+public int getQuantityByCartItem(int cartItemId) {
+    Connection conn = mysql.openConnection();
+    String sql = "SELECT quantity FROM cart_items WHERE id = ?";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, cartItemId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt("quantity");
+    } catch (SQLException e) {
+        System.out.println("Get qty error: " + e.getMessage());
+    } finally {
+        mysql.closeConnection(conn);
+    }
+    return 0;
+}
 }

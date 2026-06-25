@@ -11,101 +11,126 @@ public class AdminDashboard extends javax.swing.JFrame {
         this("Admin");
     }
 
-public AdminDashboard(String username) {
-    initComponents();
-    this.adminUsername = username;
+    public AdminDashboard(String username) {
+        initComponents();
+        this.adminUsername = username;
 
-    // Smart sizing
-    java.awt.Dimension screen =
-        java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-    if (screen.width < 1600 || screen.height < 900) {
-        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
-    } else {
-        this.setSize(1550, 840);
-        this.setLocationRelativeTo(null);
-    }
-
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-    setTitle("ReWear - Admin Dashboard");
-    updateStats();
-    
-   
-// ✅ Make Recent Orders panel scrollable and use full bottom area
-ordersScroll = new javax.swing.JScrollPane(jPanel7);
-ordersScroll.setBorder(null);
-ordersScroll.setVerticalScrollBarPolicy(
-    javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-ordersScroll.setHorizontalScrollBarPolicy(
-    javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-getContentPane().remove(jPanel7);
-getContentPane().add(ordersScroll);
-ordersScroll.setBounds(240, 320, 1280, 470);   
-
-    // Resize panels with window
-    this.addComponentListener(new java.awt.event.ComponentAdapter() {
-        @Override
-        public void componentResized(java.awt.event.ComponentEvent e) {
-            int w = getContentPane().getWidth();
-            int h = getContentPane().getHeight();
-
-            // Navbar
-            jPanel2.setBounds(0, 0, w, 48);
-
-            // Sidebar height
-            jPanel3.setBounds(0, 52, 200, h - 52);
-
-            // Stat panels
-            int statWidth = (w - 260) / 4 - 10;
-            jPanel1.setBounds(240, 170, statWidth, 130);
-            jPanel4.setBounds(240 + statWidth + 13, 170, statWidth, 130);
-            jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
-            jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
-
-            ordersScroll.setBounds(240, 320, w - 260, h - 360);
-
-            revalidate();
-            repaint();
+        // Smart sizing
+        java.awt.Dimension screen =
+            java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        if (screen.width < 1600 || screen.height < 900) {
+            this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+        } else {
+            this.setSize(1550, 840);
+            this.setLocationRelativeTo(null);
         }
-    });
-}
-   
 
-  private void updateStats() {
-    try {
-        // ─── Stats from Controller ─────────────────────────────
-        jLabel3.setText(adminController.getTotalSalesText());
-        jLabel5.setText(adminController.getTotalOrdersText());
-        jLabel7.setText(adminController.getTotalUsersText());
-        jLabel9.setText(adminController.getTotalProductsText());
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ReWear - Admin Dashboard");
+        updateStats();
+        setupHeader();
+       
+        // ✅ Make Recent Orders panel scrollable and use full bottom area
+        ordersScroll = new javax.swing.JScrollPane(jPanel7);
+        ordersScroll.setBorder(null);
+        ordersScroll.setVerticalScrollBarPolicy(
+            javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        ordersScroll.setHorizontalScrollBarPolicy(
+            javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        getContentPane().remove(jPanel7);
+        getContentPane().add(ordersScroll);
+        ordersScroll.setBounds(240, 320, 1280, 470);   
 
-        // ─── Recent Orders ─────────────────────────────────────
-        java.util.List<model.AdminRecentOrder> orders =
-                adminController.getRecentOrders();
+        // Resize panels with window
+        this.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentResized(java.awt.event.ComponentEvent e) {
+                int w = getContentPane().getWidth();
+                int h = getContentPane().getHeight();
 
-        javax.swing.JLabel[] productLabels = { jLabel12, jLabel13, jLabel14 };
-        javax.swing.JLabel[] dateLabels    = { jLabel15, jLabel16, jLabel17 };
-        javax.swing.JLabel[] priceLabels   = { jLabel18, jLabel19, jLabel20 };
-        javax.swing.JLabel[] statusLabels  = { jLabel21, jLabel22, jLabel23 };
+                // Navbar
+                jPanel2.setBounds(0, 0, w, 48);
 
-        for (int i = 0; i < 3; i++) {
-            productLabels[i].setText("");
-            dateLabels[i].setText("");
-            priceLabels[i].setText("");
-            statusLabels[i].setText("");
+                // Sidebar height
+                jPanel3.setBounds(0, 52, 200, h - 52);
 
-            if (i < orders.size()) {
-                model.AdminRecentOrder o = orders.get(i);
-                productLabels[i].setText(o.getProductName());
-                dateLabels[i].setText(o.getOrderDate());
-                priceLabels[i].setText(o.getPrice());
-                statusLabels[i].setText(o.getStatus());
+                // Stat panels
+                int statWidth = (w - 260) / 4 - 10;
+                jPanel1.setBounds(240, 170, statWidth, 130);
+                jPanel4.setBounds(240 + statWidth + 13, 170, statWidth, 130);
+                jPanel5.setBounds(240 + (statWidth + 13) * 2, 170, statWidth, 130);
+                jPanel6.setBounds(240 + (statWidth + 13) * 3, 170, statWidth, 130);
+
+                ordersScroll.setBounds(240, 320, w - 260, h - 360);
+
+                revalidate();
+                repaint();
             }
-        }
-    } catch (Exception ex) {
-        System.out.println("Error updating stats: " + ex.getMessage());
+        });
     }
-}
-  
+   
+
+    private void updateStats() {
+        try {
+            // ─── Stats from Controller ─────────────────────────────
+            jLabel3.setText(adminController.getTotalSalesText());
+            jLabel5.setText(adminController.getTotalOrdersText());
+            jLabel7.setText(adminController.getTotalUsersText());
+            jLabel9.setText(adminController.getTotalProductsText());
+
+            // ─── Recent Orders ─────────────────────────────────────
+            java.util.List<model.AdminRecentOrder> orders =
+                    adminController.getRecentOrders();
+
+            javax.swing.JLabel[] productLabels = { jLabel12, jLabel13, jLabel14 };
+            javax.swing.JLabel[] dateLabels    = { jLabel15, jLabel16, jLabel17 };
+            javax.swing.JLabel[] priceLabels   = { jLabel18, jLabel19, jLabel20 };
+            javax.swing.JLabel[] statusLabels  = { jLabel21, jLabel22, jLabel23 };
+
+            for (int i = 0; i < 3; i++) {
+                productLabels[i].setText("");
+                dateLabels[i].setText("");
+                priceLabels[i].setText("");
+                statusLabels[i].setText("");
+
+                if (i < orders.size()) {
+                    model.AdminRecentOrder o = orders.get(i);
+                    productLabels[i].setText(o.getProductName());
+                    dateLabels[i].setText(o.getOrderDate());
+                    priceLabels[i].setText(o.getPrice());
+                    statusLabels[i].setText(o.getStatus());
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error updating stats: " + ex.getMessage());
+        }
+    }
+
+    // ─── Setup Personalized Header (uses controller for text) ───
+    private void setupHeader() {
+        // ✅ Update top-right name label
+        jLabel24.setText(adminUsername);
+        jLabel24.setBounds(1400, 7, 144, 30);
+        jLabel24.setForeground(java.awt.Color.WHITE);
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        
+        // ✅ Get welcome text from controller (MVC!)
+        jLabel1.setText(adminController.getWelcomeMessage(adminUsername));
+        jLabel1.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24));
+        jLabel1.setBounds(240, 90, 700, 35);
+        
+        // ✅ Add subtitle from controller
+        javax.swing.JLabel subtitle = new javax.swing.JLabel(
+            adminController.getSubtitle());
+        subtitle.setFont(new java.awt.Font("Segoe UI", 0, 14));
+        subtitle.setForeground(new java.awt.Color(100, 100, 100));
+        subtitle.setBounds(240, 130, 500, 25);
+        getContentPane().add(subtitle);
+        
+        getContentPane().revalidate();
+        getContentPane().repaint();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

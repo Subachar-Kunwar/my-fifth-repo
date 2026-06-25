@@ -34,18 +34,31 @@ public OrderHistoryPage(String username, int userId, boolean isAdmin) {
   
     jScrollPane1.setViewportView(ordersListPanel);
    
-
     if (isAdmin) {
-    titleLabel.setText("All Orders");
-} else {
-    titleLabel.setText("My Orders");
-}
+        titleLabel.setText("All Orders");
+        
+        // ✅ HIDE navbar buttons for admin
+        jButton9.setVisible(false);    // Bell
+        jButton10.setVisible(false);   // Profile
+        jButton11.setVisible(false);   // Cart
+        
+        // ✅ Add "Admin" text in navbar (like other admin pages)
+        javax.swing.JLabel adminLabel = new javax.swing.JLabel("Admin");
+        adminLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 20));
+        adminLabel.setForeground(java.awt.Color.WHITE);
+        adminLabel.setBounds(1474, 7, 70, 30);
+        jPanel3.add(adminLabel);
+        
+    } else {
+        titleLabel.setText("My Orders");
+    }
     
     loadOrderHistory();
 }
 
 private void loadOrderHistory() {
-    orderHistoryController.populateOrderPanel(ordersListPanel, userId, isAdmin);
+    orderHistoryController.populateOrderPanel(
+        ordersListPanel, userId, isAdmin, this::loadOrderHistory);
 }
 
     /**
@@ -195,11 +208,13 @@ private void loadOrderHistory() {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
+     new Cart(username, userId).setVisible(true);
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+     new Notification_page(username, userId).setVisible(true);
+    javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

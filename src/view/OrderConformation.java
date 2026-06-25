@@ -97,12 +97,12 @@ public class OrderConformation extends javax.swing.JPanel {
         jPanel2.setBounds(0, 0, 1560, 48);
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 50)); // NOI18N
-        jLabel1.setText("Thank You !!!");
+        jLabel1.setText("Thank You <3");
         jLabel1.setMaximumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setMinimumSize(new java.awt.Dimension(1550, 840));
         jLabel1.setPreferredSize(new java.awt.Dimension(1550, 840));
         add(jLabel1);
-        jLabel1.setBounds(650, 300, 350, 60);
+        jLabel1.setBounds(650, 300, 450, 60);
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel2.setText("Your Order Has Been Placed Successfully.");
@@ -113,12 +113,12 @@ public class OrderConformation extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(0, 0, 204));
         jLabel3.setText("Order ID : ");
         add(jLabel3);
-        jLabel3.setBounds(580, 460, 410, 60);
+        jLabel3.setBounds(700, 460, 230, 60);
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
-        jLabel4.setText("We have sent your order details via email.");
+        jLabel4.setText("Track your order in My Orders page & get updates in Notifications.");
         add(jLabel4);
-        jLabel4.setBounds(580, 540, 610, 30);
+        jLabel4.setBounds(420, 540, 920, 30);
 
         jButton1.setBackground(new java.awt.Color(232, 255, 233));
         jButton1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
@@ -165,12 +165,27 @@ public class OrderConformation extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-     
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Order #" + orderController.getOrderId() 
-                + " details coming soon!",
-            "View Order",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+      // ✅ Open Order History page for this user
+    OrderHistoryPage orderHistoryPage = new OrderHistoryPage(
+        orderController.getUsername(),
+        orderController.getUserId(),
+        false                              // false = user (not admin)
+    );
+    
+    javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - My Orders");
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(orderHistoryPage);
+    frame.pack();
+    frame.setSize(1550, 840);
+    frame.setLocationRelativeTo(null);
+    frame.setVisible(true);
+    
+    // Close current Order Confirmation window
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

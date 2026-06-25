@@ -9,7 +9,6 @@ public class UserDAO {
     private final MySqlConnector mysql = new MySqlConnector();
 
     // ─── Login ────────────────────────────────────────────────
-    // Added this method - LoginController needs it
     public String[] login(String username, String email, String password) {
         Connection conn = mysql.openConnection();
         String sql = "SELECT id, username, role FROM users " +
@@ -18,7 +17,7 @@ public class UserDAO {
             ps.setString(1, username);
             ps.setString(2, email);
             ps.setString(3, password);
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new String[]{
                         rs.getString("username"),
@@ -29,6 +28,32 @@ public class UserDAO {
             }
         } catch (SQLException e) {
             System.out.println("Login error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);
+        }
+        return null;
+    }
+
+    // ─── Get User By Username + Email (for BCrypt login) ──────
+    public String[] getUserByUsernameAndEmail(String username, String email) {
+        Connection conn = mysql.openConnection();
+        String sql = "SELECT id, username, password, role FROM users " +
+                     "WHERE username = ? AND email = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new String[]{
+                        String.valueOf(rs.getInt("id")),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("role")
+                    };
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Get user error: " + e.getMessage());
         } finally {
             mysql.closeConnection(conn);
         }
@@ -61,7 +86,7 @@ public class UserDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getUsername());
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
         } catch (SQLException e) {
@@ -101,7 +126,7 @@ public class UserDAO {
         String sql = "SELECT role FROM users WHERE email = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("role");
                 }
@@ -120,7 +145,7 @@ public class UserDAO {
         String sql = "SELECT id FROM users WHERE email = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, email);
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("id");
                 }
@@ -139,7 +164,7 @@ public class UserDAO {
         String sql = "SELECT email FROM users WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("email");
                 }
@@ -158,7 +183,7 @@ public class UserDAO {
         String sql = "SELECT username FROM users WHERE id = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {        // ✅ rs closed
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("username");
                 }
@@ -199,5 +224,44 @@ public class UserDAO {
             mysql.closeConnection(conn);
         }
         return false;
+    }
+
+    // ─── Get Profile Pic Path ─────────────────────────────────
+    public String getProfilePic(int userId) {
+        Connection conn = mysql.openConnection();
+        String sql = "SELECT profile_pic FROM users WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("profile_pic");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Get profile pic error: " + e.getMessage());
+        } finally {
+            mysql.closeConnection(conn);
+        }
+        return null;
+    }
+
+    // ─── Update Profile Pic ───────────────────────────────────
+    public boolean updateProfilePic(int userId, String imagePath) {
+        Connection conn = mysql.openConnection();
+        String sql = "UPDATE users SET profile_pic = ? WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, imagePath);
+            ps.setInt(2, userId);
+            boolean updated = ps.executeUpdate() > 0;
+            if (updated) {
+                new ActivityDAO().logActivity(userId, "Profile Picture Updated");
+            }
+            return updated;
+        } catch (SQLException e) {
+            System.out.println("Update profile pic error: " + e.getMessage());
+            return false;
+        } finally {
+            mysql.closeConnection(conn);
+        }
     }
 }

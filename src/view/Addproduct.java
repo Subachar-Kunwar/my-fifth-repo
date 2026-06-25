@@ -167,6 +167,7 @@ selectedImagePath = "";
         jButton2.setBackground(new java.awt.Color(170, 218, 172));
         jButton2.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
         jButton2.setText("Orders ");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
 
         jButton3.setBackground(new java.awt.Color(170, 218, 172));
         jButton3.setFont(new java.awt.Font("Arial Black", 0, 20)); // NOI18N
@@ -475,6 +476,27 @@ selectedImagePath = "";
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    // ✅ Open OrderHistoryPage in admin mode (sees ALL orders)
+    OrderHistoryPage orderHistoryPanel = 
+        new OrderHistoryPage(adminUsername, -1, true);
+    
+    javax.swing.JFrame frame = new javax.swing.JFrame("ReWear - All Orders");
+    frame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(orderHistoryPanel);
+    frame.pack();
+    frame.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
+    frame.setMinimumSize(new java.awt.Dimension(1000, 600));
+    frame.setVisible(true);
+    
+    // Close current Add Product window
+    java.awt.Window window = 
+        javax.swing.SwingUtilities.getWindowAncestor(this);
+    if (window != null) {
+        window.dispose();
+    }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

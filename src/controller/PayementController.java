@@ -1,131 +1,140 @@
 package controller;
 
-import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
-import dao.OrderDAO; 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.InetSocketAddress;
-import java.util.UUID;
-
 public class PayementController {
-    
-    // 1. EXIT POINT: Start this server when the application boots up
-    public static void startPaymentServer() {
-        try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-            
-            // Handles successful payments
-            server.createContext("/success", new HttpHandler() {
-                @Override
-                public void handle(HttpExchange exchange) throws IOException {
-                    String query = exchange.getRequestURI().getQuery();
-                    System.out.println("Payment Success Query Data: " + query);
-                    
-                    String transactionUuid = "";
-                    
-                    if (query != null && query.contains("data=")) {
-                        try {
-                            // 1. Extract the raw Base64 string from the "data=" URL parameter
-                            String base64Data = query.split("data=")[1].split("&")[0];
-                            
-                            // 2. Decode the Base64 string into plain text JSON
-                            byte[] decodedBytes = java.util.Base64.getDecoder().decode(base64Data);
-                            String decodedJson = new String(decodedBytes, java.nio.charset.StandardCharsets.UTF_8);
-                            System.out.println("Decoded eSewa Payload: " + decodedJson);
-                            
-                            // 3. Extract transaction_uuid from the JSON string without needing external libraries
-                            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\"transaction_uuid\"\\s*:\\s*\"([^\"]+)\"");
-                            java.util.regex.Matcher matcher = pattern.matcher(decodedJson);
-                            if (matcher.find()) {
-                                transactionUuid = matcher.group(1);
-                            }
-                        } catch (Exception ex) {
-                            System.err.println("Error decoding eSewa success data: " + ex.getMessage());
-                        }
-                    }
-                    
-                    // 4. DATABASE UPDATE: Execute the payment update if a transaction UUID was captured
-                    if (!transactionUuid.isEmpty()) {
-                        OrderDAO orderDao = new OrderDAO();
-                        // Note: Ensure your OrderDAO actually has a method with this exact name and signature!
-                        orderDao.updatePaymentStatus(transactionUuid, "Paid"); 
-                        System.out.println("Database updated successfully for Order UUID: " + transactionUuid);
-                    } else {
-                        System.err.println("Failed to update database: transaction_uuid could not be resolved.");
-                    }
-                    
-                    String response = "<html><body style='text-align:center;font-family:sans-serif;padding-top:50px;'>"
-                            + "<h1 style='color:green;'>Payment Successful!</h1>"
-                            + "<p>Re-WEAR has updated your order status. You can close this browser window now.</p>"
-                            + "</body></html>";
-                    sendResponse(exchange, response);
-                }
-            });
-            
-            // Handles cancelled/failed payments
-            server.createContext("/failure", new HttpHandler() {
-                @Override
-                public void handle(HttpExchange exchange) throws IOException {
-                    String response = "<html><body style='text-align:center;font-family:sans-serif;padding-top:50px;'>"
-                            + "<h1 style='color:red;'>Payment Cancelled</h1>"
-                            + "<p>Please return to the Re-WEAR app and try again.</p>"
-                            + "</body></html>";
-                    sendResponse(exchange, response);
-                }
-            });
-            
-            server.start();
-            System.out.println("Payment server running safely on port 8000...");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    // 3. ENTRY POINT: Call this method when the user clicks 'Checkout' with eSewa selected
-    public void processEsewaPayment(String totalAmount) {
+    // ─── Show QR Code Pop-Up + Get Transaction ID ─────────────
+    // Returns the entered Transaction ID, or null if cancelled
+    public String showQRCodePayment(String totalAmount, java.awt.Component parent) {
         try {
-            String transactionUuid = UUID.randomUUID().toString(); // Unique Order Reference ID
-            String signature = EsewaUtils.generateSignature(totalAmount, transactionUuid);
+            // Load QR image
+            java.net.URL qrUrl = getClass().getResource("/group7/rewear/eSewaQr.jpg");
             
-            String successUrl = "http://localhost:8000/success";
-            String failureUrl = "http://localhost:8000/failure";
-            
-            // Hidden HTML form that auto-submits to eSewa gateway portal
-            String htmlForm = "<html><body onload='document.forms[0].submit()'>"
-                + "<form action='https://rc-epay.esewa.com.np/api/epay/main/v2/form' method='POST'>"
-                + "<input type='hidden' name='amount' value='" + totalAmount + "'>"
-                + "<input type='hidden' name='tax_amount' value='0'>"
-                + "<input type='hidden' name='total_amount' value='" + totalAmount + "'>"
-                + "<input type='hidden' name='transaction_uuid' value='" + transactionUuid + "'>"
-                + "<input type='hidden' name='product_code' value='" + EsewaUtils.MERCHANT_CODE + "'>"
-                + "<input type='hidden' name='product_service_charge' value='0'>"
-                + "<input type='hidden' name='product_delivery_charge' value='0'>"
-                + "<input type='hidden' name='success_url' value='" + successUrl + "'>"
-                + "<input type='hidden' name='failure_url' value='" + failureUrl + "'>"
-                + "<input type='hidden' name='signed_field_names' value='total_amount,transaction_uuid,product_code'>"
-                + "<input type='hidden' name='signature' value='" + signature + "'>"
-                + "</form></body></html>";
-                
-            File tempFile = File.createTempFile("esewa_trigger", ".html");
-            try (FileWriter writer = new FileWriter(tempFile)) {
-                writer.write(htmlForm);
+            if (qrUrl == null) {
+                javax.swing.JOptionPane.showMessageDialog(parent,
+                    "QR code image not found!\nMake sure eSewaQr.jpg exists in /group7/rewear/",
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return null;
             }
             
-            Desktop.getDesktop().browse(tempFile.toURI()); // Opens user's browser
+            javax.swing.ImageIcon qrIcon = new javax.swing.ImageIcon(qrUrl);
+            java.awt.Image scaled = qrIcon.getImage()
+                .getScaledInstance(280, 280, java.awt.Image.SCALE_SMOOTH);
+            javax.swing.ImageIcon finalIcon = new javax.swing.ImageIcon(scaled);
+            
+            // Pop-up panel
+            javax.swing.JPanel panel = new javax.swing.JPanel();
+            panel.setLayout(new javax.swing.BoxLayout(panel, javax.swing.BoxLayout.Y_AXIS));
+            panel.setBackground(new java.awt.Color(232, 255, 233));
+            
+            javax.swing.JLabel amountLabel = new javax.swing.JLabel("Amount: Rs " + totalAmount);
+            amountLabel.setFont(new java.awt.Font("Arial Black", java.awt.Font.BOLD, 22));
+            amountLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+            amountLabel.setForeground(new java.awt.Color(58, 125, 68));
+            
+            javax.swing.JLabel qrLabel = new javax.swing.JLabel(finalIcon);
+            qrLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+            
+            javax.swing.JLabel instructionLabel = new javax.swing.JLabel(
+                "1. Scan QR with eSewa / Bank app / FonePay");
+            instructionLabel.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
+            instructionLabel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+            
+            javax.swing.JLabel instructionLabel2 = new javax.swing.JLabel(
+                "2. Complete the payment");
+            instructionLabel2.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
+            instructionLabel2.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+            
+            javax.swing.JLabel instructionLabel3 = new javax.swing.JLabel(
+                "3. Click 'Payment Done' below");
+            instructionLabel3.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 14));
+            instructionLabel3.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
+            
+            panel.add(javax.swing.Box.createVerticalStrut(10));
+            panel.add(amountLabel);
+            panel.add(javax.swing.Box.createVerticalStrut(15));
+            panel.add(qrLabel);
+            panel.add(javax.swing.Box.createVerticalStrut(15));
+            panel.add(instructionLabel);
+            panel.add(instructionLabel2);
+            panel.add(instructionLabel3);
+            panel.add(javax.swing.Box.createVerticalStrut(10));
+            
+            int result = javax.swing.JOptionPane.showOptionDialog(
+                parent, panel, "Payment QR",
+                javax.swing.JOptionPane.OK_CANCEL_OPTION,
+                javax.swing.JOptionPane.PLAIN_MESSAGE,
+                null,
+                new String[]{"✓ Payment Done", "Cancel"},
+                "✓ Payment Done"
+            );
+            
+            if (result != javax.swing.JOptionPane.OK_OPTION) {
+                return null; // user cancelled
+            }
+            
+            // ✅ Now ask for Transaction ID
+            return askForTransactionId(parent);
+            
         } catch (Exception e) {
-            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(parent,
+                "Error showing QR: " + e.getMessage(),
+                "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+            return null;
         }
     }
 
-    private static void sendResponse(HttpExchange exchange, String response) throws IOException {
-        exchange.sendResponseHeaders(200, response.length());
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
+    // ─── Ask User for Transaction ID ──────────────────────────
+    private String askForTransactionId(java.awt.Component parent) {
+        while (true) {
+            String txnId = javax.swing.JOptionPane.showInputDialog(
+                parent,
+                "Please enter your Transaction/Reference ID:\n\n"
+                + "• If paid via eSewa app → use eSewa Transaction ID\n"
+                + "• If paid via bank app → use Bank Reference Number\n"
+                + "• If paid via FonePay → use FonePay Reference\n\n"
+                + "(You'll find this in your SMS or payment app)",
+                "Payment Reference Required",
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+            );
+            
+            // User cancelled
+            if (txnId == null) {
+                int confirm = javax.swing.JOptionPane.showConfirmDialog(
+                    parent,
+                    "Cancel the order? Your payment may have been processed.",
+                    "Cancel Order?",
+                    javax.swing.JOptionPane.YES_NO_OPTION,
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+                    return null;
+                }
+                continue; // ask again
+            }
+            
+            txnId = txnId.trim();
+            
+            // Validate not empty
+            if (txnId.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(parent,
+                    "Transaction ID cannot be empty!",
+                    "Required",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                continue;
+            }
+            
+            // Validate length (TXN IDs are typically 4+ chars)
+            if (txnId.length() < 4) {
+                javax.swing.JOptionPane.showMessageDialog(parent,
+                    "Transaction ID looks too short! Please check.",
+                    "Invalid Format",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                continue;
+            }
+            
+            return txnId; // ✅ valid
         }
     }
 }

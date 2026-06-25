@@ -124,10 +124,10 @@ private void refreshReviews() {
         Back.setBackground(new java.awt.Color(170, 218, 172));
         Back.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         Back.setForeground(new java.awt.Color(0, 0, 153));
-        Back.setText("Back");
+        Back.setText("Back to product");
         Back.addActionListener(this::BackActionPerformed);
         Main_panal_productcatalog.add(Back);
-        Back.setBounds(630, 710, 120, 50);
+        Back.setBounds(540, 700, 280, 50);
 
         jButton1.setFont(new java.awt.Font("Arial Black", 1, 12)); // NOI18N
         jButton1.setText("Home");
@@ -182,11 +182,11 @@ UserDashboard userDash = new UserDashboard(username, userId);
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
-// ✅ Coming soon
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Cart page coming soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+Cart cart = new Cart(username, userId);
+    cart.setSize(1550, 840);
+    cart.setLocationRelativeTo(null);
+    cart.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed

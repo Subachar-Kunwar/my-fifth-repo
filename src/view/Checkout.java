@@ -1,24 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view;
 
-/**
- *
- * @author Lenovo
- */
 import javax.swing.JFrame;
 
 public class Checkout extends javax.swing.JFrame {
 
     private String username;
     private int userId;
-    private controller.CartController cartController = new controller.CartController();
+    private controller.CheckoutController checkoutController = new controller.CheckoutController();
 
-    /**
-     * Creates new form Checkout
-     */
     public Checkout() {
         this("Guest", -1);
     }
@@ -28,9 +17,21 @@ public class Checkout extends javax.swing.JFrame {
         this.userId = userId;
         initComponents();
         
-        // Window setup
         setTitle("ReWear - Checkout");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(800, 600));
+
+        // ✅ Wrap entire content in scroll pane
+        javax.swing.JPanel currentContent = (javax.swing.JPanel) getContentPane();
+        currentContent.setPreferredSize(new java.awt.Dimension(1550, 960));
+        
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(currentContent);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        setContentPane(scrollPane);
+        
+        pack();
         
         // Smart sizing
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -44,7 +45,6 @@ public class Checkout extends javax.swing.JFrame {
         loadOrderSummary();
         initBackend();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,14 +76,13 @@ public class Checkout extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
         jLabel16 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         Logo_productcatalog1 = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
+        fonepayCheckBox = new javax.swing.JCheckBox();
 
         setBackground(new java.awt.Color(232, 255, 233));
         setMaximumSize(new java.awt.Dimension(1550, 840));
@@ -161,12 +160,12 @@ public class Checkout extends javax.swing.JFrame {
         jLabel14.setText("Checkout");
         jLabel14.setToolTipText("");
         getContentPane().add(jLabel14);
-        jLabel14.setBounds(44, 85, 230, 50);
+        jLabel14.setBounds(44, 85, 400, 50);
 
         jLabel15.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel15.setText("Payment Method");
         getContentPane().add(jLabel15);
-        jLabel15.setBounds(813, 122, 230, 40);
+        jLabel15.setBounds(813, 122, 470, 40);
 
         jTextField1.setBackground(new java.awt.Color(170, 218, 172));
         jTextField1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
@@ -204,52 +203,42 @@ public class Checkout extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setText("Full Name");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(89, 228, 132, 35);
+        jLabel1.setBounds(89, 228, 360, 35);
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
-        jLabel2.setText("Address");
+        jLabel2.setText("Email Address");
         getContentPane().add(jLabel2);
-        jLabel2.setBounds(89, 348, 106, 35);
+        jLabel2.setBounds(89, 348, 330, 35);
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel4.setText("Phone Number");
         getContentPane().add(jLabel4);
-        jLabel4.setBounds(89, 595, 192, 35);
+        jLabel4.setBounds(89, 595, 410, 35);
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel5.setText("City");
         getContentPane().add(jLabel5);
-        jLabel5.setBounds(89, 467, 51, 35);
+        jLabel5.setBounds(89, 467, 290, 35);
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel6.setText("Postal Code");
         getContentPane().add(jLabel6);
         jLabel6.setBounds(89, 714, 157, 35);
 
-        jCheckBox4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jCheckBox4.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 20)); // NOI18N
         jCheckBox4.setText("COD ( Cash On delivery )");
         getContentPane().add(jCheckBox4);
-        jCheckBox4.setBounds(833, 362, 260, 35);
+        jCheckBox4.setBounds(840, 350, 410, 35);
 
-        jCheckBox5.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
+        jCheckBox5.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 20)); // NOI18N
         jCheckBox5.setText("Esewa");
         getContentPane().add(jCheckBox5);
-        jCheckBox5.setBounds(833, 192, 166, 35);
-
-        jCheckBox6.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
-        jCheckBox6.setText("Khalti");
-        getContentPane().add(jCheckBox6);
-        jCheckBox6.setBounds(833, 242, 166, 35);
-
-        jCheckBox7.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 18)); // NOI18N
-        jCheckBox7.setText("Credit/Debit Card");
-        getContentPane().add(jCheckBox7);
-        jCheckBox7.setBounds(833, 302, 200, 35);
+        jCheckBox5.setBounds(840, 220, 240, 35);
 
         jLabel16.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel16.setText("Shipping details");
         getContentPane().add(jLabel16);
-        jLabel16.setBounds(64, 162, 230, 40);
+        jLabel16.setBounds(64, 162, 400, 40);
 
         jPanel3.setBackground(new java.awt.Color(58, 125, 68));
         jPanel3.setMinimumSize(new java.awt.Dimension(1550, 48));
@@ -285,6 +274,11 @@ public class Checkout extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 1550, 48);
+
+        fonepayCheckBox.setFont(new java.awt.Font("Arial Rounded MT Bold", 0, 20)); // NOI18N
+        fonepayCheckBox.setText("Fonepay");
+        getContentPane().add(fonepayCheckBox);
+        fonepayCheckBox.setBounds(840, 280, 190, 40);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
@@ -315,139 +309,163 @@ public class Checkout extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void loadOrderSummary() {
-        java.util.List<model.CartItem> items = cartController.getCartItems(userId);
-        double subTotal = cartController.getSubTotal(items);
-        double discount = cartController.getDiscount(subTotal);
-        double total = subTotal - discount;
+        java.util.List<model.CartItem> items = checkoutController.getCartItems(userId);
+        double subTotal = checkoutController.getSubTotal(items);
+        double discount = checkoutController.getDiscount(subTotal);
+        double total    = subTotal - discount;
+        if (total < 0) total = 0;
 
         jLabel11.setText("Rs.  " + (int) subTotal);
         jLabel12.setText("Rs.  " + (int) discount);
         jLabel13.setText("Rs.  " + (int) total);
     }
 
-private void initBackend() {
-        // Group checkboxes so only one is selected
+    private void initBackend() {
+        
+        // ✅ Group checkboxes — only one can be selected
         javax.swing.ButtonGroup paymentGroup = new javax.swing.ButtonGroup();
-        paymentGroup.add(jCheckBox5);
-        paymentGroup.add(jCheckBox6);
-        paymentGroup.add(jCheckBox7);
-        paymentGroup.add(jCheckBox4);
-
+        paymentGroup.add(jCheckBox5);          // Esewa
+        paymentGroup.add(fonepayCheckBox);     // FonePay
+        paymentGroup.add(jCheckBox4);          // COD
+        
         // Pre-select COD by default
         jCheckBox4.setSelected(true);
-
-        // Checkout action
+        
+        // ✅ Build Coupon Section
+        buildCouponSection();
+        
+        // Checkout button action
         jButton1.addActionListener(e -> {
-            String fullName = jTextField2.getText().trim();
-            String address = jTextField3.getText().trim();
-            String city = jTextField4.getText().trim();
+            
+            String fullName    = jTextField2.getText().trim();
+            String address     = jTextField3.getText().trim();
+            String city        = jTextField4.getText().trim();
             String phoneNumber = jTextField5.getText().trim();
-            String postalCode = jTextField1.getText().trim();
-
-            if (fullName.isEmpty() || address.isEmpty() || city.isEmpty() || phoneNumber.isEmpty() || postalCode.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "Please fill in all shipping details!",
-                    "Validation Error", javax.swing.JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
+            String postalCode  = jTextField1.getText().trim();
+            
             String paymentMethod = "";
-            if (jCheckBox5.isSelected()) paymentMethod = "Esewa";
-            else if (jCheckBox6.isSelected()) paymentMethod = "Khalti";
-            else if (jCheckBox7.isSelected()) paymentMethod = "Credit/Debit Card";
-            else if (jCheckBox4.isSelected()) paymentMethod = "COD";
+            if (jCheckBox5.isSelected())           paymentMethod = "Esewa";
+            else if (fonepayCheckBox.isSelected()) paymentMethod = "FonePay";
+            else if (jCheckBox4.isSelected())      paymentMethod = "COD";
 
-            if (paymentMethod.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "Please select a payment method!",
-                    "Validation Error", javax.swing.JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            java.util.List<model.CartItem> items = cartController.getCartItems(userId);
-            if (items.isEmpty()) {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "Your cart is empty!",
-                    "Checkout Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Place order for each item in the cart
-            dao.OrderDAO orderDAO = new dao.OrderDAO();
-            int orderId = -1;
-            boolean success = true;
-
-            for (model.CartItem item : items) {
-                double itemTotal = item.getPrice() * item.getQuantity();
-                double subTotal = cartController.getSubTotal(items);
-                double discountRate = subTotal > 0 ? cartController.getDiscount(subTotal) / subTotal : 0;
-                double finalItemAmount = itemTotal * (1 - discountRate);
-
-                int placedId = orderDAO.placeOrder(
-                    item.getProductId(),
-                    userId,
-                    finalItemAmount,
-                    fullName,
-                    address,
-                    city,
-                    phoneNumber,
-                    postalCode,
-                    paymentMethod
+            controller.CheckoutController.CheckoutResult result = 
+                checkoutController.processCheckout(
+                    userId, fullName, address, city, 
+                    phoneNumber, postalCode, paymentMethod
                 );
 
-                if (placedId == -1) {
-                    success = false;
-                } else {
-                    orderId = placedId;
-                }
+            if (!result.success) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    result.message, "Checkout Error",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
             }
 
-            if (success) {
-                // Clear the cart
-                cartController.clearCart(userId);
-
-                // --- NEW ESewa INTEGRATION CODE ---
-                if (paymentMethod.equals("Esewa")) {
-                    // Dynamically calculate final checkout price total
-                    double subTotal = cartController.getSubTotal(items);
-                    double discount = cartController.getDiscount(subTotal);
-                    int totalAmount = (int) (subTotal - discount);
-
-                    // Initialize payment controller and load up the browser
-                    controller.PayementController paymentEngine = new controller.PayementController();
-                    paymentEngine.processEsewaPayment(String.valueOf(totalAmount));
-
-                    // Direct feedback alert to user
-                    javax.swing.JOptionPane.showMessageDialog(this,
-                        "Redirecting to eSewa secure payment portal. Please check your web browser!",
-                        "eSewa Payment Portal", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                    this.dispose();
-                } else {
-                    // Standard flow for Cash on Delivery (COD) or other options
-                    new OrderConformation(orderId, username, userId).showInFrame();
-                    this.dispose();
-                }
-                // --- END OF NEW CODE ---
+            // Success — handle by payment method
+            boolean isOnlinePayment = paymentMethod.equals("Esewa") 
+                                   || paymentMethod.equals("FonePay");
+            
+            if (isOnlinePayment) {
+                String transactionId = checkoutController.processOnlinePayment(result.totalAmount, this);
                 
+                if (transactionId != null) {
+                    boolean saved = checkoutController.saveTransactionId(result.orderId, transactionId);
+                    
+                    if (saved) {
+                        javax.swing.JOptionPane.showMessageDialog(this,
+                            "Payment recorded!\n\nTransaction ID: " + transactionId
+                            + "\n\nYour order is being verified by our admin.\n"
+                            + "You'll be notified once confirmed.",
+                            "Payment Recorded",
+                            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+                        
+                        new OrderConformation(result.orderId, username, userId).showInFrame();
+                        this.dispose();
+                    } else {
+                        javax.swing.JOptionPane.showMessageDialog(this,
+                            "Failed to save Transaction ID. Please contact admin.",
+                            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                        "Payment cancelled. Your order has been placed but marked as Pending.",
+                        "Payment Cancelled", javax.swing.JOptionPane.WARNING_MESSAGE);
+                }
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "Failed to place order. Please try again.",
-                    "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                // COD → Order Confirmation directly
+                new OrderConformation(result.orderId, username, userId).showInFrame();
+                this.dispose();
             }
         });
+    }
+
+    // ─── Build Coupon Section (programmatically) ──────────────
+    private void buildCouponSection() {
+        // ✅ Get the actual main panel (inside scroll pane)
+        javax.swing.JViewport viewport = 
+            ((javax.swing.JScrollPane) getContentPane()).getViewport();
+        javax.swing.JPanel mainPanel = (javax.swing.JPanel) viewport.getView();
+        
+        // Coupon label
+        javax.swing.JLabel couponLabel = new javax.swing.JLabel("Coupon Code:");
+        couponLabel.setFont(new java.awt.Font("Arial Black", 0, 20));
+        couponLabel.setBounds(823, 815, 200, 30);
+        mainPanel.add(couponLabel);
+
+        // Coupon text field
+        javax.swing.JTextField couponField = new javax.swing.JTextField();
+        couponField.setFont(new java.awt.Font("Arial Black", 0, 20));
+        couponField.setBackground(new java.awt.Color(232, 255, 233));
+        couponField.setBorder(javax.swing.BorderFactory.createLineBorder(
+            new java.awt.Color(170, 218, 172), 2));
+        couponField.setBounds(823, 855, 350, 45);
+        mainPanel.add(couponField);
+
+        // Apply button
+        javax.swing.JButton applyBtn = new javax.swing.JButton("Apply");
+        applyBtn.setFont(new java.awt.Font("Arial Black", 0, 16));
+        applyBtn.setBackground(new java.awt.Color(170, 218, 172));
+        applyBtn.setBounds(1185, 855, 120, 45);
+        mainPanel.add(applyBtn);
+
+        // Status label
+        javax.swing.JLabel statusLabel = new javax.swing.JLabel(" ");
+        statusLabel.setFont(new java.awt.Font("Arial Black", 0, 14));
+        statusLabel.setBounds(823, 905, 500, 25);
+        mainPanel.add(statusLabel);
+
+        // Apply coupon action
+        applyBtn.addActionListener(e -> {
+            String code = couponField.getText().trim();
+            String result = checkoutController.applyCoupon(code);
+            
+            if (result == null) {
+                statusLabel.setText("✓ Coupon applied! Rs 50 discount");
+                statusLabel.setForeground(new java.awt.Color(0, 153, 0));
+                applyBtn.setEnabled(false);
+                couponField.setEditable(false);
+            } else {
+                statusLabel.setText("✗ " + result);
+                statusLabel.setForeground(java.awt.Color.RED);
+            }
+            
+            loadOrderSummary();
+        });
+        
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Logo_productcatalog1;
+    private javax.swing.JCheckBox fonepayCheckBox;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

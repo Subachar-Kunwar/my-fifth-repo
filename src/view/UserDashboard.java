@@ -23,12 +23,53 @@ public class UserDashboard extends javax.swing.JFrame {
     }
 
     private void initBackend() {
-        jLabel11.setText(dashController.getWelcomeMessage());
-        jLabel13.setText(dashController.getUsername());
-        jLabel14.setText(dashController.getUserEmail());
-        loadRecentOrders();
-        loadRecentActivities();
+    jLabel11.setText(dashController.getWelcomeMessage());
+    jLabel13.setText(dashController.getUsername());
+    jLabel14.setText(dashController.getUserEmail());
+    loadRecentOrders();
+    loadRecentActivities();
+    
+    // ✅ Load profile picture on startup
+    new controller.ProfileController(dashController.getUserId())
+        .initProfilePic(jLabel40);
+    
+    // ✅ Wire Change Photo button
+    profilepic.addActionListener(e -> changeProfilePicture());
+}
+
+// ─── Change Profile Picture ───────────────────────────────
+private void changeProfilePicture() {
+    javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
+    chooser.setDialogTitle("Select Profile Picture");
+    chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+        "Image files (JPG, JPEG, PNG)", "jpg", "jpeg", "png"));
+
+    int result = chooser.showOpenDialog(this);
+
+    if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
+        java.io.File selectedFile = chooser.getSelectedFile();
+        String imagePath = selectedFile.getAbsolutePath();
+
+        controller.ProfileController profileCtrl = 
+            new controller.ProfileController(dashController.getUserId());
+
+        String message = profileCtrl.updateProfilePic(imagePath);
+
+        if (message == null) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Profile picture updated!",
+                "Success",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+            // Reload the new image
+            profileCtrl.initProfilePic(jLabel40);
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                message, "Error",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }
+}
 
     private void loadRecentOrders() {
 
@@ -122,6 +163,7 @@ private void loadRecentActivities() {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
+        profilepic = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -307,6 +349,9 @@ private void loadRecentActivities() {
         jLabel40.setBackground(new java.awt.Color(0, 102, 51));
         jLabel40.setIcon(new javax.swing.ImageIcon(getClass().getResource("/group7/rewear/cattpic.png"))); // NOI18N
 
+        profilepic.setText("Change Photo");
+        profilepic.addActionListener(this::profilepicActionPerformed);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -319,8 +364,10 @@ private void loadRecentActivities() {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(0, 24, Short.MAX_VALUE)
-                        .addComponent(jLabel40)
-                        .addGap(18, 18, 18)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(profilepic, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(3, 3, 3)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -340,7 +387,9 @@ private void loadRecentActivities() {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(profilepic)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel7);
@@ -620,10 +669,11 @@ private void loadRecentActivities() {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Redirecting to Cart page...\nComing soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+       Cart cart = new Cart(dashController.getUsername(), dashController.getUserId());
+    cart.setSize(1550, 840);
+    cart.setLocationRelativeTo(null);
+    cart.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -682,6 +732,10 @@ private void loadRecentActivities() {
     notificationPage.setVisible(true);
     this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void profilepicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profilepicActionPerformed
+    changeProfilePicture();
+    }//GEN-LAST:event_profilepicActionPerformed
 
     /**
      * @param args the command line arguments
@@ -754,6 +808,7 @@ private void loadRecentActivities() {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JButton profilepic;
     // End of variables declaration//GEN-END:variables
 }
 

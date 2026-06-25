@@ -180,11 +180,11 @@ private void refreshNotifications() {
     }//GEN-LAST:event_BellBtnActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
-   // ✅ Coming soon
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Cart page coming soon!",
-            "Cart",
-            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+    Cart cart = new Cart(username, userId);
+    cart.setSize(1550, 840);
+    cart.setLocationRelativeTo(null);
+    cart.setVisible(true);
+    this.dispose();
     }//GEN-LAST:event_CartBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

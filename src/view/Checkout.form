@@ -163,7 +163,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="44" y="85" width="230" height="50"/>
+          <AbsoluteConstraints x="44" y="85" width="400" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -176,7 +176,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="813" y="122" width="230" height="40"/>
+          <AbsoluteConstraints x="813" y="122" width="470" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -278,7 +278,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="89" y="228" width="-1" height="-1"/>
+          <AbsoluteConstraints x="89" y="228" width="360" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -287,11 +287,11 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Arial Black" size="24" style="0"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Address"/>
+        <Property name="text" type="java.lang.String" value="Email Address"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="89" y="348" width="-1" height="-1"/>
+          <AbsoluteConstraints x="89" y="348" width="330" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -304,7 +304,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="89" y="595" width="-1" height="-1"/>
+          <AbsoluteConstraints x="89" y="595" width="410" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -317,7 +317,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="89" y="467" width="-1" height="-1"/>
+          <AbsoluteConstraints x="89" y="467" width="290" height="-1"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -337,52 +337,26 @@
     <Component class="javax.swing.JCheckBox" name="jCheckBox4">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial Rounded MT Bold" size="18" style="0"/>
+          <Font name="Arial Rounded MT Bold" size="20" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="COD ( Cash On delivery )"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="833" y="362" width="260" height="35"/>
+          <AbsoluteConstraints x="840" y="350" width="410" height="35"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JCheckBox" name="jCheckBox5">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial Rounded MT Bold" size="18" style="0"/>
+          <Font name="Arial Rounded MT Bold" size="20" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Esewa"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="833" y="192" width="166" height="35"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox6">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial Rounded MT Bold" size="18" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Khalti"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="833" y="242" width="166" height="35"/>
-        </Constraint>
-      </Constraints>
-    </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox7">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial Rounded MT Bold" size="18" style="0"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Credit/Debit Card"/>
-      </Properties>
-      <Constraints>
-        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="833" y="302" width="200" height="35"/>
+          <AbsoluteConstraints x="840" y="220" width="240" height="35"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -395,7 +369,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="64" y="162" width="230" height="40"/>
+          <AbsoluteConstraints x="64" y="162" width="400" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -516,5 +490,18 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JCheckBox" name="fonepayCheckBox">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial Rounded MT Bold" size="20" style="0"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Fonepay"/>
+      </Properties>
+      <Constraints>
+        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+          <AbsoluteConstraints x="840" y="280" width="190" height="40"/>
+        </Constraint>
+      </Constraints>
+    </Component>
   </SubComponents>
 </Form>

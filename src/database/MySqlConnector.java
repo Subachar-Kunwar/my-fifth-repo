@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class MySqlConnector implements db {
 
     private final String username = "root";
-    private final String password = "1234";
+    private final String password = "subachar@0310";
     private final String database = "group7_Rewear";
 
     @Override

@@ -382,8 +382,11 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="0" pref="24" max="32767" attributes="0"/>
-                              <Component id="jLabel40" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="profilepic" max="32767" attributes="0"/>
+                                  <Component id="jLabel40" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel14" min="-2" pref="323" max="-2" attributes="0"/>
                                   <Component id="jLabel13" min="-2" pref="282" max="-2" attributes="0"/>
@@ -411,7 +414,9 @@
                               <Component id="jLabel40" min="-2" pref="105" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="57" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="profilepic" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="28" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -459,6 +464,14 @@
                   <Image iconType="3" name="/group7/rewear/cattpic.png"/>
                 </Property>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="profilepic">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Change Photo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="profilepicActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

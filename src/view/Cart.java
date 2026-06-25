@@ -341,47 +341,62 @@ public class Cart extends javax.swing.JFrame {
 
         // ---- BUTTON ACTIONS ----
 
-        // MINUS button
-        minusBtn.addActionListener(e -> {
-            int newQty = item.getQuantity() - 1;
-            if (newQty <= 0) {
-                int confirm = JOptionPane.showConfirmDialog(this,
-                    "Remove " + item.getProductName() + " from cart?",
-                    "Remove Item", JOptionPane.YES_NO_OPTION);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    cartController.removeItem(item.getId());
-                    loadCartItems();
-                }
-            } else {
-                cartController.updateQuantity(item.getId(), newQty);
-                item.setQuantity(newQty);
-                qtyLabel.setText(String.valueOf(newQty));
-                itemTotal.setText("Rs.  " + (int) (item.getPrice() * newQty));
-                refreshTotals();
-            }
-        });
+        // MINUS button — restore stock when decreased
+minusBtn.addActionListener(e -> {
+    int newQty = item.getQuantity() - 1;
+    if (newQty <= 0) {
+        int confirm = JOptionPane.showConfirmDialog(this,
+            "Remove " + item.getProductName() + " from cart?",
+            "Remove Item", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // ✅ Use restore-stock version
+            cartController.removeItemAndRestoreStock(item.getId());
+            loadCartItems();
+        }
+    } else {
+        // ✅ Use restore-stock version
+        cartController.decreaseQuantity(item.getId(), item.getProductId(), newQty);
+        item.setQuantity(newQty);
+        qtyLabel.setText(String.valueOf(newQty));
+        itemTotal.setText("Rs.  " + (int) (item.getPrice() * newQty));
+        refreshTotals();
+    }
+});
 
-        // PLUS button
-        plusBtn.addActionListener(e -> {
-            int newQty = item.getQuantity() + 1;
-            cartController.updateQuantity(item.getId(), newQty);
-            item.setQuantity(newQty);
-            qtyLabel.setText(String.valueOf(newQty));
-            itemTotal.setText("Rs.  " + (int) (item.getPrice() * newQty));
-            refreshTotals();
-        });
+       // PLUS button
+plusBtn.addActionListener(e -> {
+    // ✅ Check stock first
+    String result = cartController.tryIncreaseQuantity(
+        item.getId(), 
+        item.getProductId(), 
+        item.getQuantity()
+    );
 
-        // REMOVE button
-        removeBtn.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(this,
-                "Remove " + item.getProductName() + " from cart?",
-                "Remove Item", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                cartController.removeItem(item.getId());
-                loadCartItems();
-            }
-        });
+    if (result == null) {
+        // ✅ Success
+        int newQty = item.getQuantity() + 1;
+        item.setQuantity(newQty);
+        qtyLabel.setText(String.valueOf(newQty));
+        itemTotal.setText("Rs.  " + (int) (item.getPrice() * newQty));
+        refreshTotals();
+    } else {
+        // ❌ Stock exceeded
+        JOptionPane.showMessageDialog(this,
+            result, "Stock Limit", JOptionPane.WARNING_MESSAGE);
+    }
+});
 
+       // REMOVE button — restore stock
+removeBtn.addActionListener(e -> {
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "Remove " + item.getProductName() + " from cart?",
+        "Remove Item", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        // ✅ Use restore-stock version
+        cartController.removeItemAndRestoreStock(item.getId());
+        loadCartItems();
+    }
+});
         return row;
     }
 

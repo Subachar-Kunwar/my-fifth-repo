@@ -564,12 +564,11 @@ private void loadProducts() {
     }//GEN-LAST:event_shop_btn_productcatalogActionPerformed
 
     private void CartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CartBtnActionPerformed
-    
-    javax.swing.JOptionPane.showMessageDialog(
-        this,
-        "Redirecting to Cart page !",
-        "My Cart",
-        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+   Cart cart = new Cart(loggedInUsername, loggedInUserId);
+    cart.setSize(1550, 840);
+    cart.setLocationRelativeTo(null);
+    cart.setVisible(true);
+    this.dispose();
 
     }//GEN-LAST:event_CartBtnActionPerformed
 
